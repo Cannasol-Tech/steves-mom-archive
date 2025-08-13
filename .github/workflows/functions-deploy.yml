@@ -1,0 +1,52 @@
+name: functions-deploy
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Azure Functions Core tools (for packaging)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: Install backend dependencies
+        working-directory: src/backend
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt -t .python_packages/lib/site-packages; fi
+
+      - name: Zip function app
+        working-directory: src/backend
+        run: |
+          zip -r ../functionapp.zip . -x "*.git*"
+
+      - name: Azure login
+        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Functions (if configured)
+        if: ${{ secrets.AZURE_FUNCTIONAPP_NAME != '' && secrets.AZURE_CREDENTIALS != '' }}
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
+          package: src/functionapp.zip
+          scm-do-build-during-deployment: false
+
+      - name: Skip deploy (no Azure creds)
+        if: ${{ !(secrets.AZURE_FUNCTIONAPP_NAME != '' && secrets.AZURE_CREDENTIALS != '') }}
+        run: echo "Azure creds not configured; build succeeded, deploy skipped."
