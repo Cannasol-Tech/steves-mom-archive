@@ -1,0 +1,61 @@
+name: release-pack
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate manifest.json
+        run: |
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT=$(git rev-parse HEAD)
+          TAG=${GITHUB_REF_NAME}
+          mkdir -p release-pack
+          cat > release-pack/manifest.json <<EOF
+          {
+            "project": "steves-mom",
+            "tag": "${TAG}",
+            "commit": "${COMMIT}",
+            "generatedAt": "${TS}",
+            "apiVersion": "mvp",
+            "includes": [
+              "docs/planning/implementation-plan.md",
+              "db/migrations/",
+              "analytics-schema.json",
+              "deployment.json",
+              "api-schema.json"
+            ]
+          }
+          EOF
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p release-pack/db/migrations
+          # Optional files; copy if they exist
+          if [ -f docs/planning/implementation-plan.md ]; then cp docs/planning/implementation-plan.md release-pack/; fi
+          if [ -f api-schema.json ]; then cp api-schema.json release-pack/; fi
+          if [ -f analytics-schema.json ]; then cp analytics-schema.json release-pack/; fi
+          if [ -f deployment.json ]; then cp deployment.json release-pack/; fi
+
+      - name: Create archive
+        run: |
+          (cd release-pack && zip -r ../release-pack.zip .)
+
+      - name: Create GitHub Release and upload asset
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: release-pack.zip
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true

@@ -1,0 +1,26 @@
+name: tests
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  pull_request:
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dev deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install pytest behave; fi
+      - name: Run unit/integration tests (pytest)
+        run: |
+          pytest -q || pytest -q -k ""
+      - name: Run acceptance tests (behave)
+        run: |
+          if [ -d features ]; then behave --stop --no-capture; else echo "No features directory; skipping."; fi
