@@ -37,16 +37,16 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 1: Infrastructure setup (Consumption plan) [ ] (est: 2 days)
 
-  #1.1: Azure resources IaC draft (naming, SKUs) [ ] (est: 0.5d) [CURRENT-TASK] **[CHECKED OUT: cascade-01 @2025-08-13T16:55:16-04:00] [feature/infrastructure-iac-draft]**
-      1.1.1 [ ] Define TDD scope for IaC: write test plan for naming rules and SKU validation (unit/integration)
-      1.1.2 [ ] Establish naming conventions (resource group, functions, storage, sql, redis, kv) with examples and doc in `docs/architecture/naming.md`
-      1.1.3 [ ] Select SKUs for each service (Functions Consumption/Flex, SQL tier, Redis tier, Storage replication) with cost notes
-      1.1.4 [ ] Draft IaC skeleton (Bicep or Terraform) modules and parameters with doxygen comments
-      1.1.5 [ ] Add IaC lint/validate tasks and unit tests (naming, tags, locations)
-      1.1.6 [ ] Add integration "plan/what-if" tests to assert expected resources
-      1.1.7 [ ] Update `docs/planning/multi-agent-sync.md` notes during progress
-      1.1.8 [ ] Acceptance review and finalize draft
-  #1.2: Provision Azure resources [ ] (est: 0.5d)
+  #1.1: Azure resources IaC draft (naming, SKUs) [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T17:45:00-04:00] [feature/infrastructure-iac-draft]**
+      1.1.1 [x] Define TDD scope for IaC: write test plan for naming rules and SKU validation (unit/integration)
+      1.1.2 [x] Establish naming conventions (resource group, functions, storage, sql, redis, kv) with examples and doc in `docs/architecture/naming.md`
+      1.1.3 [x] Select SKUs for each service (Functions Consumption/Flex, SQL tier, Redis tier, Storage replication) with cost notes
+      1.1.4 [x] Draft IaC skeleton (Bicep or Terraform) modules and parameters with doxygen comments
+      1.1.5 [x] Add IaC lint/validate tasks and unit tests (naming, tags, locations)
+      1.1.6 [x] Add integration "plan/what-if" tests to assert expected resources
+      1.1.7 [x] Update `docs/planning/multi-agent-sync.md` notes during progress
+      1.1.8 [x] Acceptance review and finalize draft
+  #1.2: Provision Azure resources [ ] (est: 0.5d) [CURRENT-TASK] **[CHECKED OUT: cascade-01 @2025-08-13T18:00:00-04:00] [feature/azure-provisioning]**
       1.2.1 [ ] Create resource group with proper naming and tags
       1.2.2 [ ] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
       1.2.3 [ ] Create Redis Cache instance with appropriate tier
