@@ -97,7 +97,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ## 3: Chat interface (React/TS/Tailwind) [ ] (est: 2 days)
 
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
-  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d)
+  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-01-15T11:15:00-05:00] [feature/chat-input-messages]**
   #3.3: Streaming display + retry/cancel [ ] (est: 0.5d)
   #3.4: Error/loading states, toasts [ ] (est: 0.25d)
   #3.5: Socket/client wiring for live updates [ ] (est: 0.25d)

@@ -17,6 +17,7 @@ List any unclaimed tasks here as they are identified.
 | Task ID | Description | Agent | Branch | Started | Dependencies | Notes |
 |---------|-------------|-------|--------|---------|--------------|-------|
 | 1.2 | Provision Azure resources | cascade-01 | feature/azure-provisioning | 2025-08-13T18:00:00-04:00 | 1.1 complete | Using Bicep templates from 1.1 to provision actual Azure resources |
+| 3.2 | Chat input, message list, timestamps | cascade-02 | feature/chat-input-messages | 2025-01-15T11:15:00-05:00 | 3.1 complete | Enhancing chat interface with better UX |
 
 ## Completed Tasks
 
