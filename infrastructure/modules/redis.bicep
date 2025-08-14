@@ -1,6 +1,8 @@
 /**
  * @file redis.bicep
  * @brief Azure Cache for Redis (Basic C0)
+ * @author Cannasol Technologies
+ * Note: Cost-optimized SKU label: Basic_C0
  */
 
 param redisCacheName string

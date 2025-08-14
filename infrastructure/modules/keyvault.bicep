@@ -18,6 +18,8 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
       family: 'A'
       name: 'standard'
     }
+    // Ensure soft delete is enabled for security compliance
+    enableSoftDelete: true
     enableRbacAuthorization: true
     enabledForTemplateDeployment: false
     enabledForDiskEncryption: false

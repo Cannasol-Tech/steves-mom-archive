@@ -411,35 +411,36 @@ Your default mode is to seize work from people's grasp while making them beg for
                 elif message.role.value == "system":
                     chat.append(system(message.content))
 
-            # Stream the response with real-time reasoning
-            for chunk in chat.stream():
-                chunk_data = {
-                    "type": "unknown",
-                    "content": "",
-                    "reasoning": "",
-                    "done": False
-                }
+            # Stream the response with real-time reasoning using native xAI SDK
+            reasoning_sent = False
 
-                if hasattr(chunk, 'choices') and chunk.choices:
-                    choice = chunk.choices[0]
+            for response_obj, chunk in chat.stream():
+                # Send reasoning first (from complete response object)
+                if not reasoning_sent and hasattr(response_obj, 'reasoning_content') and response_obj.reasoning_content:
+                    yield {
+                        "type": "reasoning",
+                        "content": "",
+                        "reasoning": response_obj.reasoning_content,
+                        "done": False
+                    }
+                    reasoning_sent = True
 
-                    # Handle reasoning content
-                    if hasattr(choice, 'delta') and choice.delta:
-                        if hasattr(choice.delta, 'reasoning_content') and choice.delta.reasoning_content:
-                            chunk_data["type"] = "reasoning"
-                            chunk_data["reasoning"] = choice.delta.reasoning_content
-                            yield chunk_data
+                # Send content chunks as they arrive
+                if chunk and hasattr(chunk, 'content') and chunk.content:
+                    yield {
+                        "type": "content",
+                        "content": chunk.content,
+                        "reasoning": "",
+                        "done": False
+                    }
 
-                        if hasattr(choice.delta, 'content') and choice.delta.content:
-                            chunk_data["type"] = "content"
-                            chunk_data["content"] = choice.delta.content
-                            yield chunk_data
-
-                    # Check if finished
-                    if hasattr(choice, 'finish_reason') and choice.finish_reason:
-                        chunk_data["type"] = "done"
-                        chunk_data["done"] = True
-                        yield chunk_data
+            # Send completion signal
+            yield {
+                "type": "done",
+                "content": "",
+                "reasoning": "",
+                "done": True
+            }
                     
         except Exception as e:
             logger.error(f"GROK streaming error: {e}")
