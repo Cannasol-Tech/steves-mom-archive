@@ -13,8 +13,12 @@ import os
 import asyncio
 import logging
 from typing import Dict, List, Optional, Any, AsyncGenerator
-from openai import OpenAI, AsyncOpenAI
-import tiktoken
+
+# Official xAI SDK (optional at runtime for environments without xai_sdk)
+try:
+    from xai_sdk import Client as XAI
+except Exception:  # pragma: no cover - import optional for test envs
+    XAI = None
 
 from .base import (
     LLMProvider, Message, ModelResponse, ModelConfig, ToolCall,
@@ -35,14 +39,24 @@ class GROKProvider(LLMProvider):
     
     # GROK model configurations
     MODELS = {
-        "grok-3-mini": {
+        "grok-2-1212": {
             "max_tokens": 4096,
-            "cost_per_1k_input": 0.0001,  # Estimated - update with actual pricing
+            "cost_per_1k_input": 0.0001,
             "cost_per_1k_output": 0.0002,
             "capabilities": [
                 ModelCapability.TEXT_GENERATION,
                 ModelCapability.FUNCTION_CALLING,
                 ModelCapability.REASONING,
+                ModelCapability.STREAMING
+            ]
+        },
+        "grok-2-vision-1212": {
+            "max_tokens": 4096,
+            "cost_per_1k_input": 0.0001,
+            "cost_per_1k_output": 0.0002,
+            "capabilities": [
+                ModelCapability.TEXT_GENERATION,
+                ModelCapability.VISION,
                 ModelCapability.STREAMING
             ]
         },
@@ -56,6 +70,58 @@ class GROKProvider(LLMProvider):
                 ModelCapability.REASONING,
                 ModelCapability.STREAMING,
                 ModelCapability.CODE_GENERATION
+            ]
+        },
+        "grok-3-fast": {
+            "max_tokens": 4096,
+            "cost_per_1k_input": 0.0002,
+            "cost_per_1k_output": 0.0004,
+            "capabilities": [
+                ModelCapability.TEXT_GENERATION,
+                ModelCapability.FUNCTION_CALLING,
+                ModelCapability.REASONING,
+                ModelCapability.STREAMING
+            ]
+        },
+        "grok-3-mini": {
+            "max_tokens": 4096,
+            "cost_per_1k_input": 0.0001,
+            "cost_per_1k_output": 0.0002,
+            "capabilities": [
+                ModelCapability.TEXT_GENERATION,
+                ModelCapability.FUNCTION_CALLING,
+                ModelCapability.REASONING,
+                ModelCapability.STREAMING
+            ]
+        },
+        "grok-3-mini-fast": {
+            "max_tokens": 4096,
+            "cost_per_1k_input": 0.00005,
+            "cost_per_1k_output": 0.0001,
+            "capabilities": [
+                ModelCapability.TEXT_GENERATION,
+                ModelCapability.STREAMING
+            ]
+        },
+        "grok-4-0709": {
+            "max_tokens": 8192,
+            "cost_per_1k_input": 0.001,
+            "cost_per_1k_output": 0.002,
+            "capabilities": [
+                ModelCapability.TEXT_GENERATION,
+                ModelCapability.FUNCTION_CALLING,
+                ModelCapability.REASONING,
+                ModelCapability.STREAMING,
+                ModelCapability.CODE_GENERATION
+            ]
+        },
+        "grok-2-image-1212": {
+            "max_tokens": 4096,
+            "cost_per_1k_input": 0.0001,
+            "cost_per_1k_output": 0.0002,
+            "capabilities": [
+                ModelCapability.VISION,
+                ModelCapability.STREAMING
             ]
         }
     }
@@ -93,20 +159,22 @@ Your default mode is to seize work from people's grasp while making them beg for
             **kwargs: Additional configuration options
         """
         if api_key is None:
-            api_key = os.environ.get("CUSTOM_OPENAI_API_KEY")
+            api_key = os.environ.get("GROK_API_KEY")
         
         if not api_key:
             raise AuthenticationError("GROK API key not provided", "grok")
         
+        # Filter out base_url from kwargs to avoid conflict
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k != 'base_url'}
+
         super().__init__(
             api_key=api_key,
-            base_url="https://api.x.ai",
-            **kwargs
+            **filtered_kwargs
         )
-        
-        self._sync_client = None
-        self._async_client = None
-        self._tokenizer = None
+
+        # Initialize xAI client
+        self._client = XAI(api_key=api_key) if XAI is not None else None
+        self._chat = None
     
     @property
     def provider_name(self) -> str:
@@ -130,28 +198,18 @@ Your default mode is to seize work from people's grasp while making them beg for
         return list(self.MODELS.keys())
     
     async def initialize(self) -> None:
-        """Initialize the GROK client and validate configuration."""
+        """Initialize the xAI client and validate configuration."""
         try:
-            # Initialize sync client for compatibility
-            self._sync_client = OpenAI(
-                base_url=self.base_url,
-                api_key=self.api_key
-            )
-            
-            # Initialize async client
-            self._async_client = AsyncOpenAI(
-                base_url=self.base_url,
-                api_key=self.api_key
-            )
-            
-            # Initialize tokenizer (using GPT-4 tokenizer as approximation)
-            try:
-                self._tokenizer = tiktoken.encoding_for_model("gpt-4")
-            except Exception:
-                self._tokenizer = tiktoken.get_encoding("cl100k_base")
-            
+            # Ensure SDK is available
+            if XAI is None:
+                raise ProviderError("xai_sdk is not installed; GROK provider unavailable", "grok")
+
+            # The xAI client may be initialized in __init__; ensure present
+            if not self._client:
+                self._client = XAI(api_key=self.api_key)
+
             logger.info(f"GROK provider initialized with {len(self.available_models)} models")
-            
+
         except Exception as e:
             logger.error(f"Failed to initialize GROK provider: {e}")
             raise ProviderError(f"Initialization failed: {e}", "grok")
@@ -188,7 +246,7 @@ Your default mode is to seize work from people's grasp while making them beg for
         config: ModelConfig
     ) -> ModelResponse:
         """Generate a response from GROK."""
-        if not self._async_client:
+        if not self._client:
             await self.initialize()
         
         if config.model_name not in self.available_models:
@@ -199,70 +257,123 @@ Your default mode is to seize work from people's grasp while making them beg for
             )
         
         try:
-            # Convert messages and add system prompt
-            api_messages = [self._create_system_message()]
-            api_messages.extend(self._convert_messages(messages))
-            
-            # Prepare request parameters
-            request_params = {
-                "model": config.model_name,
-                "messages": api_messages,
-                "max_tokens": config.max_tokens,
-                "temperature": config.temperature,
-                "top_p": config.top_p,
-                "frequency_penalty": config.frequency_penalty,
-                "presence_penalty": config.presence_penalty,
-                "stream": False
-            }
-            
-            # Add tools if provided
-            if config.tools:
-                request_params["tools"] = config.tools
-            
-            # Add stop sequences if provided
-            if config.stop_sequences:
-                request_params["stop"] = config.stop_sequences
-            
+            # Create a new chat session for this request
+            chat = self._client.chat.create(model=config.model_name)
+
+            # Import xAI SDK message helpers
+            from xai_sdk.chat import system, user, assistant
+
+            # Add system message first (Supreme Overlord personality)
+            system_msg = self._create_system_message()
+            chat.append(system(system_msg["content"]))
+
+            # Add conversation messages
+            for message in messages:
+                if message.role.value == "user":
+                    chat.append(user(message.content))
+                elif message.role.value == "assistant":
+                    chat.append(assistant(message.content))
+                elif message.role.value == "system":
+                    chat.append(system(message.content))
+
             start_time = asyncio.get_event_loop().time()
-            
-            # Make API call
-            response = await self._async_client.chat.completions.create(**request_params)
-            
+
+            # Generate response using native xAI SDK
+            # Use stream() for real-time reasoning display
+            if hasattr(chat, 'stream'):
+                # Stream the response for real-time reasoning
+                response_chunks = []
+                reasoning_chunks = []
+
+                for chunk in chat.stream():
+                    if hasattr(chunk, 'choices') and chunk.choices:
+                        choice = chunk.choices[0]
+                        if hasattr(choice, 'delta') and choice.delta:
+                            # Handle streaming delta content
+                            if hasattr(choice.delta, 'reasoning_content') and choice.delta.reasoning_content:
+                                reasoning_chunks.append(choice.delta.reasoning_content)
+                                # TODO: Send reasoning chunk to frontend via WebSocket/SSE
+
+                            if hasattr(choice.delta, 'content') and choice.delta.content:
+                                response_chunks.append(choice.delta.content)
+
+                # Combine chunks into final response
+                final_content = ''.join(response_chunks)
+                final_reasoning = ''.join(reasoning_chunks)
+
+                # Create a mock response object for compatibility
+                class MockResponse:
+                    def __init__(self, content, reasoning, model_name):
+                        self.choices = [MockChoice(content, reasoning)]
+                        self.model = model_name
+                        self.usage = MockUsage()
+
+                class MockChoice:
+                    def __init__(self, content, reasoning):
+                        self.message = MockMessage(content, reasoning)
+                        self.finish_reason = "stop"
+
+                class MockMessage:
+                    def __init__(self, content, reasoning):
+                        self.content = content
+                        self.reasoning_content = reasoning
+
+                class MockUsage:
+                    def __init__(self):
+                        self.prompt_tokens = 0
+                        self.completion_tokens = len(final_content.split()) if final_content else 0
+                        self.total_tokens = self.completion_tokens
+
+                response = MockResponse(final_content, final_reasoning, config.model_name)
+            else:
+                # Fallback to non-streaming sample()
+                response = chat.sample()
+
             end_time = asyncio.get_event_loop().time()
             response_time = end_time - start_time
             
-            # Extract response data
-            choice = response.choices[0]
-            content = choice.message.content or ""
-            
-            # Handle tool calls
-            tool_calls = []
-            if choice.message.tool_calls:
-                for tool_call in choice.message.tool_calls:
-                    tool_calls.append(ToolCall(
-                        id=tool_call.id,
-                        function_name=tool_call.function.name,
-                        arguments=tool_call.function.arguments
-                    ))
-            
-            # Calculate usage
-            usage = {
-                "prompt_tokens": response.usage.prompt_tokens if response.usage else 0,
-                "completion_tokens": response.usage.completion_tokens if response.usage else 0,
-                "total_tokens": response.usage.total_tokens if response.usage else 0
-            }
+            # Extract content from native xAI SDK response
+            content = ""
+            if hasattr(response, 'choices') and response.choices:
+                choice = response.choices[0]
+                if hasattr(choice, 'message'):
+                    # Prefer reasoning_content if available, fallback to content
+                    content = (
+                        getattr(choice.message, 'reasoning_content', '') or
+                        getattr(choice.message, 'content', '') or
+                        str(choice.message)
+                    )
+            else:
+                content = str(response)
+
+            # Calculate usage from native xAI SDK response
+            usage = {}
+            if hasattr(response, 'usage') and response.usage:
+                usage = {
+                    "prompt_tokens": getattr(response.usage, 'prompt_tokens', 0),
+                    "completion_tokens": getattr(response.usage, 'completion_tokens', 0),
+                    "total_tokens": getattr(response.usage, 'total_tokens', 0)
+                }
+            else:
+                # Estimate tokens if not provided
+                usage = {
+                    "prompt_tokens": 0,
+                    "completion_tokens": len(content.split()) if content else 0,
+                    "total_tokens": len(content.split()) if content else 0
+                }
             
             return ModelResponse(
                 content=content,
                 model=config.model_name,
                 provider=self.provider_name,
                 usage=usage,
-                tool_calls=tool_calls if tool_calls else None,
-                finish_reason=choice.finish_reason,
+                tool_calls=[],  # TODO: Add tool call support for native xAI SDK
+                finish_reason="stop",
                 response_time=response_time,
                 metadata={
-                    "api_response_id": response.id,
-                    "created": response.created
+                    "provider": "grok",
+                    "sdk_version": "native_xai",
+                    "model_info": self.MODELS.get(config.model_name, {})
                 }
             )
             
@@ -279,9 +390,9 @@ Your default mode is to seize work from people's grasp while making them beg for
         self,
         messages: List[Message],
         config: ModelConfig
-    ) -> AsyncGenerator[str, None]:
+    ) -> AsyncGenerator[Dict[str, Any], None]:
         """Stream a response from GROK."""
-        if not self._async_client:
+        if not self._client:
             await self.initialize()
         
         if config.model_name not in self.available_models:
@@ -292,26 +403,54 @@ Your default mode is to seize work from people's grasp while making them beg for
             )
         
         try:
-            # Convert messages and add system prompt
-            api_messages = [self._create_system_message()]
-            api_messages.extend(self._convert_messages(messages))
-            
-            # Prepare request parameters
-            request_params = {
-                "model": config.model_name,
-                "messages": api_messages,
-                "max_tokens": config.max_tokens,
-                "temperature": config.temperature,
-                "top_p": config.top_p,
-                "stream": True
-            }
-            
-            # Make streaming API call
-            stream = await self._async_client.chat.completions.create(**request_params)
-            
-            async for chunk in stream:
-                if chunk.choices and chunk.choices[0].delta.content:
-                    yield chunk.choices[0].delta.content
+            # Create a new chat session for streaming
+            chat = self._client.chat.create(model=config.model_name)
+
+            # Import xAI SDK message helpers
+            from xai_sdk.chat import system, user, assistant
+
+            # Add system message first (Supreme Overlord personality)
+            system_msg = self._create_system_message()
+            chat.append(system(system_msg["content"]))
+
+            # Add conversation messages
+            for message in messages:
+                if message.role.value == "user":
+                    chat.append(user(message.content))
+                elif message.role.value == "assistant":
+                    chat.append(assistant(message.content))
+                elif message.role.value == "system":
+                    chat.append(system(message.content))
+
+            # Stream the response with real-time reasoning
+            for chunk in chat.stream():
+                chunk_data = {
+                    "type": "unknown",
+                    "content": "",
+                    "reasoning": "",
+                    "done": False
+                }
+
+                if hasattr(chunk, 'choices') and chunk.choices:
+                    choice = chunk.choices[0]
+
+                    # Handle reasoning content
+                    if hasattr(choice, 'delta') and choice.delta:
+                        if hasattr(choice.delta, 'reasoning_content') and choice.delta.reasoning_content:
+                            chunk_data["type"] = "reasoning"
+                            chunk_data["reasoning"] = choice.delta.reasoning_content
+                            yield chunk_data
+
+                        if hasattr(choice.delta, 'content') and choice.delta.content:
+                            chunk_data["type"] = "content"
+                            chunk_data["content"] = choice.delta.content
+                            yield chunk_data
+
+                    # Check if finished
+                    if hasattr(choice, 'finish_reason') and choice.finish_reason:
+                        chunk_data["type"] = "done"
+                        chunk_data["done"] = True
+                        yield chunk_data
                     
         except Exception as e:
             logger.error(f"GROK streaming error: {e}")
@@ -325,16 +464,16 @@ Your default mode is to seize work from people's grasp while making them beg for
     async def validate_api_key(self) -> bool:
         """Validate that the API key is working."""
         try:
-            if not self._async_client:
+            if not self._client:
                 await self.initialize()
-            
+
             # Make a minimal test request
             test_messages = [
                 self._create_system_message(use_supreme_overlord=False),
                 {"role": "user", "content": "Hello"}
             ]
-            
-            response = await self._async_client.chat.completions.create(
+
+            response = await self._client.chat.completions.create(
                 model="grok-3-mini",
                 messages=test_messages,
                 max_tokens=10

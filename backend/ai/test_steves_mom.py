@@ -14,7 +14,7 @@ import logging
 import os
 from typing import Dict, Any
 
-from ai.supreme_overlord_agent import create_supreme_overlord, SupremeOverlordAgent
+from ai.steves_mom import create_supreme_overlord, SupremeOverlordAgent
 from ai.providers import ProviderType, validate_providers
 
 # Configure logging

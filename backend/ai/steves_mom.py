@@ -533,10 +533,18 @@ class SupremeOverlordAgent:
             # Convert to provider format
             provider_messages = self._convert_to_provider_messages(conversation_messages)
 
+            # Create default model config
+            from ai.providers.base import ModelConfig
+            default_config = ModelConfig(
+                model_name="grok-3-mini",
+                max_tokens=4096,
+                temperature=0.7
+            )
+
             # Get response from provider
             provider_response = await self.provider.generate_response(
                 messages=provider_messages,
-                config=None  # Use provider defaults
+                config=default_config
             )
 
             end_time = datetime.utcnow()

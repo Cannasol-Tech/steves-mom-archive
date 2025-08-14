@@ -57,7 +57,7 @@ class ProviderConfigManager:
         ProviderType.GROK: {
             "base_url": "https://api.x.ai",
             "model_name": "grok-3-mini",
-            "env_key": "CUSTOM_OPENAI_API_KEY",
+            "env_key": "GROK_API_KEY",
             "priority": 1
         },
         ProviderType.OPENAI: {
