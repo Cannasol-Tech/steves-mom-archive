@@ -12,7 +12,7 @@ Version: 1.0.0
 from datetime import datetime
 from typing import Dict, List, Optional, Any, Union, Literal
 from enum import Enum
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 import uuid
 
 
@@ -88,10 +88,11 @@ class AIModelConfig(BaseModel):
     stream: bool = False
     enable_tools: bool = True
     
-    @validator('model_name')
-    def validate_model_name(cls, v, values):
+    @field_validator('model_name')
+    @classmethod
+    def validate_model_name(cls, v, info):
         """Validate model name matches provider."""
-        provider = values.get('provider')
+        provider = info.data.get('provider') if info.data else None
         if provider == AIProvider.GROK and not v.startswith('grok'):
             raise ValueError('GROK provider requires grok model name')
         return v
@@ -124,7 +125,8 @@ class GeneratedTask(BaseModel):
     created_by: str = "supreme_overlord"
     metadata: Dict[str, Any] = Field(default_factory=dict)
     
-    @validator('confidence_score')
+    @field_validator('confidence_score')
+    @classmethod
     def validate_confidence(cls, v):
         """Ensure confidence score is reasonable."""
         if v < 0.3:
@@ -184,7 +186,8 @@ class ConversationSession(BaseModel):
     active: bool = True
     metadata: Dict[str, Any] = Field(default_factory=dict)
     
-    @validator('message_count', 'total_tokens')
+    @field_validator('message_count', 'total_tokens')
+    @classmethod
     def validate_non_negative(cls, v):
         """Ensure counts are non-negative."""
         if v < 0:
@@ -201,7 +204,8 @@ class BusinessIntegration(BaseModel):
     last_sync: Optional[datetime] = None
     error_count: int = 0
     
-    @validator('error_count')
+    @field_validator('error_count')
+    @classmethod
     def validate_error_count(cls, v):
         """Ensure error count is non-negative."""
         if v < 0:
@@ -224,7 +228,7 @@ class InventoryItem(BaseModel):
 
 class EmailRequest(BaseModel):
     """Structured email request for tool integration."""
-    recipient: str = Field(..., regex=r'^[^@]+@[^@]+\.[^@]+$')  # Basic email validation
+    recipient: str = Field(..., pattern=r'^[^@]+@[^@]+\.[^@]+$')  # Basic email validation
     subject: str = Field(..., min_length=1, max_length=200)
     body: str = Field(..., min_length=1, max_length=10000)
     cc: List[str] = Field(default_factory=list)
@@ -232,7 +236,8 @@ class EmailRequest(BaseModel):
     attachments: List[str] = Field(default_factory=list)
     priority: Literal["low", "normal", "high"] = "normal"
     
-    @validator('cc', 'bcc')
+    @field_validator('cc', 'bcc')
+    @classmethod
     def validate_email_lists(cls, v):
         """Validate email addresses in CC and BCC."""
         import re
@@ -260,7 +265,8 @@ class DatabaseQuery(BaseModel):
     where_conditions: Dict[str, Any] = Field(default_factory=dict)
     limit: int = Field(default=100, ge=1, le=1000)
     
-    @validator('query_type')
+    @field_validator('query_type')
+    @classmethod
     def validate_safe_query(cls, v):
         """Ensure only safe query types are allowed."""
         safe_types = ["select", "count", "aggregate"]
@@ -282,23 +288,25 @@ class SystemHealth(BaseModel):
     average_response_time_ms: Optional[float] = Field(None, ge=0.0)
     error_rate_percent: float = Field(default=0.0, ge=0.0, le=100.0)
     
-    @root_validator
+    @model_validator(mode='before')
+    @classmethod
     def validate_overall_status(cls, values):
         """Determine overall status based on component health."""
-        ai_status = values.get('ai_provider_status', {})
-        db_status = values.get('database_status', True)
-        cache_status = values.get('cache_status', True)
-        storage_status = values.get('storage_status', True)
-        error_rate = values.get('error_rate_percent', 0.0)
-        
-        # Determine overall health
-        if not db_status or not any(ai_status.values()) if ai_status else False:
-            values['overall_status'] = "unhealthy"
-        elif not cache_status or not storage_status or error_rate > 10.0:
-            values['overall_status'] = "degraded"
-        else:
-            values['overall_status'] = "healthy"
-        
+        if isinstance(values, dict):
+            ai_status = values.get('ai_provider_status', {})
+            db_status = values.get('database_status', True)
+            cache_status = values.get('cache_status', True)
+            storage_status = values.get('storage_status', True)
+            error_rate = values.get('error_rate_percent', 0.0)
+
+            # Determine overall health
+            if not db_status or not any(ai_status.values()) if ai_status else False:
+                values['overall_status'] = "unhealthy"
+            elif not cache_status or not storage_status or error_rate > 10.0:
+                values['overall_status'] = "degraded"
+            else:
+                values['overall_status'] = "healthy"
+
         return values
 
 
