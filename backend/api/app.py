@@ -2,8 +2,11 @@ import os
 import time
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+from dotenv import load_dotenv
 try:
-    from xai_sdk import XAI
+    # xai_sdk 1.x exposes `Client`. Alias to XAI for backward-compat usage below.
+    from xai_sdk import Client as XAI
     from xai_sdk.chat import system, user, assistant
 except Exception:  # pragma: no cover
     XAI = None
@@ -19,6 +22,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+"""
+Load environment variables from the repository root .env for local development.
+This ensures GROK_API_KEY and other secrets are available when running Uvicorn.
+"""
+try:
+    # backend/api/app.py -> repo root is two levels up
+    REPO_ROOT = Path(__file__).resolve().parents[2]
+    env_path = REPO_ROOT / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except Exception:
+    # Non-fatal if dotenv loading fails; explicit env vars can still be used
+    pass
 
 
 @app.get("/health")

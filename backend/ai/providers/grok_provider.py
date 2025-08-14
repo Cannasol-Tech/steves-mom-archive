@@ -278,55 +278,35 @@ Your default mode is to seize work from people's grasp while making them beg for
 
             start_time = asyncio.get_event_loop().time()
 
-            # Generate response using native xAI SDK
-            # Use stream() for real-time reasoning display
-            if hasattr(chat, 'stream'):
-                # Stream the response for real-time reasoning
-                response_chunks = []
+            # Generate response using native xAI SDK with streaming
+            # Check if we want streaming (default to non-streaming for now)
+            use_streaming = getattr(config, 'stream', False)
+
+            if use_streaming:
+                # Use streaming for real-time reasoning display
+                content_chunks = []
                 reasoning_chunks = []
+                final_response = None
 
-                for chunk in chat.stream():
-                    if hasattr(chunk, 'choices') and chunk.choices:
-                        choice = chunk.choices[0]
-                        if hasattr(choice, 'delta') and choice.delta:
-                            # Handle streaming delta content
-                            if hasattr(choice.delta, 'reasoning_content') and choice.delta.reasoning_content:
-                                reasoning_chunks.append(choice.delta.reasoning_content)
-                                # TODO: Send reasoning chunk to frontend via WebSocket/SSE
+                for response_obj, chunk in chat.stream():
+                    # Collect content chunks for streaming
+                    if chunk and hasattr(chunk, 'content') and chunk.content:
+                        content_chunks.append(chunk.content)
+                        # TODO: Send chunk to frontend via WebSocket/SSE
 
-                            if hasattr(choice.delta, 'content') and choice.delta.content:
-                                response_chunks.append(choice.delta.content)
+                    # Keep the final response for reasoning extraction
+                    final_response = response_obj
 
-                # Combine chunks into final response
-                final_content = ''.join(response_chunks)
-                final_reasoning = ''.join(reasoning_chunks)
+                # Create combined response
+                final_content = ''.join(content_chunks)
+                response = final_response  # Use final response for metadata
 
-                # Create a mock response object for compatibility
-                class MockResponse:
-                    def __init__(self, content, reasoning, model_name):
-                        self.choices = [MockChoice(content, reasoning)]
-                        self.model = model_name
-                        self.usage = MockUsage()
+                # Override content with streamed content if available
+                if final_content and hasattr(response, 'content'):
+                    response.content = final_content
 
-                class MockChoice:
-                    def __init__(self, content, reasoning):
-                        self.message = MockMessage(content, reasoning)
-                        self.finish_reason = "stop"
-
-                class MockMessage:
-                    def __init__(self, content, reasoning):
-                        self.content = content
-                        self.reasoning_content = reasoning
-
-                class MockUsage:
-                    def __init__(self):
-                        self.prompt_tokens = 0
-                        self.completion_tokens = len(final_content.split()) if final_content else 0
-                        self.total_tokens = self.completion_tokens
-
-                response = MockResponse(final_content, final_reasoning, config.model_name)
             else:
-                # Fallback to non-streaming sample()
+                # Use non-streaming sample() method
                 response = chat.sample()
 
             end_time = asyncio.get_event_loop().time()
@@ -334,16 +314,24 @@ Your default mode is to seize work from people's grasp while making them beg for
             
             # Extract content from native xAI SDK response
             content = ""
-            if hasattr(response, 'choices') and response.choices:
+            reasoning = ""
+
+            # xAI SDK Response object has direct attributes
+            if hasattr(response, 'content'):
+                content = response.content or ""
+
+            if hasattr(response, 'reasoning_content'):
+                reasoning = response.reasoning_content or ""
+
+            # Fallback to choices structure if direct attributes not available
+            if not content and hasattr(response, 'choices') and response.choices:
                 choice = response.choices[0]
                 if hasattr(choice, 'message'):
-                    # Prefer reasoning_content if available, fallback to content
-                    content = (
-                        getattr(choice.message, 'reasoning_content', '') or
-                        getattr(choice.message, 'content', '') or
-                        str(choice.message)
-                    )
-            else:
+                    content = getattr(choice.message, 'content', '') or str(choice.message)
+                    reasoning = getattr(choice.message, 'reasoning_content', '')
+
+            # Final fallback
+            if not content:
                 content = str(response)
 
             # Calculate usage from native xAI SDK response
@@ -373,6 +361,7 @@ Your default mode is to seize work from people's grasp while making them beg for
                 metadata={
                     "provider": "grok",
                     "sdk_version": "native_xai",
+                    "reasoning_content": reasoning,  # Include GROK's reasoning process
                     "model_info": self.MODELS.get(config.model_name, {})
                 }
             )
