@@ -46,13 +46,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       1.1.6 [x] Add integration "plan/what-if" tests to assert expected resources
       1.1.7 [x] Update `docs/planning/multi-agent-sync.md` notes during progress
       1.1.8 [x] Acceptance review and finalize draft
-  #1.2: Provision Azure resources [ ] (est: 0.5d) [CURRENT-TASK] **[CHECKED OUT: cascade-01 @2025-08-13T18:00:00-04:00] [feature/azure-provisioning]**
-      1.2.1 [ ] Create resource group with proper naming and tags
-      1.2.2 [ ] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
-      1.2.3 [ ] Create Redis Cache instance with appropriate tier
-      1.2.4 [ ] Set up Blob Storage with containers and access policies
-      1.2.5 [ ] Create Key Vault with access policies and managed identity
-  #1.3: Azure Functions setup [ ] (est: 0.5d)
+  #1.2: Provision Azure resources [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T18:30:00-04:00] [feature/azure-provisioning]**
+      1.2.1 [x] Create resource group with proper naming and tags
+      1.2.2 [x] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
+      1.2.3 [x] Create Redis Cache instance with appropriate tier
+      1.2.4 [x] Set up Blob Storage with containers and access policies
+      1.2.5 [x] Create Key Vault with access policies and managed identity
+  #1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
       1.3.1 [ ] Create Functions Consumption plan
       1.3.2 [ ] Create Function App with Python runtime
       1.3.3 [ ] Configure app settings from Key Vault using managed identity
