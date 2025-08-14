@@ -78,16 +78,31 @@ async def chat(req: ChatRequest):
 
     dur_ms = int((time.time() - start) * 1000)
 
-    choice = resp.choices[0] if getattr(resp, "choices", None) else None
-    if not choice or not getattr(choice, "message", None):
-        raise HTTPException(status_code=502, detail="No completion returned")
+    # Robust extraction across xAI SDK variants
+    assistant_content = ""
+    reasoning_content = None
 
-    assistant_content = (
-        getattr(choice.message, "reasoning_content", None)
-        or getattr(choice.message, "content", "")
-        or str(choice.message)
-    )
-    reasoning_content = getattr(choice.message, "reasoning_content", None)
+    # Direct attributes (newer SDKs)
+    if hasattr(resp, "content") and resp.content:
+        assistant_content = resp.content
+    if hasattr(resp, "reasoning_content") and getattr(resp, "reasoning_content"):
+        reasoning_content = getattr(resp, "reasoning_content")
+
+    # Fallback to choices[0].message (older style)
+    if not assistant_content and getattr(resp, "choices", None):
+        choice = resp.choices[0]
+        message = getattr(choice, "message", None)
+        if message is not None:
+            if reasoning_content is None:
+                reasoning_content = getattr(message, "reasoning_content", None)
+            assistant_content = getattr(message, "content", "") or str(message)
+
+    # Final fallback
+    if not assistant_content:
+        assistant_content = str(resp) if resp is not None else ""
+
+    if not assistant_content:
+        raise HTTPException(status_code=502, detail="No completion returned")
 
     usage = getattr(resp, "usage", None)
 
