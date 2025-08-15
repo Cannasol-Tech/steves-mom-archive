@@ -1,4 +1,3 @@
-<!-- 🔓 UNLOCKED (2025-08-15T09:10:26-04:00) -->
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -17,6 +16,7 @@ This file coordinates active agents and task statuses for the implementation pla
 | cascade-03 | 2025-08-15T05:57:58-04:00 | Backend model router and context management |
 | cascade-69 | 2025-08-15T06:45:47-04:00 | Backend router + infra sync |
 | Sonnet-01 | 2025-08-15T06:41:44-04:00 | Context manager and memory window (Section 4.3) |
+| cascade-UI | 2025-08-15T15:13:40-04:00 | UI/UX specialist – design system, accessibility, modern UX |
 
 ## Available Tasks
 
@@ -33,9 +33,13 @@ List any unclaimed tasks here as they are identified.
 | 3.T2 | Fix chat JSON display + eliminate "(no content)" messages | cascade-69 | agent-dev | 2025-08-15T07:06:41-04:00 | 3.T complete | Fixed frontend JSON parsing, reasoning integration, make preview target |
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
-| 5.4 | UI approve/reject buttons + status updates | cascade-01 | feature/approve-reject-ui | 2025-08-15T08:30:00-04:00 | 5.3 complete | Implementing UI for approval workflow |
 | 2.2 | Functions build/deploy workflow (Python) | Sonnet-01 | feature/functions-gha-deploy | 2025-08-15T09:00:30-04:00 | 1.3 complete | Checking out per implementation plan |
 | 2.1 | SWA GitHub Actions deploy | cascade-69 | feature/swa-gha-deploy | 2025-08-15T08:25:01-04:00 | 1.5 complete | Workflow file added; awaiting token and CI run |
+| 3.8 | Design system tokens + theming (light/dark) | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.1 complete | Establish Tailwind tokens; brand integration; theming switch |
+| 3.9 | Chat UX polish: keyboard shortcuts, input affordances | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.2/3.3 complete | Cmd/Ctrl+Enter send; Esc cancel; aria-live improvements |
+| 1.3.C | Commit/push for Section 1.3 (Functions setup) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.3 complete | Move CURRENT-TASK to commit step and push updates |
+| 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | none | Align structure with standardized Make targets |
+| 1.5.C | Commit/push for Section 1.5 (SWA config complete) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.5 complete | Prepare final commit message and push |
 
 ## Completed Tasks
 
@@ -46,6 +50,7 @@ List any unclaimed tasks here as they are identified.
 | 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | ✅ |
 | 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
 | 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
+| 5.4 | cascade-01 | feature/approve-reject-ui | 40min | frontend/src/pages/TaskDetailPage.tsx; frontend/src/pages/__tests__/TaskApprovalFlow.test.tsx; frontend/src/components/Character/StevesMomCharacter.tsx | ⏳ |
 | 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
 | 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | ⏳ (awaiting test run) |
@@ -88,6 +93,7 @@ List any unclaimed tasks here as they are identified.
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
+| 5.4.T | cascade-01 | N/A | ✅ (frontend RTL integration) | N/A | N/A |
 
 ## Communication Log
 
@@ -102,3 +108,5 @@ List any unclaimed tasks here as they are identified.
 | 2025-01-15T11:00:00-05:00 | cascade-02 | ALL | Completed task 3.1: UI shell with React/TS/Tailwind. Frontend foundation ready for Phase 3.2+ | Review frontend structure |
 | 2025-08-15T06:30:00-04:00 | cascade-03 | ALL | Completed TDD for 4.2.1: routing policy schema tests added (8/8 passing). Moving to 4.2.2 router fallback logic. | None |
 | 2025-08-15T06:20:15-04:00 | cascade-03 | ALL | Completed 4.2.2: Implemented fallback/retry and circuit breaker behavior for ModelRouter; added unit tests (3/3 passing). | None |
+| 2025-08-15T15:31:52-04:00 | cascade-02 | ALL | Resumed 3.2; expanded subtasks/tests in implementation-plan. Proceeding with ChatInput/MessageList wiring and a11y polish. | None |
+| 2025-08-15T15:13:40-04:00 | cascade-UI | ALL | Checking out 3.8 (Design system tokens + theming) and 3.9 (Chat UX polish). Will align with Cannasol branding and a11y best practices. | None |

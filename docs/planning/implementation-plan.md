@@ -53,6 +53,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
 | 3.7.T | cascade-02 | 6/6 ✅ | N/A | N/A | N/A |
+| 5.4.T | cascade-01 | N/A | ✅ (frontend RTL integration) | N/A | N/A |
 
 ### Completed Tasks
 
@@ -106,7 +107,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.2.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 - **1.2.C** [ ] Commit and push your work: `git add -A && git commit -m "1.2: progress" && git push`
 
-#### 1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
+#### 1.3: Azure Functions setup [ ] (est: 0.5d)
 
 - **1.3.1** [x] Create Functions Consumption plan ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.2** [x] Create Function App with Python runtime ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
@@ -114,11 +115,11 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.3.4** [x] Set up connection strings and environment variables ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:30-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.5** [x] Configure CORS and authentication settings ✅ **[COMPLETED: cascade-01 @2025-08-15T07:04:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.T** [x] Tests — unit, integration, acceptance for infra setup ✅ **[COMPLETED: cascade-01 @2025-08-15T07:13:00-04:00] [feature/azure-functions-consumption-plan]** (est: 0.25d)
-- **1.3.C** [ ] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push`
+- **1.3.C** [ ] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push` **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev] [CURRENT-TASK]**
 
 #### 1.4: Repository and development environment [ ] (est: 0.25d)
 
-- **1.4.1** [ ] Set up repository structure and branching strategy
+- **1.4.1** [ ] Set up repository structure and branching strategy **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev]**
 - **1.4.2** [ ] Configure development environment and dependencies
 - **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
 - **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
@@ -184,7 +185,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   - 1.5.4.4 [x] Configured role-based access control and security decorators
 
 - **1.5.T** [x] Tests — unit, integration, acceptance for infra setup [x] (est: 0.25d)
-- **1.5.C** [ ] Commit and push your work: `git add -A && git commit -m "1.5: Static Web App configuration complete" && git push`
+- **1.5.C** [ ] Commit and push your work: `git add -A && git commit -m "1.5: Static Web App configuration complete" && git push` **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev]**
 
 ## 2: CI/CD and release-pack pipeline [ ] (est: 1 day)
 
@@ -245,9 +246,23 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
       3.1.C [ ] Commit and push your work: `git add -A && git commit -m "3.1: progress" && git push`
       3.1.T [ ] Tests — unit, integration, acceptance for UI shell/routing [ ] (est: 0.1d)
-  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-01-15T11:15:00-05:00] [feature/chat-input-messages]**
+  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T15:31:52-04:00] [feature/chat-input-messages] [CURRENT-TASK]**
+      3.2.1 [ ] Implement `ChatInput` component
+        - Autosize textarea; character limit warning; disabled during stream
+        - Keyboard: Enter=send, Shift+Enter=newline, Cmd/Ctrl+Enter=send
+      3.2.2 [ ] Implement `MessageList` item model
+        - Sender styling (user/assistant/system), timestamp, status (streaming/complete/error)
+        - Preserve partial content on cancel/error
+      3.2.3 [ ] Wire to context/socket
+        - Append outbound user message, start assistant placeholder on stream start
+        - Update assistant message incrementally from SSE/socket events
+      3.2.4 [ ] Accessibility & UX polish
+        - Focus management after send/cancel; aria-live region for streaming
+        - Loading/empty states and error toasts integration
       3.2.C [ ] Commit and push your work: `git add -A && git commit -m "3.2: progress" && git push`
       3.2.T [ ] Tests — unit, integration for chat input/message list [ ] (est: 0.2d)
+        - RTL unit tests: input behaviors, keyboard shortcuts, disabled/limits
+        - Integration: message append and streaming updates via mocked socket/client
   #3.3: Streaming display + retry/cancel [x] (est: 0.5d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:20:36-04:00] [feature/chat-streaming]**
       3.3.1 [x] Write unit tests: progressive chunk rendering (stream appends) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:20:36-04:00]**
       3.3.2 [x] Write unit tests: Retry replays last prompt; Cancel aborts stream and preserves partial ✅ **[COMPLETED: cascade-02 @2025-08-15T06:20:36-04:00]**
@@ -272,8 +287,20 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.7.4 [x] Ensure responsive logo display across devices **[COMPLETED: cascade-01 @2025-08-15T06:18:23-04:00] [agent-dev]**
       3.7.C [ ] Commit and push your work: `git add -A && git commit -m "3.7: progress" && git push`
       3.7.T [x] Tests — visual/regression checks for logo placement ✅ **[COMPLETED: cascade-02 @2025-08-15T07:17:32-04:00] [feature/admin-panel-shell]** (est: 0.05d)
-  #3.T: Tests — unit (components), integration (API/socket), acceptance (chat flow) [x] (est: 0.25d) ✅ **[COMPLETED: cascade-01 @2025-08-15T06:46:30-04:00] [agent-dev]**
-      - All frontend chat tests passing locally (12/12). Fix applied to `frontend/src/components/Chat/ChatInterface.tsx` to render `StreamRenderer` when streaming starts (even before first chunk) and remain visible when partial content exists; minor update to `frontend/src/pages/ChatPage.tsx` stream handlers. Ensures "Streaming…" hint appears and partial content persists on cancel/error.
+  #3.8: Design system tokens + theming [ ] (est: 0.25d) **[CHECKED OUT: cascade-UI @2025-08-15T15:13:40-04:00] [agent-dev]**
+      3.8.1 [ ] Establish Tailwind design tokens (colors, spacing, typography) aligned to Cannasol brand
+      3.8.2 [ ] Implement CSS variables and Tailwind config for light/dark themes
+      3.8.3 [ ] Add theme switcher with persisted preference (localStorage/System)
+      3.8.4 [ ] Document tokens and usage in `frontend/README.md`
+      3.8.T [ ] Tests — unit/snapshot for themed components; a11y contrast checks [ ] (est: 0.1d)
+      3.8.C [ ] Commit and push your work: `git add -A && git commit -m "3.8: progress" && git push`
+  #3.9: Chat UX polish (shortcuts, affordances, a11y) [ ] (est: 0.25d) **[CHECKED OUT: cascade-UI @2025-08-15T15:13:40-04:00] [agent-dev]**
+      3.9.1 [ ] Cmd/Ctrl+Enter to send; Shift+Enter for newline; Esc to cancel stream
+      3.9.2 [ ] Improve input states (disabled, loading, error) with clear affordances
+      3.9.3 [ ] Enhance aria-live regions for streaming updates; focus management after send/cancel
+      3.9.4 [ ] Add subtle animations/micro-interactions (reduced-motion safe)
+      3.9.T [ ] Tests — RTL + a11y for keyboard/focus/aria-live behaviors [ ] (est: 0.1d)
+      3.9.C [ ] Commit and push your work: `git add -A && git commit -m "3.9: progress" && git push`
 
 ## 4: GROK integration + model router stub [ ] (est: 1 day)
 
@@ -285,8 +312,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - Rate limiting/backoff in place with deterministic tests.
 - Secure config via env/Key Vault; no secrets in repo.
 - Unit/integration tests cover provider stubs and routing policies; CI green.
-- Docs updated: `backend/ai/` readme or architecture notes on routing.
-- Planning updated (plan + multi-agent sync).
+- Docs updated for API and UI flows; planning updated.
   #4.1: Provider clients (GROK, placeholders for others) [x] (est: 0.25d) **[COMPLETED: augment-01 @2025-08-13T19:45:00-04:00]**
       - 4.1.1 [ ] Create base LLMProvider abstract class with standard interface
       - 4.1.2 [ ] Implement GROKProvider with API client and authentication
@@ -338,6 +364,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ## 5: Task generation + approval skeleton [ ] (est: 2 days)
 
 {{ ... }}
+
 ### Definition of Done — Section 5 (Tasking & Approvals)
 
 - Intent detection rules tested; confidence/fallback behavior verified.
@@ -346,13 +373,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - Approval workflow state transitions covered by unit/integration tests.
 - UI provides approve/reject with real-time status and preserves history.
 - Audit logging present; permissions enforced where applicable.
-- Docs updated for API and UI flows; planning docs updated.
+- Docs updated for API and UI flows; planning updated.
   #5.1: Intent detection (rule-based MVP) [ ] (est: 0.5d) [CURRENT-TASK]
-      - 5.1.1 [x] Define task-generating intent categories (email, document, query, etc.) ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
-      - 5.1.2 [x] Create rule-based classifier with keyword matching and patterns ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
-      - 5.1.3 [x] Implement confidence scoring and fallback handling ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
-      - 5.1.4 [x] Add intent validation and user confirmation prompts ✅ **[COMPLETED: cascade @2024-07-29T12:15:00-04:00]**
-      - 5.1.T [x] Tests — unit/integration for intent detection ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.1 [ ] Define task-generating intent categories (email, document, query, etc.) ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.2 [ ] Create rule-based classifier with keyword matching and patterns ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.3 [ ] Implement confidence scoring and fallback handling ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.4 [ ] Add intent validation and user confirmation prompts ✅ **[COMPLETED: cascade @2024-07-29T12:15:00-04:00]**
+      - 5.1.T [ ] Tests — unit/integration for intent detection [ ] (est: 0.25d)
       - 5.1.C [ ] Commit and push your work: `git add -A && git commit -m "5.1: progress" && git push`
   #5.2: Task schema, DB table, CRUD endpoints [x] (est: 0.5d)
       - 5.2.1 [x] Design task database schema with status, metadata, and audit fields ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]**
@@ -373,11 +400,11 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 5.3.T [x] Tests — unit/integration for approval handling (est: 0.2d)
       - 5.3.C [ ] Commit and push your work: `git add -A && git commit -m "5.3: progress" && git push`
   #5.4: UI approve/reject buttons + status updates [ ] (est: 0.5d)
-      - 5.4.1 [ ] Design task approval interface with clear action buttons
-      - 5.4.2 [ ] Implement real-time status updates and notifications
+      - 5.4.1 [x] Design task approval interface with clear action buttons ✅ **[COMPLETED: cascade-01 @2025-08-15T16:02:29-04:00] [feature/approve-reject-ui]**
+      - 5.4.2 [x] Implement real-time status updates and notifications ✅ **[COMPLETED: cascade-01 @2025-08-15T16:02:29-04:00] [feature/approve-reject-ui]**
       - 5.4.3 [x] Add task details view with approval history ✅ **[COMPLETED: cascade-01 @2025-08-15T09:00:00-04:00]**
       - 5.4.4 [ ] Create bulk approval functionality for multiple tasks
-      - 5.4.T [ ] Tests — UI integration for approvals/status updates [ ] (est: 0.2d) [CURRENT-TASK]
+      - 5.4.T [x] Tests — UI integration for approvals/status updates ✅ **[COMPLETED: cascade-01 @2025-08-15T16:02:29-04:00] [feature/approve-reject-ui]** (est: 0.2d)
       - 5.4.C [ ] Commit and push your work: `git add -A && git commit -m "5.4: progress" && git push`
   #5.T: Tests — unit, integration, acceptance for tasking [ ] (est: 0.5d)
 
