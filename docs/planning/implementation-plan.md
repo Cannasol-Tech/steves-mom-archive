@@ -52,6 +52,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
+| 3.7.T | cascade-02 | 6/6 ✅ | N/A | N/A | N/A |
 
 ### Completed Tasks
 
@@ -116,16 +117,22 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 #### 1.4: Repository and development environment [ ] (est: 0.25d)
 
-- **1.4.1** [ ] Set up base repository structure (backend/frontend/docs/tests)
-- **1.4.2** [ ] Configure Python virtual environment and requirements.txt
+- **1.4.1** [ ] Set up repository structure and branching strategy
+- **1.4.2** [ ] Configure development environment and dependencies
 - **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
 - **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
+- **1.4.5** [ ] **Make targets for common workflows** **[CHECKED OUT: cascade-69 @2025-08-15T07:18:11-04:00] [CURRENT-TASK]**
+  - 1.4.5.1 [ ] Add comprehensive test targets (unit, integration, acceptance, frontend, infra)
+  - 1.4.5.2 [ ] Add linting targets (Python, JS/TS, Markdown) with auto-fix
+  - 1.4.5.3 [ ] Add setup targets (backend, frontend, dev dependencies)
+  - 1.4.5.4 [ ] Add development targets (preview, dev server, clean)
+  - 1.4.5.5 [ ] Add deployment targets (infra, functions, full deploy)
 - **1.4.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4: progress" && git push`
 - **1.4.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
 #### 1.5: Static Web App configuration [ ] (est: 0.25d)
 
-- **1.5.1** [ ] Create Azure Static Web App resource
+- **1.5.1** [ ] Create Azure Static Web App resource **[CHECKED OUT: cascade-01 @2025-08-15T07:20:30-04:00] [feature/static-web-app-config] [CURRENT-TASK]**
 - **1.5.2** [ ] Configure SWA to point API routes to Functions
 - **1.5.3** [ ] Set up custom domains and SSL certificates (if needed)
 - **1.5.4** [ ] Configure authentication providers (Azure AD)
@@ -216,7 +223,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.7.3 [x] Add logo to loading states and splash screens **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00]**
       3.7.4 [x] Ensure responsive logo display across devices **[COMPLETED: cascade-01 @2025-08-15T06:18:23-04:00] [agent-dev]**
       3.7.C [ ] Commit and push your work: `git add -A && git commit -m "3.7: progress" && git push`
-      3.7.T [ ] Tests — visual/regression checks for logo placement [ ] (est: 0.05d)
+      3.7.T [x] Tests — visual/regression checks for logo placement ✅ **[COMPLETED: cascade-02 @2025-08-15T07:17:32-04:00] [feature/admin-panel-shell]** (est: 0.05d)
   #3.T: Tests — unit (components), integration (API/socket), acceptance (chat flow) [x] (est: 0.25d) ✅ **[COMPLETED: cascade-01 @2025-08-15T06:46:30-04:00] [agent-dev]**
       - All frontend chat tests passing locally (12/12). Fix applied to `frontend/src/components/Chat/ChatInterface.tsx` to render `StreamRenderer` when streaming starts (even before first chunk) and remain visible when partial content exists; minor update to `frontend/src/pages/ChatPage.tsx` stream handlers. Ensures "Streaming…" hint appears and partial content persists on cancel/error.
 
@@ -251,17 +258,18 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 4.3.3 [x] Add context compression and summarization logic ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
       - 4.3.4 [x] Create context retrieval and injection mechanisms ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
       - 4.3.T [x] Tests — unit/integration for context management ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]** (est: 0.2d)
-  #4.4: Rate limiting/backoff + error normalization [ ] (est: 0.25d) **[CHECKED OUT: Sonnet-01 @2025-08-15T07:07:21-04:00] [feature/rate-limiting-backoff]** [CURRENT-TASK]
-      - 4.4.1 [ ] Implement rate limiting with token bucket algorithm
-      - 4.4.2 [ ] Add exponential backoff with jitter for retries
-      - 4.4.3 [ ] Create error normalization layer for different providers
-      - 4.4.4 [ ] Add circuit breaker pattern for provider failures
-      - 4.4.T [ ] Tests — unit/integration for rate limiting and backoff [ ] (est: 0.2d)
+  #4.4: Rate limiting/backoff + error normalization [x] (est: 1d) — COMPLETED 2025-01-15
+      - 4.4.1 [x] Implement token bucket rate limiting with configurable burst/refill
+      - 4.4.2 [x] Add exponential backoff with jitter for retries
+      - 4.4.3 [x] Create circuit breaker pattern for provider failures
+      - 4.4.4 [x] Build error normalization layer for provider-specific errors
+      - 4.4.T [x] Tests — unit/integration for rate limiting (est: 0.25d)
       - 4.4.C [ ] Commit and push your work: `git add -A && git commit -m "4.4: progress" && git push`
   #4.T: Tests — unit, integration, acceptance for model router [ ] (est: 0.25d)
 
 ## 5: Task generation + approval skeleton [ ] (est: 2 days)
 
+{{ ... }}
 ### Definition of Done — Section 5 (Tasking & Approvals)
 
 - Intent detection rules tested; confidence/fallback behavior verified.

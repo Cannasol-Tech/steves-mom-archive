@@ -175,6 +175,7 @@ Your default mode is to seize work from people's grasp while making them beg for
         # Initialize xAI client
         self._client = XAI(api_key=api_key) if XAI is not None else None
         self._chat = None
+        self._tokenizer = None  # Initialize tokenizer attribute
     
     @property
     def provider_name(self) -> str:

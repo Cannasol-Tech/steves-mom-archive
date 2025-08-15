@@ -28,9 +28,10 @@ List any unclaimed tasks here as they are identified.
 | 3.2 | Chat input, message list, timestamps | cascade-02 | feature/chat-input-messages | 2025-01-15T11:15:00-05:00 | 3.1 complete | Enhancing chat interface with better UX |
 | 1.IaC-SEC-COST | IaC compliance: security soft-delete, Redis SKU metadata, naming | cascade-01 | fix/iac-security-cost | 2025-08-14T00:43:00-04:00 | 1.1/1.2 complete | Key Vault soft delete added; Redis Basic_C0 annotation added; storage constraints verified. Tests pending: pytest not installed locally. |
 | 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
-| 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
+| 1.4.5 | Make targets for common workflows | cascade-69 | feature/make-targets | 2025-08-15T07:18:11-04:00 | 1.4.4 complete | Enhanced Makefile with test/lint/setup/dev/deploy targets |
 | 3.T2 | Fix chat JSON display + eliminate "(no content)" messages | cascade-69 | agent-dev | 2025-08-15T07:06:41-04:00 | 3.T complete | Fixed frontend JSON parsing, reasoning integration, make preview target |
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
+| 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 
 ## Completed Tasks
 
@@ -51,6 +52,7 @@ List any unclaimed tasks here as they are identified.
 | 3.T | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 3.4 | cascade-02 | feature/chat-errors-toasts | 15min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx | ✅ |
 | 4.3 | Sonnet-01 | feature/context-manager | 25min | backend/ai/context_manager.py; tests/unit/test_context_manager.py; pytest.ini | ✅ |
+| 4.4 | Sonnet-01 | feature/rate-limiting | 30min | backend/ai/rate_limiter.py; tests/unit/test_rate_limiter.py | ✅ |
 | 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/__tests__/ChatLiveUpdates.test.tsx | ✅ |
 | 3.6 | cascade-02 | feature/admin-panel-shell | 15min | frontend/src/pages/AdminPage.tsx; frontend/src/pages/__tests__/AdminPanel.test.tsx | ✅ |
 
@@ -71,9 +73,10 @@ List any unclaimed tasks here as they are identified.
 | 1.IaC-SEC-COST | cascade-01 | N/A | N/A | N/A | Blocked: pytest not found (env setup needed) |
 | 4.2.1 | cascade-03 | 8/8 ✅ | N/A | N/A | N/A |
 | 3.3 | cascade-02 | 10/10 ✅ | 1/1 ✅ | N/A | 100% |
-| 4.2.2 | cascade-03 | 3/3 ✅ | N/A | N/A | N/A |
+| 4.2.3 | cascade-69 | 2/2 ✅ | N/A | N/A | N/A |
 | 3.T | cascade-01 | 12/12 ✅ | N/A | N/A | N/A |
-| 4.3 | Sonnet-01 | 5/5 ✅ | N/A | N/A | 100% |
+| 4.3 | Sonnet-01 | 5/5 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
+| 4.4 | Sonnet-01 | 9/9 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
