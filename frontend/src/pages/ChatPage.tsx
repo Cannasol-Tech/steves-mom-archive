@@ -5,6 +5,7 @@ import type { Task } from '../types/tasks';
 import { startStream, type StreamHandle } from '../services/chatStream';
 import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
 import { TaskStatus } from '../types/tasks';
+import { parseAnimationFromText, executeAnimation } from '../utils/animationCommands';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -80,6 +81,13 @@ const ChatPage: React.FC = () => {
         );
       },
       onMessage: (text) => {
+        try {
+          const cmd = parseAnimationFromText(text);
+          if (cmd) {
+            executeAnimation(cmd);
+            return; // Do not append control directives as chat messages
+          }
+        } catch {}
         setMessages(prev => [
           ...prev,
           {
@@ -91,8 +99,9 @@ const ChatPage: React.FC = () => {
         ]);
       },
       onError: (err) => {
-        // Only set a live updates toast if no other toast is currently shown
-        setToastMessage(prev => prev ?? `Live updates error: ${err.message}`);
+        // Log and show a delayed toast so streaming errors (if any) take precedence
+        console.warn('Live updates error:', err.message);
+        setTimeout(() => setToastMessage(`Live updates error: ${err.message}`), 50);
       },
       onClose: () => {
         // no-op for now; could update a connection status indicator
@@ -130,7 +139,14 @@ const ChatPage: React.FC = () => {
     );
 
     // Start streaming from backend
+    const systemToolPrompt = `You are Steve's Mom persona. In addition to normal replies, you may optionally include an inline animation control directive so the UI character can act out your mood. Emit one of the following formats when useful:
+<!-- smom:{"action":"dance|wink|blow-kiss|shimmy|bounce|enter|point-left|point-right","side":"left|right","intensity":"low|medium|high"} -->
+Or a JSON block: {"type":"smom","action":"dance","side":"right","intensity":"high"}
+Or a DSL tag: [smom action=dance side=right intensity=high]
+Keep normal content readable; place control directives once per reply when appropriate.`;
+
     const history = [
+      { role: 'system' as const, content: systemToolPrompt },
       ...messages.slice(-3).map(m => ({ role: m.role as any, content: m.content })),
       { role: 'user' as const, content: userMessage.content }
     ];
@@ -159,6 +175,11 @@ const ChatPage: React.FC = () => {
           });
           statusUpdated = true;
         }
+        // Try to parse animation cues in streamed text too
+        try {
+          const cmd = parseAnimationFromText(t);
+          if (cmd) executeAnimation(cmd);
+        } catch {}
         setStreamingContent(prev => prev + t);
       },
       onDone: (reasoning?: string) => {

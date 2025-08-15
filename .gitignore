@@ -45,3 +45,6 @@ next-env.d.ts
 venv*
 *__pycache__*
 backend/ai/__pycache__/*
+
+# Ignore CRA build output inside frontend
+frontend/build/

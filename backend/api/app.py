@@ -41,6 +41,54 @@ except Exception:
     # Non-fatal if dotenv loading fails; explicit env vars can still be used
     pass
 
+# --- UI Animation directive parsing & broadcast ---
+import json as _json
+import re as _re
+
+_ANIM_JSON_RE = _re.compile(r"\{\s*\"type\"\s*:\s*\"smom\"[^}]*\}", _re.IGNORECASE)
+_ANIM_COMMENT_RE = _re.compile(r"smom:\s*\{[^}]*\}", _re.IGNORECASE)
+_DSL_RE = _re.compile(r"\[smom\s+([^\]]+)\]", _re.IGNORECASE)
+
+
+def _parse_animation_cmd(text: str):
+    """Extract a minimal animation command dict from assistant text, if present."""
+    if not text:
+        return None
+    # JSON block
+    m = _ANIM_JSON_RE.search(text)
+    if m:
+        try:
+            return _json.loads(m.group(0))
+        except Exception:
+            pass
+    # HTML comment envelope
+    m = _ANIM_COMMENT_RE.search(text)
+    if m:
+        try:
+            js = m.group(0)
+            js = js[js.find('{') :]
+            cmd = _json.loads(js)
+            cmd.setdefault('type', 'smom')
+            return cmd
+        except Exception:
+            pass
+    # DSL fallback: [smom action=dance side=right intensity=high]
+    m = _DSL_RE.search(text)
+    if m:
+        try:
+            params = {}
+            for part in m.group(1).split():
+                if '=' in part:
+                    k, v = part.split('=', 1)
+                    params[k.strip()] = v.strip()
+            if params:
+                params.setdefault('type', 'smom')
+                return params
+        except Exception:
+            pass
+    return None
+
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
@@ -118,6 +166,14 @@ async def chat(req: ChatRequest):
         raise HTTPException(status_code=502, detail="No completion returned")
 
     usage = getattr(resp, "usage", None)
+
+    # Broadcast any inline animation directive via WebSocket
+    try:
+        cmd = _parse_animation_cmd(assistant_content)
+        if cmd:
+            await manager.broadcast(_json.dumps(cmd))
+    except Exception:
+        pass
 
     return ChatResponse(
         message=ChatMessage(role="assistant", content=assistant_content),
