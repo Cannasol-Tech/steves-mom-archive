@@ -11,8 +11,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  PYTHON_VERSION: '3.12' # set this to the python version to use (supports 3.6, 3.7, 3.8)
+  # Deploy only the backend folder
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend'
+  PYTHON_VERSION: '3.11'
 
 jobs:
   build:
@@ -35,20 +36,24 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
 
       # Optional: Add step to run tests here
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Zip backend for deployment
+        run: |
+          zip -r backend.zip backend \
+            -x "backend/.venv/*" \
+               "**/__pycache__/*" \
+               "**/.pytest_cache/*" \
+               "**/.mypy_cache/*"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: python-app
-          path: |
-            release.zip
-            !venv/
+          name: functionapp
+          path: backend.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,10 +63,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: python-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip     
+          name: functionapp
         
       - name: 'Deploy to Azure Functions'
         uses: Azure/functions-action@v1
@@ -69,5 +71,5 @@ jobs:
         with:
           app-name: 'steves-mom-fn'
           slot-name: 'Production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          package: backend.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_27BBA4F9FCBB4AAF8B04C11E5CB8AEC8 }}

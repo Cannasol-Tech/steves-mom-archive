@@ -1,22 +1,13 @@
 name: Azure Functions Deploy (Python)
 
 on:
+  # Keep this workflow manual-only to avoid duplicate deployments with the auto-generated workflow
   workflow_dispatch:
     inputs:
       slot:
         description: 'Deployment slot (leave blank for production)'
         required: false
         default: ''
-  push:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/functions-deploy.yml'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/functions-deploy.yml'
 
 permissions:
   contents: read
