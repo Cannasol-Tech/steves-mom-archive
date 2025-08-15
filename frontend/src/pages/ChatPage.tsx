@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatInterface from '../components/Chat/ChatInterface';
 import type { Message } from '../components/Chat/MessageList';
 import { startStream, type StreamHandle } from '../services/chatStream';
+import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -22,10 +23,39 @@ const ChatPage: React.FC = () => {
   const streamRef = useRef<StreamHandle | null>(null);
   const lastPromptRef = useRef<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const liveConnRef = useRef<LiveUpdateConnection | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
+
+  // Live updates connection: connect on mount, cleanup on unmount
+  useEffect(() => {
+    const conn = connectLiveUpdates({
+      onMessage: (text) => {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: (Date.now() + Math.random()).toString(),
+            content: text,
+            role: 'assistant',
+            timestamp: new Date(),
+          }
+        ]);
+      },
+      onError: (err) => {
+        setToastMessage(`Live updates error: ${err.message}`);
+      },
+      onClose: () => {
+        // no-op for now; could update a connection status indicator
+      },
+    });
+    liveConnRef.current = conn;
+    return () => {
+      try { conn.disconnect(); } catch {}
+      liveConnRef.current = null;
+    };
+  }, []);
 
   const handleSendMessage = async (e?: React.FormEvent, promptOverride?: string) => {
     if (e) e.preventDefault();
@@ -60,7 +90,9 @@ const ChatPage: React.FC = () => {
       model: model.includes('grok') ? 'grok-3-mini' : undefined,
       temperature: 0.2,
       max_tokens: 512,
-      onChunk: (t) => setStreamingContent(prev => prev + t),
+      onChunk: (t) => {
+        setStreamingContent(prev => prev + t);
+      },
       onDone: () => {
         setMessages(prev => [
           ...prev,
