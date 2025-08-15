@@ -1,4 +1,3 @@
-🔒 EDITING: Sonnet-01 (2025-08-15T06:30:08-04:00)
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -15,6 +14,7 @@ This file coordinates active agents and task statuses for the implementation pla
 | cascade-01 | 2025-08-13T16:55:16-04:00 | Infrastructure and Azure specialist |
 | cascade-02 | 2025-01-15T10:30:00-05:00 | Frontend React/TypeScript specialist |
 | cascade-03 | 2025-08-15T05:57:58-04:00 | Backend model router and context management |
+| Sonnet-01 | 2025-08-15T06:41:44-04:00 | Context manager and memory window (Section 4.3) |
 
 ## Available Tasks
 
@@ -29,6 +29,7 @@ List any unclaimed tasks here as they are identified.
 | 3.4 | Error/loading states, toasts | cascade-02 | feature/chat-errors-toasts | 2025-08-15T06:20:36-04:00 | 3.3 complete | TDD: error boundaries, loading indicators, and toast notifications |
 | 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
+| 4.3 | ContextManager.py (basic memory window) | Sonnet-01 | feature/context-manager | 2025-08-15T06:41:44-04:00 | 4.2 in progress | Design schema; implement sliding window + summarization |
 
 ## Completed Tasks
 

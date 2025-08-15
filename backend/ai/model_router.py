@@ -10,6 +10,7 @@ Version: 1.0.0
 """
 
 import asyncio
+import os
 import logging
 import random
 from typing import Dict, List, Optional, Any, Tuple
@@ -22,6 +23,7 @@ from .providers.base import (
     ModelCapability, ProviderError, RateLimitError
 )
 from .providers.grok_provider import GROKProvider
+from .providers.config_manager import ProviderConfigManager, config_manager
 
 logger = logging.getLogger(__name__)
 
@@ -398,4 +400,64 @@ async def create_default_router() -> ModelRouter:
         fallback_order=0
     )
     
+    return router
+
+
+# Environment-based setup utilities
+def _policy_from_env() -> RoutingPolicy:
+    """Build a RoutingPolicy from environment variables.
+
+    Env vars:
+    - AI_ROUTING_STRATEGY: one of cost_optimized, latency_optimized, capability_based, round_robin, failover, load_balanced
+    - AI_MAX_COST_THRESHOLD: float (USD)
+    - AI_MAX_LATENCY_MS: int/float milliseconds; converted to seconds internally
+    - AI_RETRY_ATTEMPTS: int
+    """
+    strategy_str = os.environ.get("AI_ROUTING_STRATEGY", RoutingStrategy.COST_OPTIMIZED.value)
+    # Normalize case and map to enum if possible
+    strategy_map = {s.value.lower(): s for s in RoutingStrategy}
+    strategy = strategy_map.get(strategy_str.lower(), RoutingStrategy.COST_OPTIMIZED)
+
+    max_cost = float(os.environ.get("AI_MAX_COST_THRESHOLD", "0.05"))
+    max_latency_ms = float(os.environ.get("AI_MAX_LATENCY_MS", "10000"))
+    retry_attempts = int(os.environ.get("AI_RETRY_ATTEMPTS", "3"))
+
+    return RoutingPolicy(
+        strategy=strategy,
+        max_cost_threshold=max_cost,
+        max_latency_threshold=max_latency_ms / 1000.0,
+        retry_attempts=retry_attempts,
+    )
+
+
+async def create_router_from_env() -> ModelRouter:
+    """Create a ModelRouter based on environment configuration.
+
+    Uses ProviderConfigManager to instantiate available providers in ascending
+    priority (lower number means higher priority). Fallback order is derived
+    from that order. Default routing policy is derived from env via _policy_from_env().
+    """
+    policy = _policy_from_env()
+    router = ModelRouter(default_policy=policy)
+
+    # Use a fresh instance to ensure current env is reflected (tests set env at runtime)
+    pcm: ProviderConfigManager = ProviderConfigManager()
+
+    # Get available providers in priority order
+    available = pcm.get_available_providers()
+    for idx, cred in enumerate(available):
+        provider = pcm.create_provider(cred.provider_type)
+        if not provider:
+            continue
+        # Use priority to hint at fallback order by list position
+        await router.add_provider(
+            provider,
+            priority=max(1, 100 - cred.priority),  # invert so lower priority value => higher router priority
+            weight=1.0,
+            max_requests_per_minute=60,
+            max_cost_per_request=0.10,
+            enabled=True,
+            fallback_order=idx,
+        )
+
     return router

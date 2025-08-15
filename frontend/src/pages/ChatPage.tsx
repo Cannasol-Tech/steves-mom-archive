@@ -18,6 +18,7 @@ const ChatPage: React.FC = () => {
   const [reasoningText, setReasoningText] = useState<string | undefined>(undefined);
   const [streamingContent, setStreamingContent] = useState<string>('');
   const [streamingActive, setStreamingActive] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const streamRef = useRef<StreamHandle | null>(null);
   const lastPromptRef = useRef<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -73,15 +74,22 @@ const ChatPage: React.FC = () => {
         cleanupStream();
       },
       onError: (err) => {
-        setMessages(prev => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            content: `Error: ${err.message}`,
-            role: 'assistant',
-            timestamp: new Date()
+        // Preserve any partial streamed content as a message
+        const partial = streamingContentRef.current;
+        setMessages(prev => {
+          const next = [...prev];
+          if (partial && partial.trim().length > 0) {
+            next.push({
+              id: (Date.now() + 1).toString(),
+              content: partial,
+              role: 'assistant',
+              timestamp: new Date(),
+            });
           }
-        ]);
+          return next;
+        });
+        // Show a toast for the error
+        setToastMessage(`Network error: ${err.message}`);
         cleanupStream();
       }
     });
@@ -136,6 +144,7 @@ const ChatPage: React.FC = () => {
       streamingActive={streamingActive}
       onRetryStream={handleRetry}
       onCancelStream={handleCancel}
+      toastMessage={toastMessage || undefined}
     />
   );
 };

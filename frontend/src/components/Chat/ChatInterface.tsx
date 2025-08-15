@@ -19,6 +19,7 @@ interface ChatInterfaceProps {
   streamingActive?: boolean;
   onRetryStream?: () => void;
   onCancelStream?: () => void;
+  toastMessage?: string;
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -34,7 +35,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   streamingContent,
   streamingActive,
   onRetryStream,
-  onCancelStream
+  onCancelStream,
+  toastMessage
 }) => {
   return (
     <div className="flex flex-col bg-white/85 backdrop-blur rounded-2xl border border-emerald-100 shadow-xl w-full">
@@ -57,12 +59,21 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <p className="text-sm text-gray-600">Ask me about inventory, documents, or business tasks — background inventory agent handles data.</p>
           </div>
         </div>
+        {toastMessage && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="mt-3 rounded-md border border-red-200 bg-red-50 text-red-800 px-3 py-2 text-sm"
+          >
+            {toastMessage}
+          </div>
+        )}
       </div>
 
       {/* Messages */}
       <div className="flex-1 min-h-0 h-[70vh] overflow-hidden">
         <MessageList messages={messages} isLoading={isLoading} reasoningText={reasoningText} />
-        {typeof streamingContent === 'string' && (
+        {streamingActive && typeof streamingContent === 'string' && streamingContent.length > 0 && (
           <div className="px-4 sm:px-6 py-2">
             <div className="mx-auto max-w-3xl">
               <StreamRenderer
