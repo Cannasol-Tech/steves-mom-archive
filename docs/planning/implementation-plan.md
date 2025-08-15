@@ -205,7 +205,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.5: Socket/client wiring for live updates [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00] [feature/chat-sockets-live-updates]**
      3.5.C [ ] Commit and push your work: `git add -A && git commit -m "3.5: progress" && git push`
      3.5.T [x] Tests — integration for socket/client live updates ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00]** (est: 0.2d)
-  #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
+  #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d) **[CHECKED OUT: cascade-02 @2025-08-15T07:08:45-04:00] [feature/admin-panel-shell] [CURRENT-TASK]**
       3.6.C [ ] Commit and push your work: `git add -A && git commit -m "3.6: progress" && git push`
       3.6.T [ ] Tests — unit for admin shell and toggles [ ] (est: 0.1d)
   #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
@@ -240,17 +240,17 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #4.2: ModelRouter.py (route by policy/env flag) [ ] (est: 0.25d) **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00] [feature/model-router]**
       - 4.2.1 [x] Design routing policy schema (cost, latency, capability-based) ✅ **[COMPLETED: cascade-03 @2025-08-15T06:30:00-04:00]**
       - 4.2.2 [x] Implement router logic with fallback mechanisms ✅ **[COMPLETED: cascade-03 @2025-08-15T06:20:15-04:00]**
-      - 4.2.3 [ ] Add environment-based provider selection [CURRENT-TASK]
+      - 4.2.3 [ ] Add environment-based provider selection
       - 4.2.4 [ ] Create configuration interface for routing rules
       - 4.2.T [ ] Tests — unit/integration for routing policies and env selection [ ] (est: 0.2d)
       - 4.2.C [ ] Commit and push your work: `git add -A && git commit -m "4.2: progress" && git push`
-  #4.3: ContextManager.py (basic memory window) [ ] (est: 0.25d) **[CHECKED OUT: Sonnet-01 @2025-08-15T06:41:44-04:00] [feature/context-manager]**
-      - 4.3.1 [ ] Design conversation context schema and storage
-      - 4.3.2 [ ] Implement sliding window memory management
-      - 4.3.3 [ ] Add context compression and summarization logic
-      - 4.3.4 [ ] Create context retrieval and injection mechanisms
-      - 4.3.T [ ] Tests — unit/integration for context management [ ] (est: 0.2d)
-  #4.4: Rate limiting/backoff + error normalization [ ] (est: 0.25d)
+  #4.3: ContextManager.py (basic memory window) [x] (est: 0.25d) ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00] [feature/context-manager]**
+      - 4.3.1 [x] Design conversation context schema and storage ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
+      - 4.3.2 [x] Implement sliding window memory management ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
+      - 4.3.3 [x] Add context compression and summarization logic ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
+      - 4.3.4 [x] Create context retrieval and injection mechanisms ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**
+      - 4.3.T [x] Tests — unit/integration for context management ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]** (est: 0.2d)
+  #4.4: Rate limiting/backoff + error normalization [ ] (est: 0.25d) **[CHECKED OUT: Sonnet-01 @2025-08-15T07:07:21-04:00] [feature/rate-limiting-backoff]** [CURRENT-TASK]
       - 4.4.1 [ ] Implement rate limiting with token bucket algorithm
       - 4.4.2 [ ] Add exponential backoff with jitter for retries
       - 4.4.3 [ ] Create error normalization layer for different providers

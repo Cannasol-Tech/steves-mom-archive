@@ -31,6 +31,7 @@ List any unclaimed tasks here as they are identified.
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 | 4.2.3 | Env-based provider selection + default routing policy | cascade-69 | feature/model-router | 2025-08-15T06:56:39-04:00 | 4.2.2 complete | TDD: ProviderConfigManager/env and default policy from env |
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
+| 3.6 | Minimal admin panel shell (feature toggles) | cascade-02 | feature/admin-panel-shell | 2025-08-15T07:08:45-04:00 | 3.5 complete | TDD: feature toggle UI, admin routing, basic controls |
 
 ## Completed Tasks
 
