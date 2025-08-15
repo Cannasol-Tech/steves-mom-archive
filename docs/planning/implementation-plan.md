@@ -50,6 +50,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 |---------|-------|------------|-------------------|------------------|----------|
 | 3.T | cascade-01 | 12/12 ✅ | N/A | N/A | N/A |
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
+| 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 
 ### Completed Tasks
 
@@ -104,11 +105,11 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 #### 1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
 
-- **1.3.1** [ ] Create Functions Consumption plan **[CHECKED OUT: cascade-01 @2025-08-15T03:41:29-04:00] [feature/azure-functions-consumption-plan]**
-- **1.3.2** [ ] Create Function App with Python runtime
-- **1.3.3** [ ] Configure app settings from Key Vault using managed identity
-- **1.3.4** [ ] Set up connection strings and environment variables
-- **1.3.5** [ ] Configure CORS and authentication settings
+- **1.3.1** [x] Create Functions Consumption plan ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
+- **1.3.2** [x] Create Function App with Python runtime ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
+- **1.3.3** [x] Configure app settings from Key Vault using managed identity ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:00-04:00] [feature/azure-functions-consumption-plan]**
+- **1.3.4** [x] Set up connection strings and environment variables ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:30-04:00] [feature/azure-functions-consumption-plan]**
+- **1.3.5** [x] Configure CORS and authentication settings ✅ **[COMPLETED: cascade-01 @2025-08-15T07:04:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 - **1.3.C** [ ] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push`
 
@@ -201,9 +202,9 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.4: Error/loading states, toasts [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:50:00-04:00] [feature/chat-errors-toasts]**
       3.4.C [ ] Commit and push your work: `git add -A && git commit -m "3.4: progress" && git push`
       3.4.T [x] Tests — unit for error boundaries/loading/toasts ✅ **[COMPLETED: cascade-02 @2025-08-15T06:50:00-04:00]** (est: 0.15d)
-  #3.5: Socket/client wiring for live updates [ ] (est: 0.25d) **[CHECKED OUT: cascade-02 @2025-08-15T06:56:05-04:00] [feature/chat-sockets-live-updates] [CURRENT-TASK]**
+  #3.5: Socket/client wiring for live updates [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00] [feature/chat-sockets-live-updates]**
      3.5.C [ ] Commit and push your work: `git add -A && git commit -m "3.5: progress" && git push`
-     3.5.T [ ] Tests — integration for socket/client live updates [ ] (est: 0.2d)
+     3.5.T [x] Tests — integration for socket/client live updates ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00]** (est: 0.2d)
   #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
       3.6.C [ ] Commit and push your work: `git add -A && git commit -m "3.6: progress" && git push`
       3.6.T [ ] Tests — unit for admin shell and toggles [ ] (est: 0.1d)
