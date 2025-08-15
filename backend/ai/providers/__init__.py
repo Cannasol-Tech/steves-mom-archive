@@ -14,8 +14,7 @@ from .openai_provider import OpenAIProvider
 from .claude_provider import ClaudeProvider
 from .local_provider import LocalProvider
 from .config_manager import (
-    ProviderConfigManager, ProviderCredentials, ProviderType,
-    config_manager, get_primary_provider, get_all_providers, validate_providers
+    ProviderConfigManager, ProviderCredentials, ProviderType
 )
 
 __all__ = [
@@ -28,9 +27,5 @@ __all__ = [
     'LocalProvider',
     'ProviderConfigManager',
     'ProviderCredentials',
-    'ProviderType',
-    'config_manager',
-    'get_primary_provider',
-    'get_all_providers',
-    'validate_providers'
+    'ProviderType'
 ]

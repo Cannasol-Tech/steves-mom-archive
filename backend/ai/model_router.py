@@ -223,6 +223,8 @@ class ModelRouter:
     ) -> List[str]:
         """Get list of eligible providers based on policy."""
         eligible = []
+        # Pre-compute cost map to handle providers where estimate_cost may be async (e.g., AsyncMock)
+        cost_map: Dict[str, float] = {}
         
         for name, provider_config in self.providers.items():
             if not provider_config.enabled:
@@ -240,8 +242,16 @@ class ModelRouter:
             if config.model_name not in provider.available_models:
                 continue
             
-            # Check cost threshold
-            estimated_cost = provider.estimate_cost(messages, config)
+            # Check cost threshold (support both sync and async estimate_cost)
+            estimated_cost_val = provider.estimate_cost(messages, config)
+            if asyncio.iscoroutine(estimated_cost_val):
+                estimated_cost = await estimated_cost_val
+            else:
+                estimated_cost = estimated_cost_val
+
+            # Cache for later sorting
+            cost_map[name] = float(estimated_cost)
+
             if estimated_cost > policy.max_cost_threshold:
                 continue
             
@@ -252,20 +262,26 @@ class ModelRouter:
             eligible.append(name)
         
         # Sort by routing strategy
-        return self._sort_providers(eligible, policy, messages, config)
+        return self._sort_providers(eligible, policy, messages, config, cost_map)
     
     def _sort_providers(
         self,
         provider_names: List[str],
         policy: RoutingPolicy,
         messages: List[Message],
-        config: ModelConfig
+        config: ModelConfig,
+        cost_map: Optional[Dict[str, float]] = None
     ) -> List[str]:
         """Sort providers based on routing strategy."""
         if policy.strategy == RoutingStrategy.COST_OPTIMIZED:
-            # Sort by estimated cost (ascending)
-            return sorted(provider_names, key=lambda name: 
-                         self.providers[name].provider.estimate_cost(messages, config))
+            # Sort by precomputed estimated cost (ascending) to avoid calling async in sort
+            if cost_map is None:
+                # Fallback: best-effort synchronous estimate (may not work with AsyncMock)
+                return sorted(
+                    provider_names,
+                    key=lambda name: float(self.providers[name].provider.estimate_cost(messages, config))
+                )
+            return sorted(provider_names, key=lambda name: cost_map.get(name, float('inf')))
         
         elif policy.strategy == RoutingStrategy.LATENCY_OPTIMIZED:
             # Sort by average latency (ascending)
@@ -566,7 +582,10 @@ async def create_router_from_env() -> ModelRouter:
     router = ModelRouter(default_policy=policy)
 
     # Use a fresh instance to ensure current env is reflected (tests set env at runtime)
-    pcm: ProviderConfigManager = ProviderConfigManager()
+    # Late import via importlib so tests can patch
+    import importlib
+    _cfg_mod = importlib.import_module("backend.ai.providers.config_manager")
+    pcm = _cfg_mod.ProviderConfigManager()
 
     # Get available providers in priority order
     available = pcm.get_available_providers()

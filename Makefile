@@ -20,6 +20,7 @@ help:
 	@echo "  test          - Run all tests (unit + integration + acceptance)"
 	@echo "  test-unit     - Run unit tests only"
 	@echo "  test-integration - Run integration tests"
+	@echo "  test-backend  - Run backend tests (unit + integration)"
 	@echo "  test-acceptance - Run acceptance tests (behave)"
 	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
@@ -72,21 +73,21 @@ setup-dev:
 	.venv/bin/pip install pytest-asyncio flake8 mypy black isort
 
 # Testing targets
-test: setup-dev test-unit test-integration test-acceptance
+test: setup-backend setup-dev test-unit test-integration test-acceptance
 
-test-unit: setup-dev
+test-unit: setup-backend setup-dev
 	@echo "Running unit tests..."
 	.venv/bin/pytest tests/unit/ -v
 
-test-integration: setup-dev
+test-integration: setup-backend setup-dev
 	@echo "Running integration tests..."
 	.venv/bin/pytest tests/integration/ -v
 
-test-acceptance: setup-dev
+test-acceptance: setup-backend setup-dev
 	@echo "Running acceptance tests..."
-	.venv/bin/behave tests/acceptance/
+	.venv/bin/behave tests/acceptance/features
 
-test-acceptance-pytest: setup-dev
+test-acceptance-pytest: setup-backend setup-dev
 	@echo "Running acceptance tests (pytest)..."
 	.venv/bin/pytest tests/acceptance/*.py -v
 
@@ -98,11 +99,16 @@ test-infra: setup-dev
 	@echo "Running infrastructure tests..."
 	.venv/bin/pytest tests/infrastructure/ -v
 
-test-router: setup-dev
+# Convenience backend test bundle
+test-backend: setup-backend setup-dev
+	@echo "Running backend tests (unit + integration)..."
+	.venv/bin/pytest tests/unit/ tests/integration/ -v
+
+test-router: setup-backend setup-dev
 	@echo "Running model router unit tests..."
 	.venv/bin/pytest tests/unit/test_model_router_* -v
 
-test-router-acceptance: setup-dev
+test-router-acceptance: setup-backend setup-dev
 	@echo "Running model router acceptance tests (pytest)..."
 	.venv/bin/pytest tests/acceptance/test_model_router_acceptance.py -v
 
