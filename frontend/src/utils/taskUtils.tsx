@@ -9,7 +9,7 @@ export const CheckCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
 );
 export const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.4 6.6L12 10l1.4-1.4L15 10.2 13.6 11.6 15 13l-1.6 1.6L12 13.2l-1.4 1.4L9 13l1.4-1.4L9 10.2l1.6-1.6z" />
+    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 13.17l-1.41 1.41L12 13.41l-2.83 2.83-1.41-1.41L10.59 12 7.76 9.17l1.41-1.41L12 10.59l2.83-2.83 1.41 1.41L13.41 12l2.83 2.83z" />
   </svg>
 );
 export const ClockIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
