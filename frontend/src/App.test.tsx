@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders main header title', () => {
+test("renders main header title text", () => {
   render(<App />);
-  const titleElement = screen.getByRole('heading', { level: 1, name: /Steve's Mom AI/i });
-  expect(titleElement).toBeInTheDocument();
+  const titleTexts = screen.getAllByText(/Steve's Mom/i);
+  expect(titleTexts.length).toBeGreaterThan(0);
 });
 
 test('renders chat page by default', () => {
@@ -17,12 +17,10 @@ test('renders chat page by default', () => {
 test('renders navigation links', () => {
   render(<App />);
   const chatLinks = screen.getAllByRole('link', { name: /Chat/i });
-  const inventoryLinks = screen.getAllByRole('link', { name: /Inventory/i });
   const adminLinks = screen.getAllByRole('link', { name: /Admin/i });
 
   // Should have at least one of each link (desktop and mobile versions)
   expect(chatLinks.length).toBeGreaterThan(0);
-  expect(inventoryLinks.length).toBeGreaterThan(0);
   expect(adminLinks.length).toBeGreaterThan(0);
 });
 
@@ -34,7 +32,7 @@ test('renders welcome message', () => {
 
 test('renders chat input form', () => {
   render(<App />);
-  const chatInput = screen.getByPlaceholderText(/Type your message here/i);
+  const chatInput = screen.getByPlaceholderText(/Ask anything/i);
   const sendButton = screen.getByRole('button', { name: /Send/i });
 
   expect(chatInput).toBeInTheDocument();

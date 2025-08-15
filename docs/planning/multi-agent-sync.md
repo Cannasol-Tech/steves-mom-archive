@@ -34,13 +34,13 @@ List any unclaimed tasks here as they are identified.
 
 | Task ID | Agent | Branch | Duration | Files Modified | Merged |
 |---------|-------|--------|----------|----------------|--------|
-| 4.1 | augment-01 | feature/ai-provider-clients | 45min | 7 files | |
-| 4.0 | augment-01 | feature/ai-agent-langchain | 1h | 6 files | |
-| 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | |
-| 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | |
-| 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | |
-| 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | (awaiting test run) |
-| 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | (awaiting test run) |
+| 4.1 | augment-01 | feature/ai-provider-clients | 45min | 7 files | ✅ |
+| 4.0 | augment-01 | feature/ai-agent-langchain | 1h | 6 files | ✅ |
+| 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | ✅ |
+| 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
+| 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
+| 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
+| 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | ⏳ (awaiting test run) |
 
 ## Failed Tasks
 
@@ -51,11 +51,11 @@ List any unclaimed tasks here as they are identified.
 
 | Task ID | Agent | Unit Tests | Integration Tests | Acceptance Tests | Coverage |
 |---------|-------|------------|-------------------|------------------|----------|
-| 4.1 | augment-01 | 8/8 | 3/3 | 1/1 | 90% |
-| 4.0 | augment-01 | 22/22 | 6/11 | 1/1 | 85% |
-| 1.2 | cascade-01 | 6/6 | 6/6 | 1/1 | 100% |
-| 1.1 | cascade-01 | 27/27 | 12/12 | 1/1 | 95% |
-| 3.1 | cascade-02 | 5/5 | N/A | N/A | 100% |
+| 4.1 | augment-01 | 8/8 ✅ | 3/3 ✅ | 1/1 ✅ | 90% |
+| 4.0 | augment-01 | 22/22 ✅ | 6/11 ⚠️ | 1/1 ✅ | 85% |
+| 1.2 | cascade-01 | 6/6 ✅ | 6/6 ✅ | 1/1 ✅ | 100% |
+| 1.1 | cascade-01 | 27/27 ✅ | 12/12 ✅ | 1/1 ✅ | 95% |
+| 3.1 | cascade-02 | 5/5 ✅ | N/A | N/A | 100% |
 | 1.IaC-SEC-COST | cascade-01 | N/A | N/A | N/A | Blocked: pytest not found (env setup needed) |
 
 ## Communication Log
