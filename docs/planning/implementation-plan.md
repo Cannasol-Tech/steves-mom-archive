@@ -159,15 +159,31 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.4.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4: progress" && git push`
 - **1.4.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
-#### 1.5: Static Web App configuration [ ] (est: 0.25d)
+#### 1.5: Static Web App configuration [x] (est: 0.25d)
 
-- **1.5.1** [ ] Create Azure Static Web App resource **[CHECKED OUT: cascade-01 @2025-08-15T07:20:30-04:00] [feature/static-web-app-config] [CURRENT-TASK]**
-- **1.5.2** [ ] Configure SWA to point API routes to Functions
-- **1.5.3** [ ] Set up custom domains and SSL certificates (if needed)
-- **1.5.4** [ ] Configure authentication providers (Azure AD)
+- **1.5.1** [x] Create Azure Static Web App resource **[COMPLETED: cascade-01 @2025-08-15T07:20:30-04:00]**
+  - 1.5.1.1 [x] Enhanced Static Web App Bicep module with API integration and authentication
+  - 1.5.1.2 [x] Added GitHub repository integration and build configuration
+  - 1.5.1.3 [x] Configured environment-specific SKU tiers (Free for dev/staging, Standard for prod)
+  - 1.5.1.4 [x] Added comprehensive outputs for deployment automation
+- **1.5.2** [x] Configure SWA to point API routes to Functions **[COMPLETED: cascade-01 @2025-08-15T07:20:30-04:00]**
+  - 1.5.2.1 [x] Created staticwebapp.config.json with API routing configuration
+  - 1.5.2.2 [x] Set up Azure Functions configuration files (host.json, function.json)
+  - 1.5.2.3 [x] Configured CORS, security headers, and MIME types
+  - 1.5.2.4 [x] Implemented role-based access control for API endpoints
+- **1.5.3** [x] Set up custom domains and SSL certificates (if needed) **[COMPLETED: cascade-01 @2025-08-15T07:20:30-04:00]**
+  - 1.5.3.1 [x] Created comprehensive custom domain setup documentation
+  - 1.5.3.2 [x] Documented DNS configuration for CNAME and TXT records
+  - 1.5.3.3 [x] Configured automatic SSL certificate management
+  - 1.5.3.4 [x] Added environment-specific domain planning
+- **1.5.4** [x] Configure authentication providers (Azure AD) **[COMPLETED: cascade-01 @2025-08-15T07:20:30-04:00]**
+  - 1.5.4.1 [x] Created Azure AD authentication configuration documentation
+  - 1.5.4.2 [x] Implemented frontend AuthService with TypeScript
+  - 1.5.4.3 [x] Created backend authentication utilities for Azure Functions
+  - 1.5.4.4 [x] Configured role-based access control and security decorators
 
-- **1.5.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
-- **1.5.C** [ ] Commit and push your work: `git add -A && git commit -m "1.5: progress" && git push`
+- **1.5.T** [x] Tests — unit, integration, acceptance for infra setup [x] (est: 0.25d)
+- **1.5.C** [ ] Commit and push your work: `git add -A && git commit -m "1.5: Static Web App configuration complete" && git push`
 
 ## 2: CI/CD and release-pack pipeline [ ] (est: 1 day)
 
