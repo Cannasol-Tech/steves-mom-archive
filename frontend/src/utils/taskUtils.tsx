@@ -4,7 +4,7 @@ import { TaskStatus } from '../types/tasks';
 // Lightweight local icons to avoid external dependency issues in tests
 export const CheckCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 14l-4-4 1.4-1.4L11 12.2l5.6-5.6L18 8l-7 8z" />
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1.293 13.293a1 1 0 0 1-1.414 0l-2.293-2.293a1 1 0 1 1 1.414-1.414l1.586 1.586 4.586-4.586a1 1 0 0 1 1.414 1.414l-5.293 5.293z" />
   </svg>
 );
 export const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
