@@ -3,12 +3,29 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Cannasol-inspired palette */
+    --brand-blue: #3b82f6;   /* tailwind blue-500 */
+    --brand-green: #10b981;  /* tailwind emerald-500 */
+    --bg-base: #f1f5f9;      /* slate-100 (darker than slate-50) */
+  }
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply text-gray-900;
+    background-color: var(--bg-base);
+    /* Spatial gradient + faint starfield dots */
+    background-image:
+      linear-gradient(rgba(2, 6, 23, 0.02), rgba(2, 6, 23, 0.02)),
+      radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand-blue) 18%, transparent) 0%, transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%, color-mix(in oklab, var(--brand-green) 14%, transparent) 0%, transparent 65%),
+      radial-gradient(800px 400px at 50% 120%, color-mix(in oklab, var(--brand-blue) 10%, transparent) 0%, transparent 70%),
+      radial-gradient(1px 1px at 20% 30%, rgba(16, 185, 129, 0.2), transparent 50%),
+      radial-gradient(1px 1px at 70% 60%, rgba(59, 130, 246, 0.18), transparent 50%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 }
 
@@ -43,5 +60,19 @@
   
   .loading-spinner {
     @apply animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600;
+  }
+}
+
+@layer utilities {
+  .spatial-bg {
+    background-color: var(--bg-base);
+    background-image:
+      radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand-blue) 12%, transparent) 0%, transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%, color-mix(in oklab, var(--brand-green) 10%, transparent) 0%, transparent 65%),
+      radial-gradient(800px 400px at 50% 120%, color-mix(in oklab, var(--brand-blue) 6%, transparent) 0%, transparent 70%),
+      radial-gradient(1px 1px at 20% 30%, rgba(16, 185, 129, 0.15), transparent 50%),
+      radial-gradient(1px 1px at 70% 60%, rgba(59, 130, 246, 0.12), transparent 50%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 }

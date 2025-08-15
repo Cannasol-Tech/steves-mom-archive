@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "projectName": { "value": "stevesmom" },
+    "environment": { "value": "prod" },
+    "location": { "value": "eastus" },
+    "sqlAdminUsername": { "value": "sqladmin" },
+    "enableMonitoring": { "value": true },
+    "enableRedis": { "value": true }
+    /* NOTE: sqlAdminPassword is intentionally omitted. Provide via env var SQL_ADMIN_PASSWORD or CLI prompt when running scripts. */
+  }
+}

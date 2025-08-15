@@ -123,10 +123,12 @@ Steve's Mom addresses key operational challenges:
 
 **FR-1.1: AI Model Integration**
 - Primary integration with GROK AI using stephen.boyett@cannasolusa.com account
-- Support for ChatGPT, Claude, and Hugging Face models
-- Automatic routing based on request type
+- LangChain-based model abstraction for ChatGPT, Claude, and Hugging Face models
+- Automatic routing based on request type with intelligent fallback
 - Manual model selection option for users
 - Model performance tracking per request type
+- Pydantic-validated structured outputs for all AI responses
+- LangChain agents with tool calling capabilities for business automation
 
 **FR-1.2: Conversation Management**
 - Real-time chat interface with typing indicators
@@ -144,10 +146,11 @@ Steve's Mom addresses key operational challenges:
 ### 5.2 Task Generation and Workflow
 
 **FR-2.1: Intelligent Task Generation**
-- Automatic task identification from user requests
-- Task categorization by agent specialty
-- Confidence scoring for generated tasks
-- Batch task generation for complex requests
+- LangChain agents with function calling for automatic task identification
+- Task categorization by agent specialty using Pydantic models
+- Confidence scoring for generated tasks with structured validation
+- Batch task generation for complex requests through agent orchestration
+- Tool integration for inventory, email, document, and database operations
 
 **FR-2.2: Approval Workflow**
 - In-chat approval interface with Accept/Reject/Modify options
@@ -383,7 +386,30 @@ Backend (Azure Functions)
 - Document Template Service
 - Agent Communication Bus
 
-### 7.4 Security Architecture
+### 7.4 AI Architecture Framework
+
+**LangChain Integration:**
+- **Agent Framework**: LangChain agents for task orchestration and tool calling
+- **Memory Management**: Built-in conversation memory with context windows
+- **Tool Integration**: Native tool calling for business system integration
+- **Model Abstraction**: Unified interface for multiple AI providers (GROK, OpenAI, Claude)
+- **Streaming Support**: Real-time response streaming with LangChain callbacks
+- **Error Handling**: Production-ready retry logic and fallback mechanisms
+
+**Pydantic Data Models:**
+- **Structured Outputs**: All AI responses validated through Pydantic models
+- **Type Safety**: Runtime validation for all data structures
+- **API Contracts**: Consistent data schemas across frontend/backend
+- **Configuration Management**: Environment-specific settings with validation
+- **Business Logic**: Domain models for tasks, users, permissions, and integrations
+
+**Supreme Overlord Personality:**
+- **System Prompt**: Integrated personality from existing steves-mom-beta.py
+- **Context Preservation**: Personality maintained across conversation turns
+- **Tool Integration**: Business automation tools with personality-driven responses
+- **Streaming Responses**: Real-time personality-driven interactions
+
+### 7.5 Security Architecture
 
 **Defense in Depth:**
 1. Network Security (Azure Firewall)
@@ -1393,7 +1419,9 @@ jobs:
 - Azure Functions v4
 - FastAPI framework
 - SQLAlchemy ORM
-- Pydantic validation
+- Pydantic validation and structured outputs
+- LangChain framework for AI orchestration
+- LangChain agents and tools for task automation
 - Hedera SDK for Python
 - Web3.py for multi-chain support
 

@@ -8,6 +8,7 @@ Current constraints/choices:
 - NL→SQL limited to Inventory only using whitelisted query templates and guardrails.
 - Privacy‑safe telemetry by default (no raw content retained; sampling disabled by default).
 - Publish a release‑pack consumable by `functionality-reports` (spec TBD; placeholder implemented in MVP).
+- **REQUIRED**: Cannasol logo (`/Users/Stephen/Documents/GitHub/steves-mom-archive/cannasol-logo.png`) must be integrated throughout the interface for corporate branding.
 
 ## Current Task Tagging
 
@@ -33,9 +34,38 @@ Branch Completion Tagging: Tag each branch with the agent ID and timestamp when 
 
 Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it is checked out. For example, `- [ ] Task description **[DEPENDING ON: Agent-ID @timestamp]**`.
 
+## Multi-Agent Coordination (from `.github/multi-agent-collaboration.prompt.md`)
+
+- **Active Agent:** Cascade-69 (registered 2025-08-13T21:54:57-04:00)
+
+- **Checkout format:**
+
+```markdown
+- [ ] Task description **[CHECKED OUT: Cascade-69 @YYYY-MM-DDThh:mm:ss-04:00] [feature/descriptive-branch]**
+```
+
+### Test Results (append entries as tasks complete)
+
+| Task ID | Agent | Unit Tests | Integration Tests | Acceptance Tests | Coverage |
+|---------|-------|------------|-------------------|------------------|----------|
+
+### Completed Tasks
+
+| Task ID | Agent | Branch | Duration | Files Modified | Merged |
+|---------|-------|--------|----------|----------------|--------|
+| 4.1 | augment-01 | feature/ai-provider-clients | 45min | 7 files | ✅ |
+
+### Communication Log
+
+| Timestamp | From | To | Message | Action Required |
+|-----------|------|----|---------|-----------------|
+| 2025-08-13T19:45:00-04:00 | augment-01 | ALL | Task 4.1 complete: Built comprehensive AI provider abstraction layer with GROK provider and placeholders for OpenAI, Claude, and Local models. Includes configuration management, credential handling, and provider fallback system. All tests passing. | Ready for integration with existing AI agent |
+
 ### Implementation Plan
 
 ## 1: Infrastructure setup (Consumption plan) [ ] (est: 2 days)
+
+> Hosting note: Using Azure Functions Consumption (or Flex On‑Demand) for MVP to minimize cost. PRD Appendix mentions Functions Premium; evaluate upgrade after MVP acceptance.
 
   #1.1: Azure resources IaC draft (naming, SKUs) [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T17:45:00-04:00] [feature/infrastructure-iac-draft]**
       1.1.1 [x] Define TDD scope for IaC: write test plan for naming rules and SKU validation (unit/integration)
@@ -46,14 +76,14 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       1.1.6 [x] Add integration "plan/what-if" tests to assert expected resources
       1.1.7 [x] Update `docs/planning/multi-agent-sync.md` notes during progress
       1.1.8 [x] Acceptance review and finalize draft
-  #1.2: Provision Azure resources [ ] (est: 0.5d) [CURRENT-TASK] **[CHECKED OUT: cascade-01 @2025-08-13T18:00:00-04:00] [feature/azure-provisioning]**
-      1.2.1 [ ] Create resource group with proper naming and tags
-      1.2.2 [ ] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
-      1.2.3 [ ] Create Redis Cache instance with appropriate tier
-      1.2.4 [ ] Set up Blob Storage with containers and access policies
-      1.2.5 [ ] Create Key Vault with access policies and managed identity
-  #1.3: Azure Functions setup [ ] (est: 0.5d)
-      1.3.1 [ ] Create Functions Consumption plan
+  #1.2: Provision Azure resources [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T18:30:00-04:00] [feature/azure-provisioning]**
+      1.2.1 [x] Create resource group with proper naming and tags
+      1.2.2 [x] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
+      1.2.3 [x] Create Redis Cache instance with appropriate tier
+      1.2.4 [x] Set up Blob Storage with containers and access policies
+      1.2.5 [x] Create Key Vault with access policies and managed identity
+  #1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
+      1.3.1 [ ] Create Functions Consumption plan **[CHECKED OUT: Cascade-69 @2025-08-13T21:54:57-04:00] [feature/azure-functions-consumption-plan]**
       1.3.2 [ ] Create Function App with Python runtime
       1.3.3 [ ] Configure app settings from Key Vault using managed identity
       1.3.4 [ ] Set up connection strings and environment variables
@@ -97,16 +127,21 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ## 3: Chat interface (React/TS/Tailwind) [ ] (est: 2 days)
 
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
-  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d)
+  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-01-15T11:15:00-05:00] [feature/chat-input-messages]**
   #3.3: Streaming display + retry/cancel [ ] (est: 0.5d)
   #3.4: Error/loading states, toasts [ ] (est: 0.25d)
   #3.5: Socket/client wiring for live updates [ ] (est: 0.25d)
   #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
+  #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
+      3.7.1 [ ] Add Cannasol logo to header/navigation bar
+      3.7.2 [ ] Integrate logo in chat interface branding
+      3.7.3 [ ] Add logo to loading states and splash screens
+      3.7.4 [ ] Ensure responsive logo display across devices
   #3.T: Tests — unit (components), integration (API/socket), acceptance (chat flow) [ ] (est: 0.25d)
 
 ## 4: GROK integration + model router stub [ ] (est: 1 day)
 
-  #4.1: Provider clients (GROK, placeholders for others) [ ] (est: 0.25d)
+  #4.1: Provider clients (GROK, placeholders for others) [x] (est: 0.25d) **[COMPLETED: augment-01 @2025-08-13T19:45:00-04:00]**
       4.1.1 [ ] Create base LLMProvider abstract class with standard interface
       4.1.2 [ ] Implement GROKProvider with API client and authentication
       4.1.3 [ ] Create placeholder providers for OpenAI, Claude, and local models
@@ -193,6 +228,40 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       7.3.2 [ ] Add query result formatting and serialization
       7.3.3 [ ] Create execution context with user permissions
       7.3.4 [ ] Add query logging and audit trail
+
+## 8: Email integration (Microsoft Exchange) [ ] (est: 1 day)
+
+  #8.1: Email summarize/draft/send [ ] (est: 0.5d)
+      8.1.1 [ ] Implement email summarization endpoint (Graph API)
+      8.1.2 [ ] Draft response generation with approval workflow
+      8.1.3 [ ] Send email with priority, CC/BCC, and audit logging
+  #8.2: Attachments and calendar [ ] (est: 0.25d)
+      8.2.1 [ ] Attachment handling (upload/download, size limits)
+      8.2.2 [ ] Calendar integration for meeting requests (create/invite)
+      8.2.3 [ ] Error handling and permission checks
+  #8.3: UI hooks [ ] (est: 0.15d)
+      8.3.1 [ ] Chat actions: “Summarize”, “Draft”, “Send”
+      8.3.2 [ ] Approval modal and status toasts
+  #8.T: Tests — unit/integration for email [ ] (est: 0.1d)
+      8.T.1 [ ] Unit tests for Graph client wrappers
+      8.T.2 [ ] Integration tests for summarize/draft/send flow
+
+## 9: Document management (templates) [ ] (est: 1 day)
+
+  #9.1: Template store + validation [ ] (est: 0.5d)
+      9.1.1 [ ] Template repository in Blob (versioned)
+      9.1.2 [ ] Field validation and constraints
+      9.1.3 [ ] Multi-format export (PDF/DOCX/XLSX)
+  #9.2: Generation endpoints [ ] (est: 0.25d)
+      9.2.1 [ ] Generate from template with data mapping
+      9.2.2 [ ] Download/preview endpoints
+  #9.3: UI hooks [ ] (est: 0.15d)
+      9.3.1 [ ] “Generate Document” action with form input
+      9.3.2 [ ] Result preview and download
+  #9.T: Tests — unit/integration for documents [ ] (est: 0.1d)
+      9.T.1 [ ] Unit tests for template validation
+      9.T.2 [ ] Integration tests for generation + download
+
   #7.4: Guardrails: row limits, timeouts, RBAC check [ ] (est: 0.25d)
       7.4.1 [ ] Implement row count limits and pagination
       7.4.2 [ ] Add query timeout and resource limits
@@ -305,7 +374,9 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #13.1: Unit tests: router, tasking, NL→SQL templates [ ] (est: 0.75d)
   #13.2: Integration tests: Functions endpoints + SQL [ ] (est: 0.5d)
   #13.3: E2E happy path (chat → task → inventory → doc/email) [ ] (est: 0.5d)
-  #13.4: Load sanity (light k6 or Locust) + final deploy [ ] (est: 0.25d)
+  #13.4: Performance tests (k6/Locust) with PRD thresholds [ ] (est: 0.25d)
+      13.4.1 [ ] Simple queries p95 < 2s; single integration p95 < 5s; multi-system p95 < 10s
+      13.4.2 [ ] 20 concurrent users; 1000 req/hour sustained; graceful degradation verified
   #13.5: Acceptance tests (pytest-bdd/behave) mapped to PRD scenarios [ ] (est: 0.5d)
 
 ---
