@@ -1,6 +1,6 @@
 import os
 import time
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from dotenv import load_dotenv
@@ -11,8 +11,12 @@ try:
 except Exception:  # pragma: no cover
     XAI = None
 from .schemas import ChatRequest, ChatResponse, ChatMessage
+from .routes import tasks
+from .connection_manager import manager
 
 app = FastAPI(title="Steve's Mom API", version="0.1.0")
+
+app.include_router(tasks.router, prefix="/api", tags=["tasks"])
 
 # Allow local dev origins
 app.add_middleware(
@@ -37,6 +41,15 @@ except Exception:
     # Non-fatal if dotenv loading fails; explicit env vars can still be used
     pass
 
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # Keep the connection alive
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 @app.get("/health")
 async def health():

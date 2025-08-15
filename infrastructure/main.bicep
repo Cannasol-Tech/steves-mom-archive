@@ -59,6 +59,20 @@ param sqlAdminUsername string
 param sqlAdminPassword string
 
 /**
+ * @brief GitHub repository URL for Static Web App source control
+ * @details Used for CI/CD integration with GitHub Actions
+ */
+@description('GitHub repository URL (optional)')
+param repositoryUrl string = ''
+
+/**
+ * @brief GitHub branch for Static Web App deployment
+ * @details Default branch for automatic deployments
+ */
+@description('GitHub branch for deployment')
+param branch string = 'main'
+
+/**
  * @brief Enable Application Insights for monitoring
  * @details Set to false to reduce costs in development environments
  */
@@ -100,7 +114,7 @@ var naming = {
   sqlServer: 'sql-${projectName}-${environment}-${location}'
   sqlDatabase: 'sqldb-${projectName}-${environment}'
   redisCache: 'redis-${projectName}-${environment}-${location}'
-  keyVault: 'kv-${projectName}-${environment}-${location}'
+  keyVault: 'kv-cloud-agents'
   staticWebApp: 'swa-${projectName}-${environment}-${location}'
   appInsights: 'ai-${projectName}-${environment}-${location}'
   logAnalytics: 'law-${projectName}-${environment}-${location}'
@@ -140,18 +154,12 @@ module storage 'modules/storage.bicep' = {
 }
 
 /**
- * @brief Key Vault module deployment
- * @details Deploys Key Vault for secure configuration and secrets management
+ * @brief Key Vault reference (existing)
+ * @details References existing kv-cloud-agents Key Vault
  */
-module keyVault 'modules/keyvault.bicep' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   scope: resourceGroup
-  name: 'keyvault-deployment'
-  params: {
-    keyVaultName: naming.keyVault
-    location: location
-    tags: commonTags
-    environment: environment
-  }
+  name: naming.keyVault
 }
 
 /**
@@ -215,7 +223,7 @@ module functionApp 'modules/functions.bicep' = {
     location: location
     tags: commonTags
     storageAccountName: storage.outputs.storageAccountName
-    keyVaultName: keyVault.outputs.keyVaultName
+    keyVaultName: keyVault.name
     appInsightsInstrumentationKey: enableMonitoring ? monitoring.outputs.appInsightsInstrumentationKey : ''
     environment: environment
   }
@@ -227,7 +235,7 @@ module functionApp 'modules/functions.bicep' = {
 
 /**
  * @brief Static Web App module deployment
- * @details Deploys Azure Static Web Apps for frontend hosting
+ * @details Deploys Azure Static Web Apps for frontend hosting with API integration
  */
 module staticWebApp 'modules/staticwebapp.bicep' = {
   scope: resourceGroup
@@ -238,6 +246,9 @@ module staticWebApp 'modules/staticwebapp.bicep' = {
     tags: commonTags
     functionAppName: functionApp.outputs.functionAppName
     environment: environment
+    repositoryUrl: repositoryUrl
+    branch: branch
+    skuTier: environment == 'prod' ? 'Standard' : 'Free'
   }
   dependsOn: [
     functionApp
@@ -270,7 +281,7 @@ output storageAccountName string = storage.outputs.storageAccountName
  * @brief Key Vault name for secrets management
  */
 @description('Name of the Key Vault')
-output keyVaultName string = keyVault.outputs.keyVaultName
+output keyVaultName string = keyVault.name
 
 /**
  * @brief SQL Server name for database connection configuration
@@ -295,6 +306,18 @@ output redisCacheName string = enableRedis ? redisCache.outputs.redisCacheName :
  */
 @description('URL of the Static Web App')
 output staticWebAppUrl string = staticWebApp.outputs.staticWebAppUrl
+
+/**
+ * @brief Static Web App resource ID
+ */
+@description('Resource ID of the Static Web App')
+output staticWebAppId string = staticWebApp.outputs.staticWebAppId
+
+/**
+ * @brief Static Web App API key for deployment
+ */
+@description('API key for Static Web App deployment')
+output staticWebAppApiKey string = staticWebApp.outputs.staticWebAppApiKey
 
 /**
  * @brief Application Insights instrumentation key (if enabled)

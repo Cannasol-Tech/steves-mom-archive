@@ -1,0 +1,35 @@
+# Ignore generated or irrelevant paths
+
+node_modules/
+node_modules/**
+**/node_modules/**
+frontend/node_modules/
+frontend/node_modules/**
+**/dist/
+**/build/
+**/.next/
+**/.vercel/
+**/.out/
+**/.cache/
+**/.pytest_cache/
+**/__pycache__/
+.venv/
+.venv/**
+venv/
+venv/**
+env/
+env/**
+venv312/
+venv312/**
+# Ignore release artifacts
+
+**/release/*
+
+# Ignore images and binary docs
+
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.svg
+**/*.pdf

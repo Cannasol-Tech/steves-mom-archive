@@ -8,7 +8,7 @@ This document explains the complete process of setting up Azure Cognitive Servic
 
 When attempting to create an Azure Cognitive Services account, we encountered the following error:
 
-```
+```text
 Failed to create cognitive services account, HTTP Code 400, Error {"error":{"code":"SpecialFeatureOrQuotaIdRequired","message":"The subscription does not have QuotaId/Feature required by SKU 'S0' from kind 'AIServices' or contains blocked QuotaId/Feature."}}
 ```
 
@@ -52,6 +52,7 @@ az group list --output table
 ```
 
 **Available Resource Groups**:
+
 - rg-cannasol-inventory (centralus)
 - rg-official-website (centralus)
 - rg-steves-mom (centralus)
@@ -63,6 +64,7 @@ az group list --output table
 The key to resolving the issue was using the **eastus** region instead of the original region where the resource group was located.
 
 **Working Command**:
+
 ```bash
 az cognitiveservices account create \
   --name "steves-mom" \
@@ -78,7 +80,7 @@ az cognitiveservices account create \
 ### Account Details
 
 - **Name**: `steves-mom`
-- **Resource Group**: `rg-steves-mom` 
+- **Resource Group**: `rg-steves-mom`
 - **Location**: `eastus`
 - **SKU**: `S0` (Standard tier)
 - **Kind**: `AIServices`
@@ -101,16 +103,19 @@ The AI Services account provides access to multiple APIs including:
 ## Key Learnings
 
 ### 1. Region Matters
+
 - The original error was likely due to region-specific limitations
 - **eastus** region had better support for AIServices S0 SKU
 - Always try different regions if encountering quota/feature errors
 
 ### 2. SKU Availability
+
 - AIServices kind supports various SKUs, but availability varies by region
 - S0 (Standard) tier was available despite the initial quota error
 - Free tier (F0) might not be available for AIServices kind in all regions
 
 ### 3. Quota vs. Feature Limitations
+
 - Having quota available doesn't guarantee feature access
 - Subscription type and region combination affects service availability
 - Corporate subscriptions may have different limitations than personal subscriptions
@@ -118,7 +123,9 @@ The AI Services account provides access to multiple APIs including:
 ## Alternative Solutions (If Above Fails)
 
 ### Option 1: Use Different Service Kind
+
 Instead of `AIServices`, try specific service kinds:
+
 ```bash
 az cognitiveservices account create \
   --name "your-account-name" \
@@ -130,14 +137,18 @@ az cognitiveservices account create \
 ```
 
 ### Option 2: Request Quota Increase
+
 Submit a support request through Azure Portal:
+
 1. Go to Azure Portal → Help + Support
 2. Create new support request
 3. Select "Service and subscription limits (quotas)"
 4. Request increase for Cognitive Services quota
 
 ### Option 3: Different Pricing Tier
+
 Try a different pricing tier if S0 is not available:
+
 ```bash
 # Check available SKUs for the service
 az cognitiveservices account list-skus --kind AIServices --location eastus
@@ -155,6 +166,7 @@ az cognitiveservices account create \
 ## Next Steps
 
 ### 1. Retrieve API Keys
+
 ```bash
 az cognitiveservices account keys list \
   --name "steves-mom" \
@@ -162,6 +174,7 @@ az cognitiveservices account keys list \
 ```
 
 ### 2. Test the Service
+
 Use the endpoint and keys to test the service functionality:
 
 ```bash
@@ -177,26 +190,31 @@ curl -X POST "https://eastus.api.cognitive.microsoft.com/openai/deployments/gpt-
 ```
 
 ### 3. Configure Applications
+
 Update application configuration to use the new endpoint and keys.
 
 ## Best Practices
 
 ### 1. Resource Management
+
 - Use descriptive names for resources
 - Group related resources in the same resource group
 - Use consistent naming conventions
 
 ### 2. Security
+
 - Rotate API keys regularly
 - Use Azure Key Vault for key management
 - Implement proper access controls
 
 ### 3. Cost Management
+
 - Monitor usage and costs regularly
 - Set up billing alerts
 - Use appropriate pricing tiers for your needs
 
 ### 4. Troubleshooting
+
 - Always check region availability first
 - Verify subscription quotas and limits
 - Test with different SKUs if primary choice fails

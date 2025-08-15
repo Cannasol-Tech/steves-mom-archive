@@ -9,9 +9,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
 ### 1. Unit Tests
 
 #### 1.1 Naming Convention Tests
+
 **Scope**: Validate resource naming follows established conventions
 
 **Test Cases**:
+
 - `test_resource_group_naming_convention()`
   - Format: `rg-{project}-{environment}-{region}`
   - Example: `rg-stevesmom-prod-eastus`
@@ -43,9 +45,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
   - Validates: lowercase, hyphens, globally unique, 3-24 chars
 
 #### 1.2 SKU Validation Tests
+
 **Scope**: Validate selected SKUs meet requirements and constraints
 
 **Test Cases**:
+
 - `test_function_app_consumption_sku()`
   - Validates: SKU is "Y1" (Consumption) or "FC1" (Flex Consumption)
   - Ensures: Cost optimization for MVP
@@ -63,9 +67,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
   - Ensures: Cost vs durability balance
 
 #### 1.3 Tag Validation Tests
+
 **Scope**: Validate required tags are present and correctly formatted
 
 **Test Cases**:
+
 - `test_required_tags_present()`
   - Validates: Environment, Project, Owner, CostCenter tags
   - Ensures: Governance compliance
@@ -75,9 +81,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
   - Ensures: Consistency across resources
 
 #### 1.4 Location Validation Tests
+
 **Scope**: Validate resources are deployed to correct regions
 
 **Test Cases**:
+
 - `test_primary_region_consistency()`
   - Validates: All resources in same primary region
   - Ensures: Latency optimization
@@ -89,9 +97,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
 ### 2. Integration Tests
 
 #### 2.1 Resource Dependency Tests
+
 **Scope**: Validate resource dependencies and relationships
 
 **Test Cases**:
+
 - `test_function_app_storage_dependency()`
   - Validates: Function App references correct Storage Account
   - Ensures: Runtime dependencies satisfied
@@ -105,9 +115,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
   - Ensures: Database connectivity
 
 #### 2.2 Plan/What-If Tests
+
 **Scope**: Validate expected resources will be created/modified
 
 **Test Cases**:
+
 - `test_bicep_plan_output()`
   - Validates: Plan shows expected resource creation
   - Ensures: No unexpected changes
@@ -123,9 +135,11 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
 ### 3. Acceptance Tests
 
 #### 3.1 End-to-End Deployment Tests
+
 **Scope**: Validate complete infrastructure deployment
 
 **Test Cases**:
+
 - `test_complete_infrastructure_deployment()`
   - Validates: All resources deploy successfully
   - Ensures: Infrastructure is functional
@@ -141,17 +155,20 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
 ## Test Implementation Framework
 
 ### Tools and Libraries
+
 - **Python**: pytest for test framework
 - **Azure CLI**: Resource validation and querying
 - **Bicep CLI**: Template validation and what-if operations
 - **Azure SDK**: Programmatic resource validation
 
 ### Test Data Management
+
 - **Test Fixtures**: Predefined resource configurations
 - **Mock Data**: Simulated Azure responses for unit tests
 - **Test Environments**: Isolated resource groups for testing
 
 ### Continuous Integration
+
 - **Pre-commit Hooks**: Run naming validation tests
 - **PR Validation**: Run full test suite on pull requests
 - **Deployment Gates**: Require passing tests before deployment
@@ -159,16 +176,19 @@ This document defines the Test-Driven Development (TDD) scope for Infrastructure
 ## Test Execution Strategy
 
 ### Development Phase
+
 1. Write failing tests first (TDD approach)
 2. Implement IaC templates to make tests pass
 3. Refactor while maintaining test coverage
 
 ### Validation Phase
+
 1. Run unit tests on every commit
 2. Run integration tests on PR creation
 3. Run acceptance tests before deployment
 
 ### Monitoring Phase
+
 1. Periodic validation of deployed resources
 2. Drift detection through test execution
 3. Compliance reporting based on test results

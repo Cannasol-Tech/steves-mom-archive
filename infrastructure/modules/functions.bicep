@@ -1,15 +1,23 @@
 /**
  * @file functions.bicep
  * @brief Azure Function App on Linux Consumption (Y1)
+ * @author cascade-01
  */
 
+@description('Name of the Function App')
 param functionAppName string
+@description('Azure region for deployment')
 param location string
+@description('Resource tags for organization')
 param tags object
+@description('Name of the storage account for Function App')
 param storageAccountName string
+@description('Name of the Key Vault for secrets')
 param keyVaultName string
 @allowed(['dev','staging','prod'])
+@description('Environment (dev, staging, prod)')
 param environment string
+@description('Application Insights instrumentation key')
 param appInsightsInstrumentationKey string
 
 // Existing storage account to fetch keys
@@ -60,9 +68,35 @@ resource func 'Microsoft.Web/sites@2022-09-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: appInsightsInstrumentationKey
         }
+        {
+          name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'
+          value: 'true'
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: toLower(functionAppName)
+        }
+        {
+          name: 'KEY_VAULT_NAME'
+          value: keyVaultName
+        }
       ]
+      cors: {
+        allowedOrigins: [
+          'https://portal.azure.com'
+          'https://*.azurestaticapps.net'
+        ]
+        supportCredentials: false
+      }
     }
     httpsOnly: true
+  }
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 

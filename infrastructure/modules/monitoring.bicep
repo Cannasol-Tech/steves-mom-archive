@@ -1,12 +1,18 @@
 /**
  * @file monitoring.bicep
  * @brief Application Insights + Log Analytics (cheapest defaults)
+ * @author cascade-01
  */
 
+@description('Name of the Application Insights resource')
 param appInsightsName string
+@description('Name of the Log Analytics workspace')
 param logAnalyticsName string
+@description('Azure region for deployment')
 param location string
+@description('Resource tags for organization')
 param tags object
+@description('Environment (dev, staging, prod)')
 param environment string
 
 resource law 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {

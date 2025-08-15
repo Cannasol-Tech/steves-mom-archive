@@ -1014,6 +1014,12 @@ Request:
 - Cross-browser validation
 - Performance benchmarking
 
+**Acceptance Testing:**
+- Behave (BDD) framework for acceptance tests
+- Gherkin syntax for test scenarios
+- Business-readable test specifications
+- Automated acceptance criteria validation
+
 **Security Testing:**
 - OWASP compliance scanning
 - Penetration testing

@@ -77,7 +77,10 @@ class TestNamingConventions:
         elif resource_type == 'function_app':
             return f'func-{project}-{environment}-{region}'
         elif resource_type == 'storage_account':
-            return f'st{project}{environment}{region}{unique_suffix}'
+            # Use abbreviated forms to fit 24-char limit
+            env_abbrev = {'dev': 'dev', 'staging': 'stg', 'prod': 'prd'}[environment]
+            region_abbrev = {'eastus': 'eus', 'eastus2': 'eus2', 'westus2': 'wus2', 'centralus': 'cus'}[region]
+            return f'st{project}{env_abbrev}{region_abbrev}{unique_suffix}'
         elif resource_type == 'sql_server':
             return f'sql-{project}-{environment}-{region}'
         elif resource_type == 'sql_database':
@@ -85,7 +88,8 @@ class TestNamingConventions:
         elif resource_type == 'redis_cache':
             return f'redis-{project}-{environment}-{region}'
         elif resource_type == 'key_vault':
-            return f'kv-{project}-{environment}-{region}'
+            # Use existing shared Key Vault
+            return 'kv-cloud-agents'
         elif resource_type == 'static_web_app':
             return f'swa-{project}-{environment}-{region}'
         elif resource_type == 'app_insights':
@@ -97,7 +101,7 @@ class TestNamingConventions:
 
     @pytest.mark.parametrize("resource_type", [
         'resource_group', 'function_app', 'sql_server', 'redis_cache',
-        'key_vault', 'static_web_app', 'app_insights', 'log_analytics'
+        'static_web_app', 'app_insights', 'log_analytics'
     ])
     def test_hyphenated_resource_naming_pattern(self, naming_config, resource_type):
         """Test naming pattern for resources that use hyphens."""
@@ -146,7 +150,7 @@ class TestNamingConventions:
         project = naming_config['project_name']
         region = 'eastus'
         
-        resource_types = ['resource_group', 'function_app', 'sql_server', 'key_vault']
+        resource_types = ['resource_group', 'function_app', 'sql_server']
         
         for resource_type in resource_types:
             name = self.generate_resource_name(resource_type, project, environment, region)
@@ -158,8 +162,8 @@ class TestNamingConventions:
         project = naming_config['project_name']
         environment = 'dev'
         
-        # Test resources that include region in name
-        regional_resources = ['resource_group', 'function_app', 'sql_server', 'key_vault']
+        # Test resources that include region in name (excluding shared key_vault)
+        regional_resources = ['resource_group', 'function_app', 'sql_server']
         
         for resource_type in regional_resources:
             name = self.generate_resource_name(resource_type, project, environment, region)
@@ -171,8 +175,8 @@ class TestNamingConventions:
         environment = 'prod'
         region = 'eastus'
         
-        # Resources that must be globally unique
-        unique_resources = ['function_app', 'storage_account', 'sql_server', 'redis_cache', 'key_vault']
+        # Resources that must be globally unique (excluding shared key_vault)
+        unique_resources = ['function_app', 'storage_account', 'sql_server', 'redis_cache']
         
         for resource_type in unique_resources:
             name1 = self.generate_resource_name(resource_type, project, environment, region, '001')

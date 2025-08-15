@@ -1,0 +1,19 @@
+{
+  // Globs for first-party markdown files
+  "globs": [
+    "README.md",
+    "docs/**/*.md",
+    "infrastructure/**/*.md",
+    "frontend/README.md"
+  ],
+  // Paths to ignore explicitly
+  "ignores": [
+    ".markdownlintignore",
+    "node_modules/**",
+    "**/node_modules/**",
+    ".venv/**",
+    "venv/**",
+    "env/**",
+    "venv312/**"
+  ]
+}
