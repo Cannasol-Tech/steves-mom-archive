@@ -100,7 +100,7 @@ var naming = {
   sqlServer: 'sql-${projectName}-${environment}-${location}'
   sqlDatabase: 'sqldb-${projectName}-${environment}'
   redisCache: 'redis-${projectName}-${environment}-${location}'
-  keyVault: 'kv-${projectName}-${environment}-${location}'
+  keyVault: 'kv-cloud-agents'
   staticWebApp: 'swa-${projectName}-${environment}-${location}'
   appInsights: 'ai-${projectName}-${environment}-${location}'
   logAnalytics: 'law-${projectName}-${environment}-${location}'
@@ -140,18 +140,12 @@ module storage 'modules/storage.bicep' = {
 }
 
 /**
- * @brief Key Vault module deployment
- * @details Deploys Key Vault for secure configuration and secrets management
+ * @brief Key Vault reference (existing)
+ * @details References existing kv-cloud-agents Key Vault
  */
-module keyVault 'modules/keyvault.bicep' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   scope: resourceGroup
-  name: 'keyvault-deployment'
-  params: {
-    keyVaultName: naming.keyVault
-    location: location
-    tags: commonTags
-    environment: environment
-  }
+  name: naming.keyVault
 }
 
 /**
@@ -215,7 +209,7 @@ module functionApp 'modules/functions.bicep' = {
     location: location
     tags: commonTags
     storageAccountName: storage.outputs.storageAccountName
-    keyVaultName: keyVault.outputs.keyVaultName
+    keyVaultName: keyVault.name
     appInsightsInstrumentationKey: enableMonitoring ? monitoring.outputs.appInsightsInstrumentationKey : ''
     environment: environment
   }
@@ -270,7 +264,7 @@ output storageAccountName string = storage.outputs.storageAccountName
  * @brief Key Vault name for secrets management
  */
 @description('Name of the Key Vault')
-output keyVaultName string = keyVault.outputs.keyVaultName
+output keyVaultName string = keyVault.name
 
 /**
  * @brief SQL Server name for database connection configuration

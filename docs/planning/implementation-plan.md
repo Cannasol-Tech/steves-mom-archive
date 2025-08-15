@@ -110,7 +110,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.3.3** [x] Configure app settings from Key Vault using managed identity ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.4** [x] Set up connection strings and environment variables ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:30-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.5** [x] Configure CORS and authentication settings ✅ **[COMPLETED: cascade-01 @2025-08-15T07:04:00-04:00] [feature/azure-functions-consumption-plan]**
-- **1.3.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
+- **1.3.T** [x] Tests — unit, integration, acceptance for infra setup ✅ **[COMPLETED: cascade-01 @2025-08-15T07:13:00-04:00] [feature/azure-functions-consumption-plan]** (est: 0.25d)
 - **1.3.C** [ ] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push`
 
 #### 1.4: Repository and development environment [ ] (est: 0.25d)

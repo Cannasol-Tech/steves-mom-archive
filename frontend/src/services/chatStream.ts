@@ -4,7 +4,7 @@ export interface StartStreamParams {
   temperature?: number;
   max_tokens?: number;
   onChunk: (text: string) => void;
-  onDone: () => void;
+  onDone: (reasoning?: string) => void;
   onError: (err: Error) => void;
 }
 
@@ -12,7 +12,7 @@ export interface StreamHandle {
   cancel: () => void;
 }
 
-// Basic implementation using fetch streaming (ReadableStream). Tests will mock this module.
+// Handle non-streaming JSON response from backend
 export function startStream(params: StartStreamParams): StreamHandle {
   const controller = new AbortController();
   const apiBase = (process as any).env?.REACT_APP_API_BASE as string | undefined;
@@ -28,33 +28,28 @@ export function startStream(params: StartStreamParams): StreamHandle {
           model: params.model,
           temperature: params.temperature ?? 0.2,
           max_tokens: params.max_tokens ?? 512,
-          stream: true,
         }),
         signal: controller.signal,
       });
 
-      if (!res.ok || !res.body) {
+      if (!res.ok) {
         const txt = await res.text().catch(() => '');
         throw new Error(`API ${res.status}: ${txt}`);
       }
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        // Assuming server sends raw text chunks or "data: ..." lines
-        // Split by newlines and parse SSE-like payloads
-        const lines = chunk.split(/\r?\n/);
-        for (const line of lines) {
-          if (!line) continue;
-          const s = line.startsWith('data:') ? line.slice(5).trim() : line;
-          if (s === '[DONE]') continue;
-          params.onChunk(s);
-        }
+      // Parse JSON response from backend
+      const data = await res.json();
+      
+      // Extract message content and reasoning
+      const messageContent = data.message?.content || '';
+      const reasoningContent = data.reasoning_content || '';
+      
+      // Only send content if it's not empty or "(no content)"
+      if (messageContent && messageContent.trim() !== '(no content)') {
+        params.onChunk(messageContent);
       }
-      params.onDone();
+      
+      params.onDone(reasoningContent);
     } catch (e: any) {
       if (controller.signal.aborted) return; // cancelled, ignore error callback
       params.onError(e instanceof Error ? e : new Error(String(e)));

@@ -73,11 +73,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Messages */}
       <div className="flex-1 min-h-0 h-[70vh] overflow-hidden">
         <MessageList messages={messages} isLoading={isLoading} reasoningText={reasoningText} />
-        {streamingActive && typeof streamingContent === 'string' && streamingContent.length > 0 && (
+        {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
           <div className="px-4 sm:px-6 py-2">
             <div className="mx-auto max-w-3xl">
               <StreamRenderer
-                content={streamingContent}
+                content={streamingContent || ''}
                 isStreaming={!!streamingActive}
                 onRetry={onRetryStream || (() => {})}
                 onCancel={onCancelStream || (() => {})}

@@ -1,6 +1,7 @@
 /**
  * @file sql.bicep
  * @brief Azure SQL Server + Database (Basic SKU for lowest cost)
+ * @author cascade-01
  */
 
 param sqlServerName string
@@ -21,6 +22,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
     administratorLoginPassword: adminPassword
     version: '12.0'
     publicNetworkAccess: 'Enabled'
+    minimalTlsVersion: '1.2'
   }
 }
 

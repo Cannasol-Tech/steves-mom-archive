@@ -2,39 +2,40 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import ChatPage from '../ChatPage';
 
-// We will TDD a socket client living at src/services/socketClient.ts
-// The mock below simulates a connection and lets tests emit events
-
+// Local type for handler signatures
 type Handlers = {
   onMessage: (text: string) => void;
   onError: (err: Error) => void;
   onClose: () => void;
 };
 
-let lastHandlers: Handlers | null = null;
-let isConnected = false;
-
-jest.mock('../../services/socketClient', () => ({
-  connectLiveUpdates: (handlers: Handlers) => {
-    lastHandlers = handlers;
-    isConnected = true;
-    return {
-      disconnect: () => {
+// IMPORTANT: Keep mock state INSIDE the mock factory (mocks are hoisted)
+jest.mock('../../services/socketClient', () => {
+  let lastHandlers: Handlers | null = null;
+  let isConnected = false;
+  return {
+    connectLiveUpdates: (handlers: Handlers) => {
+      lastHandlers = handlers;
+      isConnected = true;
+      return {
+        disconnect: () => {
+          isConnected = false;
+          lastHandlers?.onClose();
+        },
+      } as any;
+    },
+    __testing__: {
+      getConnected: () => isConnected,
+      emitMessage: (text: string) => lastHandlers?.onMessage(text),
+      emitError: (err: Error) => lastHandlers?.onError(err),
+      emitClose: () => lastHandlers?.onClose(),
+      reset: () => {
+        lastHandlers = null;
         isConnected = false;
       },
-    } as any;
-  },
-  __testing__: {
-    getConnected: () => isConnected,
-    emitMessage: (text: string) => lastHandlers?.onMessage(text),
-    emitError: (err: Error) => lastHandlers?.onError(err),
-    emitClose: () => lastHandlers?.onClose(),
-    reset: () => {
-      lastHandlers = null;
-      isConnected = false;
     },
-  },
-}));
+  };
+});
 
 // Access our test helpers
 const socketMock = require('../../services/socketClient').__testing__ as {
@@ -79,10 +80,7 @@ describe('ChatPage live updates wiring', () => {
       socketMock.emitError(error);
     });
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole('alert', { name: '' }) || screen.getByText(/Live updates error:/i)
-      ).toBeTruthy()
-    );
+    // Prefer findByText to avoid race conditions
+    expect(await screen.findByText(/Live updates error:/i)).toBeInTheDocument();
   });
 });

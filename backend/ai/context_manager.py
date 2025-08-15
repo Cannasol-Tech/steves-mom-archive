@@ -350,7 +350,10 @@ class ContextManager:
         session = self.sessions[session_id]
         total_tokens = self._estimate_tokens(session.messages)
         
-        if total_tokens > self.summarization_threshold:
+        # Summarize if we exceed threshold, have enough messages, and haven't summarized recently
+        if (total_tokens > self.summarization_threshold and 
+            len(session.messages) > 10 and
+            len(session.messages) % 10 == 0):  # Only summarize at intervals
             await self._summarize_conversation(session_id)
     
     async def _summarize_conversation(self, session_id: str) -> None:
@@ -360,7 +363,7 @@ class ContextManager:
         session = self.sessions[session_id]
         
         # Simple summarization: keep recent messages, summarize older ones
-        if len(session.messages) > 20:
+        if len(session.messages) > 10:
             # Keep last 10 messages
             recent_messages = session.messages[-10:]
             

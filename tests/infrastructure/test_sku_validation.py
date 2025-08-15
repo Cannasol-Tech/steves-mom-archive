@@ -31,7 +31,7 @@ class TestSKUValidation:
                 'alternative_sku': 'FC1',  # Flex Consumption
                 'allowed_skus': ['Y1', 'FC1'],
                 'cost_tier': 'consumption',
-                'max_monthly_cost': 50
+                'max_monthly_cost': 0
             },
             'sql_database': {
                 'mvp_sku': 'Basic',
@@ -50,7 +50,7 @@ class TestSKUValidation:
                 'alternative_skus': ['Standard_C0', 'Standard_C1'],
                 'allowed_skus': ['Basic_C0', 'Standard_C0', 'Standard_C1'],
                 'cost_tier': 'basic',
-                'max_monthly_cost': 62,
+                'max_monthly_cost': 20,
                 'memory_mb': {
                     'Basic_C0': 250,
                     'Standard_C0': 250,

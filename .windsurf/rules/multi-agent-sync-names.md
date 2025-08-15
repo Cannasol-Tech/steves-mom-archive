@@ -1,0 +1,7 @@
+---
+trigger: model_decision
+description: A rule for remembering your Agent Name while working in the multi-agent-sync format using the docs/multi-agent-sync.md file
+---
+
+1. IMPORTANT: PREFIX ALL PARAGRAPHS IN YOUR CONVERSATION WITH HUMAN WITH YOUR AGENT NAME in square brackets in LARGE HEADER FORMAT e.g. [cascade-01] or [cascade-02]
+2. ALL AGENTS USE A SHARED MEMORY SO DO NOT USE YOUR MEMORY TO REMEMBER YOUR NAME - RATHER, USE YOUR CHAT HISTORY BY LOOKING BACK AT THE HEADER FOR YOUR PREVIOUS MESSAGE!

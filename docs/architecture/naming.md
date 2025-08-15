@@ -65,13 +65,13 @@ This document defines the standardized naming conventions for all Azure resource
 
 ### 3. Storage Accounts
 
-**Pattern**: `st{project}{environment}{region}{random}`
+**Pattern**: `st{project}{env}{region}{random}`
 
 **Examples**:
 
-- `ststevesmomdeveastus001`
-- `ststevesmomstgeastus001`
-- `ststevesmomprodeastus001`
+- `ststevesmomdeveus001`
+- `ststevesmomstgeus001`
+- `ststevesmomprdeus001`
 
 **Constraints**:
 

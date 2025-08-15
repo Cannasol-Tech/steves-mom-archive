@@ -5,9 +5,13 @@
  * Note: Cost-optimized SKU label: Basic_C0
  */
 
+@description('Name of the Redis cache instance')
 param redisCacheName string
+@description('Azure region for deployment')
 param location string
+@description('Resource tags for organization')
 param tags object
+@description('Environment (dev, staging, prod)')
 param environment string
 
 resource redis 'Microsoft.Cache/Redis@2023-08-01' = {

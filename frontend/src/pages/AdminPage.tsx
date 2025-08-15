@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+interface FeatureToggles {
+  nlsql: boolean;
+  email: boolean;
+  documents: boolean;
+}
 
 const AdminPage: React.FC = () => {
+  const [features, setFeatures] = useState<FeatureToggles>({
+    nlsql: true,
+    email: true,
+    documents: true,
+  });
+
+  const handleToggle = (feature: keyof FeatureToggles) => {
+    setFeatures(prev => ({
+      ...prev,
+      [feature]: !prev[feature]
+    }));
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
@@ -23,7 +42,9 @@ const AdminPage: React.FC = () => {
                   name="nlsql-toggle"
                   id="nlsql-toggle"
                   className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                  defaultChecked
+                  checked={features.nlsql}
+                  onChange={() => handleToggle('nlsql')}
+                  aria-label="NL→SQL Queries"
                 />
                 <label
                   htmlFor="nlsql-toggle"
@@ -39,7 +60,9 @@ const AdminPage: React.FC = () => {
                   name="email-toggle"
                   id="email-toggle"
                   className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                  defaultChecked
+                  checked={features.email}
+                  onChange={() => handleToggle('email')}
+                  aria-label="Email Integration"
                 />
                 <label
                   htmlFor="email-toggle"
@@ -55,7 +78,9 @@ const AdminPage: React.FC = () => {
                   name="docs-toggle"
                   id="docs-toggle"
                   className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                  defaultChecked
+                  checked={features.documents}
+                  onChange={() => handleToggle('documents')}
+                  aria-label="Document Generation"
                 />
                 <label
                   htmlFor="docs-toggle"

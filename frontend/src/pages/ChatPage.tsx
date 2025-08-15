@@ -93,16 +93,20 @@ const ChatPage: React.FC = () => {
       onChunk: (t) => {
         setStreamingContent(prev => prev + t);
       },
-      onDone: () => {
-        setMessages(prev => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            content: (streamingContentRef.current || '(no content)') as string,
-            role: 'assistant',
-            timestamp: new Date()
-          }
-        ]);
+      onDone: (reasoning?: string) => {
+        const content = streamingContentRef.current;
+        if (content && content.trim() && content.trim() !== '(no content)') {
+          setMessages(prev => [
+            ...prev,
+            {
+              id: (Date.now() + 1).toString(),
+              content: content,
+              role: 'assistant',
+              timestamp: new Date(),
+              reasoning: reasoning || undefined
+            }
+          ]);
+        }
         cleanupStream();
       },
       onError: (err) => {
