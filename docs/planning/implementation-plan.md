@@ -109,17 +109,16 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 #### 1.3: Azure Functions setup [ ] (est: 0.5d)
 
-- **1.3.1** [x] Create Functions Consumption plan ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.2** [x] Create Function App with Python runtime ✅ **[COMPLETED: cascade-01 @2025-08-15T07:02:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.3** [x] Configure app settings from Key Vault using managed identity ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.4** [x] Set up connection strings and environment variables ✅ **[COMPLETED: cascade-01 @2025-08-15T07:03:30-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.5** [x] Configure CORS and authentication settings ✅ **[COMPLETED: cascade-01 @2025-08-15T07:04:00-04:00] [feature/azure-functions-consumption-plan]**
 - **1.3.T** [x] Tests — unit, integration, acceptance for infra setup ✅ **[COMPLETED: cascade-01 @2025-08-15T07:13:00-04:00] [feature/azure-functions-consumption-plan]** (est: 0.25d)
-- **1.3.C** [ ] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push` **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev] [CURRENT-TASK]**
+  - **1.3.C** [x] Commit and push your work: `git add -A && git commit -m "1.3: progress" && git push` ✅ **[COMPLETED: cascade-01 @2025-08-15T17:00:00-04:00] [agent-dev]**
 
 #### 1.4: Repository and development environment [ ] (est: 0.25d)
 
-- **1.4.1** [ ] Set up repository structure and branching strategy **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev]**
+- **1.4.1** [ ] Set up repository structure and branching strategy **[CHECKED OUT: cascade-01 @2025-08-15T17:00:00-04:00] [agent-dev] [CURRENT-TASK]**
 - **1.4.2** [ ] Configure development environment and dependencies
 - **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
 - **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
@@ -246,7 +245,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
       3.1.C [ ] Commit and push your work: `git add -A && git commit -m "3.1: progress" && git push`
       3.1.T [ ] Tests — unit, integration, acceptance for UI shell/routing [ ] (est: 0.1d)
-  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T15:31:52-04:00] [feature/chat-input-messages] [CURRENT-TASK]**
+  #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T16:47:12-04:00] [feature/chat-input-messages] [CURRENT-TASK]**
       3.2.1 [ ] Implement `ChatInput` component
         - Autosize textarea; character limit warning; disabled during stream
         - Keyboard: Enter=send, Shift+Enter=newline, Cmd/Ctrl+Enter=send
@@ -259,6 +258,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.2.4 [ ] Accessibility & UX polish
         - Focus management after send/cancel; aria-live region for streaming
         - Loading/empty states and error toasts integration
+      3.2.P [ ] Progress — Subtasks/tests expanded; ready to implement InputArea autosize/limits and MessageList status/timestamps. **[cascade-02 @2025-08-15T16:47:12-04:00]**
       3.2.C [ ] Commit and push your work: `git add -A && git commit -m "3.2: progress" && git push`
       3.2.T [ ] Tests — unit, integration for chat input/message list [ ] (est: 0.2d)
         - RTL unit tests: input behaviors, keyboard shortcuts, disabled/limits

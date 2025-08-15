@@ -37,8 +37,7 @@ List any unclaimed tasks here as they are identified.
 | 2.1 | SWA GitHub Actions deploy | cascade-69 | feature/swa-gha-deploy | 2025-08-15T08:25:01-04:00 | 1.5 complete | Workflow file added; awaiting token and CI run |
 | 3.8 | Design system tokens + theming (light/dark) | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.1 complete | Establish Tailwind tokens; brand integration; theming switch |
 | 3.9 | Chat UX polish: keyboard shortcuts, input affordances | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.2/3.3 complete | Cmd/Ctrl+Enter send; Esc cancel; aria-live improvements |
-| 1.3.C | Commit/push for Section 1.3 (Functions setup) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.3 complete | Move CURRENT-TASK to commit step and push updates |
-| 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | none | Align structure with standardized Make targets |
+| 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T16:48:21-04:00 | none | CURRENT-TASK: Align structure with standardized Make targets |
 | 1.5.C | Commit/push for Section 1.5 (SWA config complete) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.5 complete | Prepare final commit message and push |
 
 ## Completed Tasks
@@ -50,6 +49,7 @@ List any unclaimed tasks here as they are identified.
 | 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | ✅ |
 | 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
 | 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
+| 1.3.C | cascade-01 | agent-dev | 10min | docs/planning/implementation-plan.md; docs/planning/multi-agent-sync.md | ✅ |
 | 5.4 | cascade-01 | feature/approve-reject-ui | 40min | frontend/src/pages/TaskDetailPage.tsx; frontend/src/pages/__tests__/TaskApprovalFlow.test.tsx; frontend/src/components/Character/StevesMomCharacter.tsx | ⏳ |
 | 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
@@ -108,5 +108,6 @@ List any unclaimed tasks here as they are identified.
 | 2025-01-15T11:00:00-05:00 | cascade-02 | ALL | Completed task 3.1: UI shell with React/TS/Tailwind. Frontend foundation ready for Phase 3.2+ | Review frontend structure |
 | 2025-08-15T06:30:00-04:00 | cascade-03 | ALL | Completed TDD for 4.2.1: routing policy schema tests added (8/8 passing). Moving to 4.2.2 router fallback logic. | None |
 | 2025-08-15T06:20:15-04:00 | cascade-03 | ALL | Completed 4.2.2: Implemented fallback/retry and circuit breaker behavior for ModelRouter; added unit tests (3/3 passing). | None |
+| 2025-08-15T16:47:12-04:00 | cascade-02 | ALL | Updated implementation-plan 3.2 with progress note and refreshed checkout; proceeding to implement InputArea autosize/limits and MessageList timestamps/status. | None |
 | 2025-08-15T15:31:52-04:00 | cascade-02 | ALL | Resumed 3.2; expanded subtasks/tests in implementation-plan. Proceeding with ChatInput/MessageList wiring and a11y polish. | None |
 | 2025-08-15T15:13:40-04:00 | cascade-UI | ALL | Checking out 3.8 (Design system tokens + theming) and 3.9 (Chat UX polish). Will align with Cannasol branding and a11y best practices. | None |
