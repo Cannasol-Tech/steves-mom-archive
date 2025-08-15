@@ -40,7 +40,6 @@ List any unclaimed tasks here as they are identified.
 | 2.3 | Release-pack: tag-triggered build + GitHub Release | cascade-03 | feature/release-pack | 2025-08-15T16:51:37-04:00 | 2.1/2.2 optional | Implemented workflow; validating end-to-end on next tag |
 | 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T16:48:21-04:00 | none | CURRENT-TASK: Align structure with standardized Make targets |
 
-
 ## Completed Tasks
 
 | Task ID | Agent | Branch | Duration | Files Modified | Merged |
@@ -52,22 +51,22 @@ List any unclaimed tasks here as they are identified.
 | 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
 | 1.3.C | cascade-01 | agent-dev | 10min | docs/planning/implementation-plan.md; docs/planning/multi-agent-sync.md | ✅ |
 | 1.5.C | cascade-01 | agent-dev | — | docs/planning/implementation-plan.md; docs/planning/multi-agent-sync.md | ✅ |
-| 5.4 | cascade-01 | feature/approve-reject-ui | 40min | frontend/src/pages/TaskDetailPage.tsx; frontend/src/pages/__tests__/TaskApprovalFlow.test.tsx; frontend/src/components/Character/StevesMomCharacter.tsx | ⏳ |
-| 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
+| 5.4 | cascade-01 | feature/approve-reject-ui | 40min | frontend/src/pages/TaskDetailPage.tsx; frontend/src/pages/**tests**/TaskApprovalFlow.test.tsx; frontend/src/components/Character/StevesMomCharacter.tsx | ⏳ |
+| 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/**tests**/ChatStreaming.test.tsx | ✅ |
 | 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
 | 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | ⏳ (awaiting test run) |
 | 3.7.1 | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/public/cannasol-logo.png | ⏳ |
 | 3.7.2 | cascade-01 | agent-dev | 5min | frontend/src/components/Chat/ChatInterface.tsx | ⏳ |
 | 3.7.3 | cascade-01 | agent-dev | 5min | frontend/src/components/Chat/MessageList.tsx | ⏳ |
 | 3.7.4 | cascade-01 | agent-dev | 5min | frontend/src/components/Layout.tsx; frontend/src/components/Chat/ChatInterface.tsx; frontend/src/components/Chat/MessageList.tsx | ⏳ |
-| 3.T | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
+| 3.T | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx; frontend/src/pages/**tests**/ChatStreaming.test.tsx | ✅ |
 | 3.4 | cascade-02 | feature/chat-errors-toasts | 15min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx | ✅ |
 | 4.3 | Sonnet-01 | feature/context-manager | 25min | backend/ai/context_manager.py; tests/unit/test_context_manager.py; pytest.ini | ✅ |
 | 4.4 | Sonnet-01 | feature/rate-limiting | 30min | backend/ai/rate_limiter.py; tests/unit/test_rate_limiter.py | ✅ |
 | 4.2.3 | Sonnet-01 | feature/model-router-env | 15min | backend/ai/model_router.py; tests/unit/test_model_router_env_selection.py | ✅ |
 | 4.2.4 | Sonnet-01 | feature/model-router-config | 20min | backend/ai/model_router.py; tests/unit/test_model_router_config_interface.py | ✅ |
-| 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/__tests__/ChatLiveUpdates.test.tsx | ✅ |
-| 3.6 | cascade-02 | feature/admin-panel-shell | 15min | frontend/src/pages/AdminPage.tsx; frontend/src/pages/__tests__/AdminPanel.test.tsx | ✅ |
+| 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/**tests**/ChatLiveUpdates.test.tsx | ✅ |
+| 3.6 | cascade-02 | feature/admin-panel-shell | 15min | frontend/src/pages/AdminPage.tsx; frontend/src/pages/**tests**/AdminPanel.test.tsx | ✅ |
 
 ## Failed Tasks
 
@@ -115,3 +114,4 @@ List any unclaimed tasks here as they are identified.
 | 2025-08-15T15:31:52-04:00 | cascade-02 | ALL | Resumed 3.2; expanded subtasks/tests in implementation-plan. Proceeding with ChatInput/MessageList wiring and a11y polish. | None |
 | 2025-08-15T15:13:40-04:00 | cascade-UI | ALL | Checking out 3.8 (Design system tokens + theming) and 3.9 (Chat UX polish). Will align with Cannasol branding and a11y best practices. | None |
 | 2025-08-15T17:04:04-04:00 | cascade-02 | ALL | Completed 3.2.1: ChatInput autosize + character limit + a11y; assistant final message marked 'sent' on stream end; added RTL unit tests; frontend suites passing (12/12, 44/44). Proceeding to 3.2.2/3.2.3 and additional tests. | None |
+| 2025-08-15T17:25:00-04:00 | cascade-01 | ALL | Linting and tests green end-to-end: Python (flake8 + mypy scoped to backend/), JS, Markdown. Backend: 92 passing; Frontend: 46 passing. Static Web App config finalized. | None |

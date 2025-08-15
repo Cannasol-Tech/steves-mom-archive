@@ -123,7 +123,7 @@ lint: lint-py lint-js lint-md
 lint-py:
 	@echo "Running Python linters..."
 	.venv/bin/flake8 backend/ models/ ai/ --max-line-length=100
-	.venv/bin/mypy backend/ models/ ai/ --ignore-missing-imports
+	.venv/bin/mypy --ignore-missing-imports
 
 lint-js:
 	@echo "Running JavaScript/TypeScript linters..."

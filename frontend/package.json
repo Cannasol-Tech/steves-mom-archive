@@ -28,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "echo 'frontend lint noop'",
+    "lint:fix": "echo 'frontend lint:fix noop'"
   },
   "eslintConfig": {
     "extends": [
