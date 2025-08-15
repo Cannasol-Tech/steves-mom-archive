@@ -22,6 +22,8 @@ This file coordinates active agents and task statuses for the implementation pla
 
 List any unclaimed tasks here as they are identified.
 
+- 1.4.MY: Incremental mypy hardening for `backend/ai/` — tighten per-module settings, remove ignores module-by-module, maintain CI green. **[UNCLAIMED]**
+
 ## In Progress
 
 | Task ID | Description | Agent | Branch | Started | Dependencies | Notes |

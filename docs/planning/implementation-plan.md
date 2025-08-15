@@ -173,6 +173,27 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.4.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4: progress" && git push`
 - **1.4.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
+#### 1.4.MY: Incremental mypy hardening for backend/ai/ [ ] (est: 0.25d)
+
+- Goals: Re-enable strict typing gradually for `backend/ai/` without breaking CI.
+- Approach: tighten per-module settings and address errors iteratively.
+- Steps:
+  - 1.4.MY.1 [ ] Enable `warn-unused-ignores`, `warn-redundant-casts` globally
+  - 1.4.MY.2 [ ] For `backend/ai/base_provider.py`: set `disallow_untyped_defs = True`; fix signatures
+  - 1.4.MY.3 [ ] For `backend/ai/config_manager.py`: add types for config shapes; enable `no_implicit_optional = True`
+  - 1.4.MY.4 [ ] For `backend/ai/model_router.py`: add explicit `TypedDict`/`Protocol` for policies
+  - 1.4.MY.5 [ ] For each provider (`grok_provider.py`, `openai_provider.py`, `claude_provider.py`, `local_provider.py`): add precise request/response DTOs
+  - 1.4.MY.6 [ ] Remove `ignore_errors` for `backend/ai.*` package in `mypy.ini`, module-by-module
+- Deliverables:
+  - Updated `mypy.ini` with per-module overrides (dropping ignores as we fix types)
+  - Type annotations and DTOs added to targeted modules
+  - Tests passing (`make test`), mypy clean for modules in scope
+- DoD:
+  - mypy strict flags enabled for 3+ ai modules; 0 mypy errors for those modules
+  - Coverage remains >85%; no regression in tests
+- **1.4.MY.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4.MY: mypy hardening progress" && git push`
+- **1.4.MY.T** [ ] Tests — unit/integration on updated modules; mypy run clean [ ] (est: 0.1d)
+
 #### 1.5: Static Web App configuration [x] (est: 0.25d)
 
 - **1.5.1** [x] Create Azure Static Web App resource **[COMPLETED: cascade-01 @2025-08-15T07:20:30-04:00]**
