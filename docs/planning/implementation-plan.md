@@ -201,14 +201,15 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.4: Error/loading states, toasts [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:50:00-04:00] [feature/chat-errors-toasts]**
       3.4.C [ ] Commit and push your work: `git add -A && git commit -m "3.4: progress" && git push`
       3.4.T [x] Tests — unit for error boundaries/loading/toasts ✅ **[COMPLETED: cascade-02 @2025-08-15T06:50:00-04:00]** (est: 0.15d)
-  #3.5: Socket/client wiring for live updates [ ] (est: 0.25d)
-      3.5.C [ ] Commit and push your work: `git add -A && git commit -m "3.5: progress" && git push`
-      3.5.T [ ] Tests — integration for socket/client live updates [ ] (est: 0.2d)
+  #3.5: Socket/client wiring for live updates [ ] (est: 0.25d) **[CHECKED OUT: cascade-02 @2025-08-15T06:56:05-04:00] [feature/chat-sockets-live-updates] [CURRENT-TASK]**
+     3.5.C [ ] Commit and push your work: `git add -A && git commit -m "3.5: progress" && git push`
+     3.5.T [ ] Tests — integration for socket/client live updates [ ] (est: 0.2d)
   #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
       3.6.C [ ] Commit and push your work: `git add -A && git commit -m "3.6: progress" && git push`
       3.6.T [ ] Tests — unit for admin shell and toggles [ ] (est: 0.1d)
   #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
       3.7.1 [x] Add Cannasol logo to header/navigation bar **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00] [agent-dev]**
+{{ ... }}
       3.7.2 [x] Integrate logo in chat interface branding **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00]**
       3.7.3 [x] Add logo to loading states and splash screens **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00]**
       3.7.4 [x] Ensure responsive logo display across devices **[COMPLETED: cascade-01 @2025-08-15T06:18:23-04:00] [agent-dev]**

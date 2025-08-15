@@ -1,3 +1,4 @@
+🔒 EDITING: cascade-02 (2025-08-15T06:56:05-04:00)
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -31,6 +32,8 @@ List any unclaimed tasks here as they are identified.
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 | 4.3 | ContextManager.py (basic memory window) | Sonnet-01 | feature/context-manager | 2025-08-15T06:41:44-04:00 | 4.2 in progress | Design schema; implement sliding window + summarization |
 | 4.3 | ContextManager.py unit tests authored | Sonnet-01 | feature/context-manager | 2025-08-15T06:45:55-04:00 | 4.3 | Added tests at `tests/unit/test_context_manager.py` covering session lifecycle, truncation, summarization, cleanup, and session limits. Awaiting local pytest env setup to execute. |
+| 3.5 | Socket/client wiring for live updates | cascade-02 | feature/chat-sockets-live-updates | 2025-08-15T06:56:05-04:00 | 3.3 complete | Wire socket client; integration tests later in 3.5.T |
+| 4.2.3 | Env-based provider selection + default routing policy | cascade-69 | feature/model-router | 2025-08-15T06:56:39-04:00 | 4.2.2 complete | TDD: ProviderConfigManager/env and default policy from env |
 
 ## Completed Tasks
 
