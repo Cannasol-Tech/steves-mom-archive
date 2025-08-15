@@ -365,12 +365,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 5.2.4.4 [x] Verify pagination (skip/limit) works with filters ✅ **[COMPLETED: cascade @2024-07-29T14:20:00-04:00]**
       - 5.2.T [x] Tests — unit/integration for task CRUD ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]** (est: 0.2d)
       - 5.2.C [ ] Commit and push your work: `git add -A && git commit -m "5.2: progress" && git push`
-  #5.3: ApprovalHandler.py (approve/reject) [ ] (est: 0.5d) **[CHECKED OUT: cascade-01 @2025-08-15T08:11:00-04:00] [feature/approval-handler]**
-      - 5.3.1 [ ] Create approval workflow state machine
-      - 5.3.2 [ ] Implement approval/rejection logic with user context
-      - 5.3.3 [ ] Add approval notifications and status tracking
-      - 5.3.4 [ ] Create approval history and audit logging
-      - 5.3.T [ ] Tests — unit/integration for approval handling [ ] (est: 0.2d)
+  #5.3: ApprovalHandler.py (approve/reject) [x] (est: 0.5d) **[COMPLETED: cascade-01 @2025-08-15T08:11:00-04:00] [feature/approval-handler]**
+      - 5.3.1 [x] Create approval workflow state machine
+      - 5.3.2 [x] Implement approval/rejection logic with user context
+      - 5.3.3 [x] Add approval notifications and status tracking
+      - 5.3.4 [x] Create approval history and audit logging
+      - 5.3.T [x] Tests — unit/integration for approval handling (est: 0.2d)
       - 5.3.C [ ] Commit and push your work: `git add -A && git commit -m "5.3: progress" && git push`
   #5.4: UI approve/reject buttons + status updates [ ] (est: 0.5d)
       - 5.4.1 [ ] Design task approval interface with clear action buttons
