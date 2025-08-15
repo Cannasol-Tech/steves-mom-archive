@@ -91,7 +91,8 @@ const ChatPage: React.FC = () => {
         ]);
       },
       onError: (err) => {
-        setToastMessage(`Live updates error: ${err.message}`);
+        // Only set a live updates toast if no other toast is currently shown
+        setToastMessage(prev => prev ?? `Live updates error: ${err.message}`);
       },
       onClose: () => {
         // no-op for now; could update a connection status indicator

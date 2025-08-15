@@ -15,7 +15,19 @@ const TaskDetailPage: React.FC = () => {
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
         const response = await fetch(`${apiBaseUrl}/api/tasks/${taskId}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch task details');
+          if (response.status === 404) {
+            // Show not-found state instead of error
+            setTask(null);
+            setError(null);
+            return;
+          }
+          // Try to surface server-provided detail if present
+          let detail: string | undefined;
+          try {
+            const data = await response.json();
+            detail = data?.detail;
+          } catch {}
+          throw new Error(detail || 'Failed to fetch task details');
         }
         const data = await response.json();
         setTask(data);

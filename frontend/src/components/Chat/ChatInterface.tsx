@@ -54,15 +54,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 <div className="w-12 h-12 bg-gradient-to-br from-white/90 to-white/70 rounded-2xl flex items-center justify-center shadow-lg">
                   <img
                     src="/cannasol-logo.png"
-                    alt="AI Assistant"
-                    className="h-7 w-7 object-contain"
+                    alt="Cannasol Technologies"
+                    className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
                     onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-sm animate-pulse"></div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white drop-shadow-sm">Steve's Mom AI</h1>
+                <h1 className="text-xl font-bold text-white drop-shadow-sm">Chat with Steve's Mom AI</h1>
                 <p className="text-white/80 text-sm font-medium">Your intelligent business assistant</p>
               </div>
             </div>

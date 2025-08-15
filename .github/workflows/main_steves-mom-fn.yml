@@ -30,20 +30,26 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Create and start virtual environment
+      - name: Verify Python and tools
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          python --version
+          pip --version || true
+          which python || true
+          which pip || true
+          ls -la
 
       - name: Install dependencies
+        working-directory: backend
         run: |
-          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+          python --version
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No requirements.txt"; fi
 
       # Optional: Add step to run tests here
 
       - name: Zip backend for deployment (rooted at backend/)
+        working-directory: backend
         run: |
-          cd backend
+          ls -la
           zip -r ../backend.zip . \
             -x ".venv/*" \
                "**/__pycache__/*" \

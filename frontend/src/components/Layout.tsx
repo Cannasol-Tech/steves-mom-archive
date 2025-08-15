@@ -1,6 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
+import { ThemeProvider } from '../context/ThemeContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,6 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
+    <ThemeProvider>
     <div className="min-h-screen spatial-bg flex flex-col bg-secondary-50 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 transition-colors duration-300">
       {/* Header */}
       <header className="bg-white dark:bg-secondary-800 border-b border-gray-200 dark:border-secondary-700 h-16 flex items-center px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -145,6 +147,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </footer>
     </div>
+    </ThemeProvider>
   );
 };
 
