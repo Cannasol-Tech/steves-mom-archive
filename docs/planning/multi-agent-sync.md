@@ -2,6 +2,10 @@
 
 This file coordinates active agents and task statuses for the implementation plan.
 
+**IMPORTANT: Prefix EVERY commit message with your agent name in square brackets: [Agent-ID]**
+
+**IMPORTANT: Prefix EVERY message in chat with human with your agent name in square brackets: [AGENT-ID]**
+
 ## Active Agents
 
 | Agent ID | Since | Notes |
@@ -9,8 +13,10 @@ This file coordinates active agents and task statuses for the implementation pla
 | augment-01 | 2025-08-13T19:15:00-04:00 | Augment Agent - AI/ML specialist, LangChain expert |
 | cascade-01 | 2025-08-13T16:55:16-04:00 | Infrastructure and Azure specialist |
 | cascade-02 | 2025-01-15T10:30:00-05:00 | Frontend React/TypeScript specialist |
+| cascade-03 | 2025-08-15T05:57:58-04:00 | Backend model router and context management |
 
 ## Available Tasks
+
 List any unclaimed tasks here as they are identified.
 
 ## In Progress
@@ -19,18 +25,22 @@ List any unclaimed tasks here as they are identified.
 |---------|-------------|-------|--------|---------|--------------|-------|
 | 3.2 | Chat input, message list, timestamps | cascade-02 | feature/chat-input-messages | 2025-01-15T11:15:00-05:00 | 3.1 complete | Enhancing chat interface with better UX |
 | 1.IaC-SEC-COST | IaC compliance: security soft-delete, Redis SKU metadata, naming | cascade-01 | fix/iac-security-cost | 2025-08-14T00:43:00-04:00 | 1.1/1.2 complete | Key Vault soft delete added; Redis Basic_C0 annotation added; storage constraints verified. Tests pending: pytest not installed locally. |
+| 3.3 | Streaming display + retry/cancel | cascade-02 | feature/chat-streaming | 2025-08-15T05:47:40-04:00 | 3.2 in progress | TDD first: add tests for stream chunks and retry/cancel |
+| 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
+| 3.7.1 | Cannasol logo in header/nav | cascade-01 | feature/ui-branding-logo | 2025-08-15T05:55:22-04:00 | 3.1 complete | Adding logo to app shell and chat header |
+| 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 
 ## Completed Tasks
 
 | Task ID | Agent | Branch | Duration | Files Modified | Merged |
 |---------|-------|--------|----------|----------------|--------|
-| 4.1 | augment-01 | feature/ai-provider-clients | 45min | 7 files | ✅ |
-| 4.0 | augment-01 | feature/ai-agent-langchain | 1h | 6 files | ✅ |
-| 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | ✅ |
-| 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
-| 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
-| 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
-| 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | ⏳ (awaiting test run) |
+| 4.1 | augment-01 | feature/ai-provider-clients | 45min | 7 files | |
+| 4.0 | augment-01 | feature/ai-agent-langchain | 1h | 6 files | |
+| 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | |
+| 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | |
+| 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | |
+| 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | (awaiting test run) |
+| 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | (awaiting test run) |
 
 ## Failed Tasks
 
@@ -41,11 +51,11 @@ List any unclaimed tasks here as they are identified.
 
 | Task ID | Agent | Unit Tests | Integration Tests | Acceptance Tests | Coverage |
 |---------|-------|------------|-------------------|------------------|----------|
-| 4.1 | augment-01 | 8/8 ✅ | 3/3 ✅ | 1/1 ✅ | 90% |
-| 4.0 | augment-01 | 22/22 ✅ | 6/11 ⚠️ | 1/1 ✅ | 85% |
-| 1.2 | cascade-01 | 6/6 ✅ | 6/6 ✅ | 1/1 ✅ | 100% |
-| 1.1 | cascade-01 | 27/27 ✅ | 12/12 ✅ | 1/1 ✅ | 95% |
-| 3.1 | cascade-02 | 5/5 ✅ | N/A | N/A | 100% |
+| 4.1 | augment-01 | 8/8 | 3/3 | 1/1 | 90% |
+| 4.0 | augment-01 | 22/22 | 6/11 | 1/1 | 85% |
+| 1.2 | cascade-01 | 6/6 | 6/6 | 1/1 | 100% |
+| 1.1 | cascade-01 | 27/27 | 12/12 | 1/1 | 95% |
+| 3.1 | cascade-02 | 5/5 | N/A | N/A | 100% |
 | 1.IaC-SEC-COST | cascade-01 | N/A | N/A | N/A | Blocked: pytest not found (env setup needed) |
 
 ## Communication Log

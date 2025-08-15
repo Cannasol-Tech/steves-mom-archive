@@ -62,7 +62,15 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, reasonin
           <div className="flex items-start justify-start">
             <div className="mr-3 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">AI</div>
             <div className="rounded-2xl px-4 py-3 shadow-sm bg-white border border-emerald-100 text-gray-900 max-w-[80%] w-full">
-              <div className="text-xs text-gray-500 mb-2">Steve's Mom AI • Thinking…</div>
+              <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                <img
+                  src="/cannasol-logo.png"
+                  alt="Cannasol"
+                  className="h-4 w-4 object-contain hidden sm:block"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
+                <span>Steve's Mom AI • Thinking…</span>
+              </div>
               <div className="flex items-center space-x-2 text-gray-500">
                 <span className="inline-block h-2 w-2 rounded-full bg-blue-400 animate-pulse"></span>
                 <span>Thinking…</span>

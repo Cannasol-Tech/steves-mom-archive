@@ -36,12 +36,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## Multi-Agent Coordination (from `.github/multi-agent-collaboration.prompt.md`)
 
-- **Active Agent:** Cascade-69 (registered 2025-08-13T21:54:57-04:00)
+- **Active Agent:** cascade-01 (registered 2025-08-13T16:55:16-04:00)
 
 - **Checkout format:**
 
 ```markdown
-- [ ] Task description **[CHECKED OUT: Cascade-69 @YYYY-MM-DDThh:mm:ss-04:00] [feature/descriptive-branch]**
+- [ ] Task description **[CHECKED OUT: cascade-01 @YYYY-MM-DDThh:mm:ss-04:00] [feature/descriptive-branch]**
 ```
 
 ### Test Results (append entries as tasks complete)
@@ -83,7 +83,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       1.2.4 [x] Set up Blob Storage with containers and access policies
       1.2.5 [x] Create Key Vault with access policies and managed identity
   #1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
-      1.3.1 [ ] Create Functions Consumption plan **[CHECKED OUT: Cascade-69 @2025-08-13T21:54:57-04:00] [feature/azure-functions-consumption-plan]**
+      1.3.1 [ ] Create Functions Consumption plan **[CHECKED OUT: cascade-01 @2025-08-15T03:41:29-04:00] [feature/azure-functions-consumption-plan]**
       1.3.2 [ ] Create Function App with Python runtime
       1.3.3 [ ] Configure app settings from Key Vault using managed identity
       1.3.4 [ ] Set up connection strings and environment variables
@@ -128,12 +128,17 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
   #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-01-15T11:15:00-05:00] [feature/chat-input-messages]**
-  #3.3: Streaming display + retry/cancel [ ] (est: 0.5d)
+  #3.3: Streaming display + retry/cancel [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T05:47:40-04:00] [feature/chat-streaming] [CURRENT-TASK]**
+      3.3.1 [ ] Write unit tests: progressive chunk rendering (stream appends) **[CHECKED OUT: cascade-02 @2025-08-15T05:57:42-04:00]**
+      3.3.2 [ ] Write unit tests: Retry replays last prompt; Cancel aborts stream and preserves partial **[CHECKED OUT: cascade-02 @2025-08-15T05:57:42-04:00]**
+      3.3.3 [ ] Implement StreamRenderer component with Retry/Cancel controls **[CHECKED OUT: cascade-02 @2025-08-15T05:57:42-04:00]**
+      3.3.4 [ ] Client stream handler: fetch/SSE piping to state (mock backend if needed) **[CHECKED OUT: cascade-02 @2025-08-15T05:57:42-04:00]**
+      3.3.T [ ] All 3.3 tests passing (unit/integration) — update sync and test results tables **[CHECKED OUT: cascade-02 @2025-08-15T05:57:42-04:00]**
   #3.4: Error/loading states, toasts [ ] (est: 0.25d)
   #3.5: Socket/client wiring for live updates [ ] (est: 0.25d)
   #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
   #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
-      3.7.1 [ ] Add Cannasol logo to header/navigation bar
+      3.7.1 [ ] Add Cannasol logo to header/navigation bar **[CHECKED OUT: cascade-01 @2025-08-15T05:55:22-04:00] [feature/ui-branding-logo]**
       3.7.2 [ ] Integrate logo in chat interface branding
       3.7.3 [ ] Add logo to loading states and splash screens
       3.7.4 [ ] Ensure responsive logo display across devices
@@ -146,8 +151,8 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       4.1.2 [ ] Implement GROKProvider with API client and authentication
       4.1.3 [ ] Create placeholder providers for OpenAI, Claude, and local models
       4.1.4 [ ] Add provider configuration and credential management
-  #4.2: ModelRouter.py (route by policy/env flag) [ ] (est: 0.25d)
-      4.2.1 [ ] Design routing policy schema (cost, latency, capability-based)
+  #4.2: ModelRouter.py (route by policy/env flag) [ ] (est: 0.25d) **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00] [feature/model-router]**
+      4.2.1 [ ] Design routing policy schema (cost, latency, capability-based) [CURRENT-TASK] **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00]**
       4.2.2 [ ] Implement router logic with fallback mechanisms
       4.2.3 [ ] Add environment-based provider selection
       4.2.4 [ ] Create configuration interface for routing rules
