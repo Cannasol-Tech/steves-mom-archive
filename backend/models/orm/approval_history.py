@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 from .base import Base
-from ..models.task_models import TaskStatus
+from ..task_models import TaskStatus
 
 class ApprovalHistory(Base):
     """SQLAlchemy model for the approval_history table."""

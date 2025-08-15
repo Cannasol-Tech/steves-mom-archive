@@ -2,11 +2,10 @@ import uuid
 from sqlalchemy import Column, String, DateTime, Enum as SQLAlchemyEnum
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base
+from .base import Base
 from datetime import datetime, timezone
 from enum import Enum
 
-Base = declarative_base()
 
 class TaskStatus(str, Enum):
     PENDING = "pending"
