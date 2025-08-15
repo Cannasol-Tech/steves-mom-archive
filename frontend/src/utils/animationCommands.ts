@@ -54,7 +54,10 @@ export function executeAnimation(cmd: AnimationCommand): void {
 function normalize(obj: any): AnimationCommand {
   const out: AnimationCommand = {};
   if (obj.action) out.action = String(obj.action) as AnimationAction;
-  if (obj.side) out.side = (String(obj.side).toLowerCase() as CharacterSide) || 'left';
+  if (obj.side) {
+    const side = String(obj.side).toLowerCase();
+    out.side = (side === 'left' || side === 'right') ? (side as CharacterSide) : 'left';
+  }
   if (obj.intensity) out.intensity = String(obj.intensity) as any;
   return out;
 }
