@@ -1,4 +1,4 @@
-🔒 EDITING: cascade-03 (2025-08-15T16:51:37-04:00)
+ 
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -38,6 +38,7 @@ List any unclaimed tasks here as they are identified.
 | 2.1 | SWA GitHub Actions deploy | cascade-69 | feature/swa-gha-deploy | 2025-08-15T08:25:01-04:00 | 1.5 complete | Workflow file added; awaiting token and CI run |
 | 3.8 | Design system tokens + theming (light/dark) | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.1 complete | Establish Tailwind tokens; brand integration; theming switch |
 | 3.9 | Chat UX polish: keyboard shortcuts, input affordances | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.2/3.3 complete | Cmd/Ctrl+Enter send; Esc cancel; aria-live improvements |
+| 2.3 | Release-pack: tag-triggered build + GitHub Release | cascade-03 | feature/release-pack | 2025-08-15T16:51:37-04:00 | 2.1/2.2 optional | Implemented workflow; validating end-to-end on next tag |
 | 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T16:48:21-04:00 | none | CURRENT-TASK: Align structure with standardized Make targets |
 | 1.5.C | Commit/push for Section 1.5 (SWA config complete) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.5 complete | Prepare final commit message and push |
 

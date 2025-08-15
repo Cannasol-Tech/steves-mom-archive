@@ -225,7 +225,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       2.2.4 [ ] Configure function app settings and connection strings
       2.2.T [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
       2.2.C [ ] Commit and push your work: `git add -A && git commit -m "2.2: progress" && git push`
-  #2.3: On tag push: build release-pack (zip) + attach to GitHub Release [ ] (est: 0.25d)
+  #2.3: On tag push: build release-pack (zip) + attach to GitHub Release [ ] (est: 0.25d) **[CHECKED OUT: cascade-03 @2025-08-15T16:51:37-04:00] [feature/release-pack]**
       2.3.1 [ ] Create release workflow triggered on tag creation
       2.3.2 [ ] Build and package all components (frontend, backend, docs)
       2.3.3 [ ] Generate release notes from commit history
