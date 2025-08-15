@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <img
               src="/cannasol-logo.png"
               alt="Cannasol Technologies"
-              className="h-8 w-8 object-contain hidden sm:block"
+              className="h-6 w-6 sm:h-8 sm:w-8 object-contain"
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             />
             <span className="text-lg font-semibold text-gray-900">Steve's Mom</span>

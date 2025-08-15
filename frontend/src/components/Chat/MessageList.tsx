@@ -66,7 +66,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, reasonin
                 <img
                   src="/cannasol-logo.png"
                   alt="Cannasol"
-                  className="h-4 w-4 object-contain hidden sm:block"
+                  className="h-4 w-4 sm:h-5 sm:w-5 object-contain"
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                 />
                 <span>Steve's Mom AI • Thinking…</span>

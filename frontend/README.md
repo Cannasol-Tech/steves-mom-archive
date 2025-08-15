@@ -12,7 +12,7 @@ This is the React/TypeScript frontend for Steve's Mom AI Chatbot, built with Tai
 
 ## Project Structure
 
-```
+```text
 frontend/
 ├── public/
 │   └── index.html          # Main HTML template
@@ -45,16 +45,19 @@ frontend/
 ### Installation
 
 1. Navigate to the frontend directory:
+
    ```bash
    cd frontend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm start
    ```
@@ -71,18 +74,21 @@ frontend/
 ## Pages and Features
 
 ### Chat Page (`/` or `/chat`)
+
 - Main chat interface with Steve's Mom AI
 - Message history with timestamps
 - Real-time typing indicators
 - Responsive design for mobile and desktop
 
 ### Inventory Page (`/inventory`)
+
 - Inventory item listing with search and filtering
 - Summary statistics (total items, quantity, value)
 - Table view with sorting capabilities
 - Placeholder for Phase 6 integration
 
 ### Admin Page (`/admin`)
+
 - Feature toggle controls
 - System status monitoring
 - Performance metrics dashboard

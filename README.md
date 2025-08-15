@@ -5,14 +5,17 @@ This repository contains documentation and troubleshooting guides for Azure Cogn
 ## 📚 Documentation
 
 ### [Azure Cognitive Services Setup Guide](docs/azure-cognitive-services-setup.md)
+
 Comprehensive guide covering the complete setup process, including troubleshooting the quota error and successful resolution.
 
 ### [Quick Troubleshooting Reference](docs/azure-troubleshooting-quick-reference.md)
+
 Quick reference guide for common issues and solutions when setting up Azure Cognitive Services.
 
 ## 🎯 Quick Start
 
 ### Successfully Created Resource
+
 - **Name**: `steves-mom`
 - **Resource Group**: `rg-steves-mom`
 - **Location**: `eastus`
@@ -21,6 +24,7 @@ Quick reference guide for common issues and solutions when setting up Azure Cogn
 - **Endpoint**: `https://eastus.api.cognitive.microsoft.com/`
 
 ### Get API Keys
+
 ```bash
 az cognitiveservices account keys list \
   --name "steves-mom" \

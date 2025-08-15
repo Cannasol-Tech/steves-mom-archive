@@ -2,6 +2,7 @@ import React from 'react';
 import MessageList, { Message } from './MessageList';
 import ModelSelector from './ModelSelector';
 import InputArea from './InputArea';
+import StreamRenderer from './StreamRenderer';
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -13,6 +14,11 @@ interface ChatInterfaceProps {
   onSubmit: () => void;
   onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement>;
   reasoningText?: string;
+  // Streaming UI (optional)
+  streamingContent?: string;
+  streamingActive?: boolean;
+  onRetryStream?: () => void;
+  onCancelStream?: () => void;
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -24,7 +30,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onChangeInput,
   onSubmit,
   onKeyDown,
-  reasoningText
+  reasoningText,
+  streamingContent,
+  streamingActive,
+  onRetryStream,
+  onCancelStream
 }) => {
   return (
     <div className="flex flex-col bg-white/85 backdrop-blur rounded-2xl border border-emerald-100 shadow-xl w-full">
@@ -39,7 +49,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               <img
                 src="/cannasol-logo.png"
                 alt="Cannasol Technologies"
-                className="h-6 w-6 object-contain hidden sm:block"
+                className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
               <h2 className="text-lg font-semibold text-gray-900">Chat with Steve's Mom AI</h2>
@@ -52,6 +62,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Messages */}
       <div className="flex-1 min-h-0 h-[70vh] overflow-hidden">
         <MessageList messages={messages} isLoading={isLoading} reasoningText={reasoningText} />
+        {typeof streamingContent === 'string' && (
+          <div className="px-4 sm:px-6 py-2">
+            <div className="mx-auto max-w-3xl">
+              <StreamRenderer
+                content={streamingContent}
+                isStreaming={!!streamingActive}
+                onRetry={onRetryStream || (() => {})}
+                onCancel={onCancelStream || (() => {})}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input */}

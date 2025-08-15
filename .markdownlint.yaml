@@ -1,0 +1,40 @@
+# markdownlint configuration for steves-mom-archive
+# Rationale:
+# - Allow long lines in planning/docs (tables, URLs, checklists)
+# - Enforce blank lines around headings and consistent list indentation
+# - Allow duplicate headings in different sections (siblings_only)
+# - Keep consistent ordered list numbering
+# - Prefer ATX-style headings (###) already used in repo
+# - Allow inline HTML if needed in docs
+
+MD013: false                      # Line length
+MD003:
+  style: atx                      # Heading style
+MD022: true                       # Headings should be surrounded by blank lines
+MD023: true                       # Headings must start at the beginning of the line
+MD024:
+  siblings_only: true             # Allow duplicate headings at different nesting levels
+MD025: true                       # Single H1 in the document
+MD026:
+  punctuation: ",;:!?."         # Trailing punctuation in headings
+MD027: true                       # List item content indentation
+MD028: true                       # Blank line before block elements
+MD029:
+  style: ordered                  # Allow 1., 2., 3. numbering
+MD030:
+  ul_single: 1                    # Spaces after list markers
+  ol_single: 1
+  ul_multi: 1
+  ol_multi: 1
+MD031: true                       # Fenced code blocks should be surrounded by blank lines
+MD032: true                       # Lists should be surrounded by blank lines
+MD033: false                      # Allow inline HTML
+MD034: true                       # Bare URL used (prefer markdown links)
+MD035:
+  style: consistent               # Horizontal rule style
+MD036: true                       # Emphasis used instead of a heading
+MD038: true                       # Spaces inside code span elements
+MD040: true                       # Fenced code blocks should have a language specified
+MD041: true                       # First line in file should be a top-level heading
+MD046:
+  style: fenced                   # Code block style

@@ -13,6 +13,7 @@ This folder contains Bicep templates for provisioning the MVP infrastructure usi
   - `appinsights.bicep` — Application Insights (connected to Function App/SWA)
 
 Notes:
+
 - Target scope: resource group
 - All resources must include tags defined in `docs/architecture/naming.md`
 - Keep modules minimal and composable; parameters are typed and documented.

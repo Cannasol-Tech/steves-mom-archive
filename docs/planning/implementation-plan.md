@@ -65,42 +65,70 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 1: Infrastructure setup (Consumption plan) [ ] (est: 2 days)
 
+### Definition of Done — Section 1 (Infrastructure)
+
+- All IaC changes pass unit/integration tests in `tests/infrastructure/` and what-if checks are clean.
+- Lint/format checks pass (Bicep build, scripts shellcheck as applicable).
+- Azure resources provision successfully in dev; parameters documented in `infrastructure/parameters/*.json`.
+- Security/Naming: follows `docs/architecture/naming.md`; soft-delete/retention settings verified.
+- Docs updated: `docs/architecture/*` and `docs/deployment/azure-deployment-guide.md`.
+- Planning updated: `docs/planning/implementation-plan.md` and `docs/planning/multi-agent-sync.md`.
+
 > Hosting note: Using Azure Functions Consumption (or Flex On‑Demand) for MVP to minimize cost. PRD Appendix mentions Functions Premium; evaluate upgrade after MVP acceptance.
 
-  #1.1: Azure resources IaC draft (naming, SKUs) [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T17:45:00-04:00] [feature/infrastructure-iac-draft]**
-      1.1.1 [x] Define TDD scope for IaC: write test plan for naming rules and SKU validation (unit/integration)
-      1.1.2 [x] Establish naming conventions (resource group, functions, storage, sql, redis, kv) with examples and doc in `docs/architecture/naming.md`
-      1.1.3 [x] Select SKUs for each service (Functions Consumption/Flex, SQL tier, Redis tier, Storage replication) with cost notes
-      1.1.4 [x] Draft IaC skeleton (Bicep or Terraform) modules and parameters with doxygen comments
-      1.1.5 [x] Add IaC lint/validate tasks and unit tests (naming, tags, locations)
-      1.1.6 [x] Add integration "plan/what-if" tests to assert expected resources
-      1.1.7 [x] Update `docs/planning/multi-agent-sync.md` notes during progress
-      1.1.8 [x] Acceptance review and finalize draft
-  #1.2: Provision Azure resources [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T18:30:00-04:00] [feature/azure-provisioning]**
-      1.2.1 [x] Create resource group with proper naming and tags
-      1.2.2 [x] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
-      1.2.3 [x] Create Redis Cache instance with appropriate tier
-      1.2.4 [x] Set up Blob Storage with containers and access policies
-      1.2.5 [x] Create Key Vault with access policies and managed identity
-  #1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
-      1.3.1 [ ] Create Functions Consumption plan **[CHECKED OUT: cascade-01 @2025-08-15T03:41:29-04:00] [feature/azure-functions-consumption-plan]**
-      1.3.2 [ ] Create Function App with Python runtime
-      1.3.3 [ ] Configure app settings from Key Vault using managed identity
-      1.3.4 [ ] Set up connection strings and environment variables
-      1.3.5 [ ] Configure CORS and authentication settings
-  #1.4: Repository and development environment [ ] (est: 0.25d)
-      1.4.1 [ ] Set up base repository structure (backend/frontend/docs/tests)
-      1.4.2 [ ] Configure Python virtual environment and requirements.txt
-      1.4.3 [ ] Create frontend scaffold with React/TypeScript/Tailwind
-      1.4.4 [ ] Set up development configuration files (.env, .gitignore, etc.)
-  #1.5: Static Web App configuration [ ] (est: 0.25d)
-      1.5.1 [ ] Create Azure Static Web App resource
-      1.5.2 [ ] Configure SWA to point API routes to Functions
-      1.5.3 [ ] Set up custom domains and SSL certificates (if needed)
-      1.5.4 [ ] Configure authentication providers (Azure AD)
+#### 1.1: Azure resources IaC draft (naming, SKUs) [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T17:45:00-04:00] [feature/infrastructure-iac-draft]**
+
+- **1.1.1** [x] Define TDD scope for IaC: write test plan for naming rules and SKU validation (unit/integration)
+- **1.1.2** [x] Establish naming conventions (resource group, functions, storage, sql, redis, kv) with examples and doc in `docs/architecture/naming.md`
+- **1.1.3** [x] Select SKUs for each service (Functions Consumption/Flex, SQL tier, Redis tier, Storage replication) with cost notes
+- **1.1.4** [x] Draft IaC skeleton (Bicep or Terraform) modules and parameters with doxygen comments
+- **1.1.5** [x] Add IaC lint/validate tasks and unit tests (naming, tags, locations)
+- **1.1.6** [x] Add integration "plan/what-if" tests to assert expected resources
+- **1.1.7** [x] Update `docs/planning/multi-agent-sync.md` notes during progress
+- **1.1.8** [x] Acceptance review and finalize draft
+
+#### 1.2: Provision Azure resources [x] (est: 0.5d) ✅ **[COMPLETED: cascade-01 @2025-08-13T18:30:00-04:00] [feature/azure-provisioning]**
+
+- **1.2.1** [x] Create resource group with proper naming and tags
+- **1.2.2** [x] Provision Azure SQL Database with firewall rules (minimal public access, no VNET)
+- **1.2.3** [x] Create Redis Cache instance with appropriate tier
+- **1.2.4** [x] Set up Blob Storage with containers and access policies
+- **1.2.5** [x] Create Key Vault with access policies and managed identity
+
+#### 1.3: Azure Functions setup [ ] (est: 0.5d) [CURRENT-TASK]
+
+- **1.3.1** [ ] Create Functions Consumption plan **[CHECKED OUT: cascade-01 @2025-08-15T03:41:29-04:00] [feature/azure-functions-consumption-plan]**
+- **1.3.2** [ ] Create Function App with Python runtime
+- **1.3.3** [ ] Configure app settings from Key Vault using managed identity
+- **1.3.4** [ ] Set up connection strings and environment variables
+- **1.3.5** [ ] Configure CORS and authentication settings
+
+#### 1.4: Repository and development environment [ ] (est: 0.25d)
+
+- **1.4.1** [ ] Set up base repository structure (backend/frontend/docs/tests)
+- **1.4.2** [ ] Configure Python virtual environment and requirements.txt
+- **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
+- **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
+
+#### 1.5: Static Web App configuration [ ] (est: 0.25d)
+
+- **1.5.1** [ ] Create Azure Static Web App resource
+- **1.5.2** [ ] Configure SWA to point API routes to Functions
+- **1.5.3** [ ] Set up custom domains and SSL certificates (if needed)
+- **1.5.4** [ ] Configure authentication providers (Azure AD)
   #1.T: Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
 ## 2: CI/CD and release-pack pipeline [ ] (est: 1 day)
+
+### Definition of Done — Section 2 (CI/CD & Release)
+
+- All workflows in `.github/workflows/` succeed on PR and main.
+- Build artifacts (frontend, backend) produce deterministic outputs; cache configured.
+- Release-pack artifacts generated on tag push and attached to GitHub Release.
+- Manifest generated/validated; version and commit embedded.
+- Secrets managed via GitHub Envs/Actions with no plaintext checked in.
+- Docs updated: release process in `docs/deployment/azure-deployment-guide.md`.
+- Planning updated: implementation plan and multi-agent sync.
 
   #2.1: SWA GitHub Actions deploy (tune `.github/workflows/azure-static-web-apps-*.yml`) [ ] (est: 0.25d)
       2.1.1 [ ] Configure SWA workflow with proper build commands and output directory
@@ -126,6 +154,15 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 3: Chat interface (React/TS/Tailwind) [ ] (est: 2 days)
 
+### Definition of Done — Section 3 (Frontend Chat)
+
+- Unit tests for components/pages pass; `tsc` type-checks clean; ESLint/Prettier clean.
+- Streaming UX implemented with retry/cancel; loading/error states covered.
+- Accessibility: basic a11y checks (labels, contrast, tab order) for chat controls.
+- Visuals: Cannasol branding applied; responsive on common breakpoints.
+- API contracts mocked or integrated; no console errors at runtime.
+- Docs updated: component structure and UX notes if applicable.
+- Planning updated and test results reflected in plan/sync.
   #3.1: UI shell, routing, layout [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-01-15T11:00:00-05:00]**
   #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-01-15T11:15:00-05:00] [feature/chat-input-messages]**
   #3.3: Streaming display + retry/cancel [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T05:47:40-04:00] [feature/chat-streaming] [CURRENT-TASK]**
@@ -138,22 +175,31 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.5: Socket/client wiring for live updates [ ] (est: 0.25d)
   #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d)
   #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
-      3.7.1 [ ] Add Cannasol logo to header/navigation bar **[CHECKED OUT: cascade-01 @2025-08-15T05:55:22-04:00] [feature/ui-branding-logo]**
-      3.7.2 [ ] Integrate logo in chat interface branding
-      3.7.3 [ ] Add logo to loading states and splash screens
-      3.7.4 [ ] Ensure responsive logo display across devices
+      3.7.1 [x] Add Cannasol logo to header/navigation bar **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00] [agent-dev]**
+      3.7.2 [x] Integrate logo in chat interface branding **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00]**
+      3.7.3 [x] Add logo to loading states and splash screens **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00]**
+      3.7.4 [x] Ensure responsive logo display across devices **[COMPLETED: cascade-01 @2025-08-15T06:18:23-04:00] [agent-dev]**
   #3.T: Tests — unit (components), integration (API/socket), acceptance (chat flow) [ ] (est: 0.25d)
 
 ## 4: GROK integration + model router stub [ ] (est: 1 day)
 
+### Definition of Done — Section 4 (AI Providers & Router)
+
+- Provider interfaces implemented with typed DTOs and error normalization.
+- Model router routes by policy/env with tested fallbacks and timeouts.
+- Rate limiting/backoff in place with deterministic tests.
+- Secure config via env/Key Vault; no secrets in repo.
+- Unit/integration tests cover provider stubs and routing policies; CI green.
+- Docs updated: `backend/ai/` readme or architecture notes on routing.
+- Planning updated (plan + multi-agent sync).
   #4.1: Provider clients (GROK, placeholders for others) [x] (est: 0.25d) **[COMPLETED: augment-01 @2025-08-13T19:45:00-04:00]**
       - 4.1.1 [ ] Create base LLMProvider abstract class with standard interface
       - 4.1.2 [ ] Implement GROKProvider with API client and authentication
       - 4.1.3 [ ] Create placeholder providers for OpenAI, Claude, and local models
       - 4.1.4 [ ] Add provider configuration and credential management
   #4.2: ModelRouter.py (route by policy/env flag) [ ] (est: 0.25d) **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00] [feature/model-router]**
-      - 4.2.1 [ ] Design routing policy schema (cost, latency, capability-based) [CURRENT-TASK] **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00]**
-      - 4.2.2 [ ] Implement router logic with fallback mechanisms
+      - 4.2.1 [x] Design routing policy schema (cost, latency, capability-based) ✅ **[COMPLETED: cascade-03 @2025-08-15T06:30:00-04:00]**
+      - 4.2.2 [ ] Implement router logic with fallback mechanisms [CURRENT-TASK]
       - 4.2.3 [ ] Add environment-based provider selection
       - 4.2.4 [ ] Create configuration interface for routing rules
   #4.3: ContextManager.py (basic memory window) [ ] (est: 0.25d)
@@ -170,6 +216,14 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 5: Task generation + approval skeleton [ ] (est: 2 days)
 
+### Definition of Done — Section 5 (Tasking & Approvals)
+
+- Intent detection rules tested; confidence/fallback behavior verified.
+- Task schema and CRUD endpoints implemented with validation and pagination.
+- Approval workflow state transitions covered by unit/integration tests.
+- UI provides approve/reject with real-time status and preserves history.
+- Audit logging present; permissions enforced where applicable.
+- Docs updated for API and UI flows; planning docs updated.
   #5.1: Intent detection (rule-based MVP) [ ] (est: 0.5d)
       - 5.1.1 [ ] Define task-generating intent categories (email, document, query, etc.)
       - 5.1.2 [ ] Create rule-based classifier with keyword matching and patterns
@@ -194,6 +248,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 6: Inventory integration [ ] (est: 2 days)
 
+### Definition of Done — Section 6 (Inventory)
+
+- Client with typed models; retries/backoff and error handling covered by tests.
+- Read endpoints support filtering/sorting/pagination; write endpoints validate inputs.
+- Basic UI list/detail flows work; empty/loading/error states covered.
+- Caching (if added) validated; no PII leakage; telemetry optional and privacy-safe.
+- Docs updated for endpoints and UI; planning updated.
   #6.1: InventoryClient.py with typed DTOs [ ] (est: 0.5d)
       - 6.1.1 [ ] Define inventory data models and DTOs with type annotations
       - 6.1.2 [ ] Create inventory client with connection management and retry logic
@@ -218,6 +279,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 7: NL→SQL (inventory-only, whitelisted) [ ] (est: 1 day)
 
+### Definition of Done — Section 7 (NL→SQL)
+
+- Only whitelisted templates executable; params validated; injection-safe.
+- Intent mapping and param extraction tested with representative phrases.
+- Execution layer enforces limits (row caps, timeouts, RBAC) with tests.
+- Results formatted deterministically; audit trail recorded.
+- Docs updated for templates and guardrails; planning updated.
   #7.1: QueryTemplates.py (whitelist + param schema) [ ] (est: 0.25d)
       - 7.1.1 [ ] Define inventory query templates (list, search, filter, aggregate)
       - 7.1.2 [ ] Create parameter schema with validation rules
@@ -236,6 +304,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 8: Email integration (Microsoft Exchange) [ ] (est: 1 day)
 
+### Definition of Done — Section 8 (Email - Exchange)
+
+- Graph client/auth configured; no secrets committed; permissions verified in dev.
+- Summarize/draft/send endpoints implemented with approval gating.
+- Attachments/calendar behaviors covered where in scope; errors handled.
+- UI hooks present with confirmations and toasts.
+- Tests pass for wrapper and end-to-end happy path; docs/planning updated.
   #8.1: Email summarize/draft/send [ ] (est: 0.5d)
       - 8.1.1 [ ] Implement email summarization endpoint (Graph API)
       - 8.1.2 [ ] Draft response generation with approval workflow
@@ -253,6 +328,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 9: Document management (templates) [ ] (est: 1 day)
 
+### Definition of Done — Section 9 (Documents - Templates)
+
+- Versioned template store with validation; metadata persisted.
+- Generation endpoints produce expected outputs; preview/download working.
+- Multi-format export validated where in scope; errors handled.
+- UI flows for generate/preview integrated; tests pass; docs/planning updated.
   #9.1: Template store + validation [ ] (est: 0.5d)
       - 9.1.1 [ ] Template repository in Blob (versioned)
       - 9.1.2 [ ] Field validation and constraints
@@ -295,6 +376,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 9: Document generation (PDF/DOCX) [ ] (est: 1 day)
 
+### Definition of Done — Section 9 (Documents - Generation)
+
+- Template schema defined; upload/validation implemented.
+- DOCX merge and PDF export produce deterministic outputs in tests.
+- Queue/pipeline logic (if implemented) has retry/backoff and logging.
+- Secure download links with expiration; versioning/history tracked.
+- Tests pass; docs/planning updated.
   #9.1: Template storage (Blob) + metadata in SQL [ ] (est: 0.25d)
       - 9.1.1 [ ] Design document template schema and metadata structure
       - 9.1.2 [ ] Create blob storage containers for templates and generated docs
@@ -314,6 +402,13 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 10: Auth (Azure AD SSO) + RBAC [ ] (est: 1 day)
 
+### Definition of Done — Section 10 (Auth & RBAC)
+
+- Frontend MSAL login/logout flows work; tokens stored securely.
+- Backend JWT validation and authorization middleware enforced.
+- Roles/permissions seeded; checks covered by unit/integration tests.
+- Admin view shows permissions; audit logs recorded where applicable.
+- Security review complete; docs/planning updated.
   #10.1: Frontend MSAL setup + login flow [ ] (est: 0.25d)
       - 10.1.1 [ ] Configure MSAL library with Azure AD app registration
       - 10.1.2 [ ] Implement login/logout components and routing guards
@@ -338,6 +433,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 11: Telemetry/analytics (privacy-safe) [ ] (est: 1 day)
 
+### Definition of Done — Section 11 (Telemetry)
+
+- DDL created with indexes; retention policies documented.
+- Instrumentation records latency, errors, token usage with redaction/anonymization.
+- Configurable sampling flags default to privacy-safe off.
+- Admin metrics view shows key KPIs; tests pass; docs/planning updated.
   #11.1: DDL for Analytics_* tables [ ] (est: 0.25d)
       - 11.1.1 [ ] Design analytics database schema (events, metrics, sessions)
       - 11.1.2 [ ] Create partitioned tables for time-series data
@@ -362,6 +463,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 12: Release-pack deliverable [ ] (est: 0.5 day)
 
+### Definition of Done — Section 12 (Release Pack)
+
+- Manifest and API schema generated and validated.
+- Release includes app, migrations, analytics schema, and deployment config.
+- Installation/upgrade docs generated; reproducible build verified in CI.
+- Tests for packaging pass; planning updated.
 - **#12.1: Define manifest.json + api-schema.json (OpenAPI export) [ ] (est: 0.25d)**
   - 12.1.1 [ ] Create comprehensive manifest schema with all metadata
   - 12.1.2 [ ] Generate OpenAPI specification from API endpoints
@@ -376,12 +483,18 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 
 ## 13: Testing + deployment [ ] (est: 2 days)
 
+### Definition of Done — Section 13 (Testing & Deployment)
+
+- Unit, integration, acceptance tests implemented per sections and all green in CI.
+- Performance tests meet PRD thresholds; report attached to PR/Release.
+- E2E happy path verified; non-flaky CI runs over multiple commits.
+- Deployment steps documented and validated in dev; planning updated.
   - **#13.1: Unit tests: router, tasking, NL→SQL templates [ ] (est: 0.75d)**
   - **#13.2: Integration tests: Functions endpoints + SQL [ ] (est: 0.5d)**
   - **#13.3: E2E happy path (chat → task → inventory → doc/email) [ ] (est: 0.5d)**
   - **#13.4: Performance tests (k6/Locust) with PRD thresholds [ ] (est: 0.25d)**
-      - 13.4.1 [ ] Simple queries p95 < 2s; single integration p95 < 5s; multi-system p95 < 10s
-      - 13.4.2 [ ] 20 concurrent users; 1000 req/hour sustained; graceful degradation verified
+    - 13.4.1 [ ] Simple queries p95 < 2s; single integration p95 < 5s; multi-system p95 < 10s
+    - 13.4.2 [ ] 20 concurrent users; 1000 req/hour sustained; graceful degradation verified
   - **#13.5: Acceptance tests (pytest-bdd/behave) mapped to PRD scenarios [ ] (est: 0.5d)**
 
 ---
