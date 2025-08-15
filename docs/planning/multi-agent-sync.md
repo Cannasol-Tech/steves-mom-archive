@@ -1,4 +1,3 @@
- 
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -40,7 +39,7 @@ List any unclaimed tasks here as they are identified.
 | 3.9 | Chat UX polish: keyboard shortcuts, input affordances | cascade-UI | agent-dev | 2025-08-15T15:13:40-04:00 | 3.2/3.3 complete | Cmd/Ctrl+Enter send; Esc cancel; aria-live improvements |
 | 2.3 | Release-pack: tag-triggered build + GitHub Release | cascade-03 | feature/release-pack | 2025-08-15T16:51:37-04:00 | 2.1/2.2 optional | Implemented workflow; validating end-to-end on next tag |
 | 1.4.1 | Repo structure and branching strategy | cascade-01 | agent-dev | 2025-08-15T16:48:21-04:00 | none | CURRENT-TASK: Align structure with standardized Make targets |
-| 1.5.C | Commit/push for Section 1.5 (SWA config complete) | cascade-01 | agent-dev | 2025-08-15T15:47:26-04:00 | 1.5 complete | Prepare final commit message and push |
+
 
 ## Completed Tasks
 
@@ -52,6 +51,7 @@ List any unclaimed tasks here as they are identified.
 | 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
 | 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
 | 1.3.C | cascade-01 | agent-dev | 10min | docs/planning/implementation-plan.md; docs/planning/multi-agent-sync.md | ✅ |
+| 1.5.C | cascade-01 | agent-dev | — | docs/planning/implementation-plan.md; docs/planning/multi-agent-sync.md | ✅ |
 | 5.4 | cascade-01 | feature/approve-reject-ui | 40min | frontend/src/pages/TaskDetailPage.tsx; frontend/src/pages/__tests__/TaskApprovalFlow.test.tsx; frontend/src/components/Character/StevesMomCharacter.tsx | ⏳ |
 | 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
@@ -96,6 +96,7 @@ List any unclaimed tasks here as they are identified.
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
 | 5.4.T | cascade-01 | N/A | ✅ (frontend RTL integration) | N/A | N/A |
+| 3.2.1 | cascade-02 | ✅ (RTL unit: InputArea autosize/limits) | N/A | N/A | N/A |
 
 ## Communication Log
 
@@ -113,3 +114,4 @@ List any unclaimed tasks here as they are identified.
 | 2025-08-15T16:47:12-04:00 | cascade-02 | ALL | Updated implementation-plan 3.2 with progress note and refreshed checkout; proceeding to implement InputArea autosize/limits and MessageList timestamps/status. | None |
 | 2025-08-15T15:31:52-04:00 | cascade-02 | ALL | Resumed 3.2; expanded subtasks/tests in implementation-plan. Proceeding with ChatInput/MessageList wiring and a11y polish. | None |
 | 2025-08-15T15:13:40-04:00 | cascade-UI | ALL | Checking out 3.8 (Design system tokens + theming) and 3.9 (Chat UX polish). Will align with Cannasol branding and a11y best practices. | None |
+| 2025-08-15T17:04:04-04:00 | cascade-02 | ALL | Completed 3.2.1: ChatInput autosize + character limit + a11y; assistant final message marked 'sent' on stream end; added RTL unit tests; frontend suites passing (12/12, 44/44). Proceeding to 3.2.2/3.2.3 and additional tests. | None |

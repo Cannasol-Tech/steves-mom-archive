@@ -196,7 +196,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   - 1.5.4.4 [x] Configured role-based access control and security decorators
 
 - **1.5.T** [x] Tests — unit, integration, acceptance for infra setup [x] (est: 0.25d)
-- **1.5.C** [ ] Commit and push your work: `git add -A && git commit -m "1.5: Static Web App configuration complete" && git push` **[CHECKED OUT: cascade-01 @2025-08-15T15:32:31-04:00] [agent-dev]**
+- **1.5.C** [x] Commit and push your work: `git add -A && git commit -m "1.5: Static Web App configuration complete" && git push` ✅ **[COMPLETED: cascade-01 @2025-08-15T17:06:54-04:00] [agent-dev]**
 
 ## 2: CI/CD and release-pack pipeline [ ] (est: 1 day)
 
@@ -258,7 +258,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.1.C [ ] Commit and push your work: `git add -A && git commit -m "3.1: progress" && git push`
       3.1.T [ ] Tests — unit, integration, acceptance for UI shell/routing [ ] (est: 0.1d)
   #3.2: Chat input, message list, timestamps [ ] (est: 0.5d) **[CHECKED OUT: cascade-02 @2025-08-15T16:47:12-04:00] [feature/chat-input-messages] [CURRENT-TASK]**
-      3.2.1 [ ] Implement `ChatInput` component
+      3.2.1 [x] Implement `ChatInput` component ✅ **[COMPLETED: cascade-02 @2025-08-15T17:04:04-04:00]**
         - Autosize textarea; character limit warning; disabled during stream
         - Keyboard: Enter=send, Shift+Enter=newline, Cmd/Ctrl+Enter=send
       3.2.2 [ ] Implement `MessageList` item model
@@ -270,7 +270,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.2.4 [ ] Accessibility & UX polish
         - Focus management after send/cancel; aria-live region for streaming
         - Loading/empty states and error toasts integration
-      3.2.P [ ] Progress — Subtasks/tests expanded; ready to implement InputArea autosize/limits and MessageList status/timestamps. **[cascade-02 @2025-08-15T16:47:12-04:00]**
+      3.2.P [ ] Progress — 3.2.1 completed with autosize + char limit + a11y; assistant status set to 'sent' on stream end; added RTL unit tests; frontend suites passing (12/12, 44/44). **[cascade-02 @2025-08-15T17:04:04-04:00]**
       3.2.C [ ] Commit and push your work: `git add -A && git commit -m "3.2: progress" && git push`
       3.2.T [ ] Tests — unit, integration for chat input/message list [ ] (est: 0.2d)
         - RTL unit tests: input behaviors, keyboard shortcuts, disabled/limits
