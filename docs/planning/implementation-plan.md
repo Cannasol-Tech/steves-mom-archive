@@ -209,7 +209,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #2.2: Functions build/deploy workflow (Python) [ ] (est: 0.25d) **[CHECKED OUT: Sonnet-01 @2025-08-15T09:00:30-04:00] [feature/functions-gha-deploy]**
       2.2.1 [ ] Create GitHub Actions workflow for Azure Functions deployment
       2.2.2 [ ] Configure Python build steps with requirements installation
-      2.2.3 [ ] Set up deployment slots and blue-green deployment strategy
+      2.2.3 [ ] Validate single-slot deployment on main
       2.2.4 [ ] Configure function app settings and connection strings
       2.2.T [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
       2.2.C [ ] Commit and push your work: `git add -A && git commit -m "2.2: progress" && git push`
