@@ -32,6 +32,7 @@ List any unclaimed tasks here as they are identified.
 | 3.T2 | Fix chat JSON display + eliminate "(no content)" messages | cascade-69 | agent-dev | 2025-08-15T07:06:41-04:00 | 3.T complete | Fixed frontend JSON parsing, reasoning integration, make preview target |
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
+| 5.3 | ApprovalHandler.py (approve/reject) | cascade-01 | feature/approval-handler | 2025-08-15T08:11:00-04:00 | 5.2 complete | Creating approval workflow state machine |
 
 ## Completed Tasks
 
