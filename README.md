@@ -1,18 +1,62 @@
-# Steve's Mom - Azure Cognitive Services Documentation
+# Steve's Mom AI Chatbot (MVP)
 
-This repository contains documentation and troubleshooting guides for Azure Cognitive Services setup and configuration.
+AI-powered chatbot with Azure Functions backend, React frontend, and comprehensive business automation tools.
+
+## 🚀 Quick Start
+
+### Development Setup
+
+```bash
+# Complete project setup
+make setup
+
+# Start development servers
+make preview
+
+# Run tests
+make test-unit
+```
+
+## 📋 Make Targets (Standardized Workflow)
+
+### Testing
+- `make test` - Run all tests (unit + integration + acceptance)
+- `make test-unit` - Run unit tests only
+- `make test-integration` - Run integration tests
+- `make test-acceptance` - Run acceptance tests (behave)
+- `make test-frontend` - Run frontend tests (Jest/React Testing Library)
+- `make test-infra` - Run infrastructure tests (Bicep validation)
+
+### Development
+- `make setup` - Complete project setup (backend + frontend + dev deps)
+- `make preview` - Start dev servers (backend + frontend)
+- `make dev` - Start development environment with hot reload
+- `make clean` - Clean build artifacts and caches
+
+### Code Quality
+- `make lint` - Run all linters (Python, JS, Markdown)
+- `make fix-lint` - Auto-fix linting issues where possible
+
+### Deployment
+- `make deploy` - Deploy full application (infra + functions)
+- `make deploy-infra` - Deploy infrastructure only (Bicep)
+- `make deploy-functions` - Deploy Azure Functions only
 
 ## 📚 Documentation
 
-### [Azure Cognitive Services Setup Guide](docs/azure-cognitive-services-setup.md)
+### [Implementation Plan](docs/planning/implementation-plan.md)
 
-Comprehensive guide covering the complete setup process, including troubleshooting the quota error and successful resolution.
+Comprehensive 2-week MVP development plan with task tracking and multi-agent coordination.
 
-### [Quick Troubleshooting Reference](docs/azure-troubleshooting-quick-reference.md)
+### [Multi-Agent Sync](docs/planning/multi-agent-sync.md)
 
-Quick reference guide for common issues and solutions when setting up Azure Cognitive Services.
+Active agent coordination and task status tracking for parallel development.
 
-## 🎯 Quick Start
+### [Azure Deployment Guide](docs/deployment/azure-deployment-guide.md)
+
+Infrastructure setup and deployment procedures for Azure resources.
+
+## 🎯 Architecture
 
 ### Successfully Created Resource
 

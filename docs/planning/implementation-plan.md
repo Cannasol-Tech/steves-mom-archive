@@ -121,12 +121,41 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.4.2** [ ] Configure development environment and dependencies
 - **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
 - **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
-- **1.4.5** [ ] **Make targets for common workflows** **[CHECKED OUT: cascade-69 @2025-08-15T07:18:11-04:00] [CURRENT-TASK]**
-  - 1.4.5.1 [ ] Add comprehensive test targets (unit, integration, acceptance, frontend, infra)
-  - 1.4.5.2 [ ] Add linting targets (Python, JS/TS, Markdown) with auto-fix
-  - 1.4.5.3 [ ] Add setup targets (backend, frontend, dev dependencies)
-  - 1.4.5.4 [ ] Add development targets (preview, dev server, clean)
-  - 1.4.5.5 [ ] Add deployment targets (infra, functions, full deploy)
+- **1.4.5** [x] **Make targets for common workflows** ✅ **[COMPLETED: cascade-69 @2025-08-15T07:26:37-04:00]**
+  - 1.4.5.1 [x] Add comprehensive test targets (unit, integration, acceptance, frontend, infra) ✅
+  - 1.4.5.2 [x] Add linting targets (Python, JS/TS, Markdown) with auto-fix ✅
+  - 1.4.5.3 [x] Add setup targets (backend, frontend, dev dependencies) ✅
+  - 1.4.5.4 [x] Add development targets (preview, dev server, clean) ✅
+  - 1.4.5.5 [x] Add deployment targets (infra, functions, full deploy) ✅
+
+### **STANDARDIZED MAKE TARGETS - USE THESE FOR ALL WORKFLOWS**
+
+**Testing (use instead of manual pytest/npm commands):**
+
+- `make test` - Run all tests (unit + integration + acceptance)
+- `make test-unit` - Run unit tests only
+- `make test-integration` - Run integration tests
+- `make test-acceptance` - Run acceptance tests (behave)
+- `make test-frontend` - Run frontend tests (Jest/React Testing Library)
+- `make test-infra` - Run infrastructure tests (Bicep validation)
+
+**Development:**
+
+- `make setup` - Complete project setup (backend + frontend + dev deps)
+- `make preview` - Start dev servers (backend + frontend)
+- `make dev` - Start development environment with hot reload
+- `make clean` - Clean build artifacts and caches
+
+**Code Quality:**
+
+- `make lint` - Run all linters (Python, JS, Markdown)
+- `make fix-lint` - Auto-fix linting issues where possible
+
+**Deployment:**
+
+- `make deploy` - Deploy full application (infra + functions)
+- `make deploy-infra` - Deploy infrastructure only (Bicep)
+- `make deploy-functions` - Deploy Azure Functions only
 - **1.4.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4: progress" && git push`
 - **1.4.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
@@ -245,12 +274,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 4.1.4 [ ] Add provider configuration and credential management
       - 4.1.T [ ] Tests — unit/integration for provider clients [ ] (est: 0.15d)
       - 4.1.C [ ] Commit and push your work: `git add -A && git commit -m "4.1: progress" && git push`
-  #4.2: ModelRouter.py (route by policy/env flag) [ ] (est: 0.25d) **[CHECKED OUT: cascade-03 @2025-08-15T05:57:58-04:00] [feature/model-router]**
+  #4.2: ModelRouter.py (route by policy/env flag) [x] (est: 0.25d) — COMPLETED 2025-01-15
       - 4.2.1 [x] Design routing policy schema (cost, latency, capability-based) ✅ **[COMPLETED: cascade-03 @2025-08-15T06:30:00-04:00]**
       - 4.2.2 [x] Implement router logic with fallback mechanisms ✅ **[COMPLETED: cascade-03 @2025-08-15T06:20:15-04:00]**
-      - 4.2.3 [ ] Add environment-based provider selection
-      - 4.2.4 [ ] Create configuration interface for routing rules
-      - 4.2.T [ ] Tests — unit/integration for routing policies and env selection [ ] (est: 0.2d)
+      - 4.2.3 [x] Add environment-based provider selection ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:22:00-04:00]**
+      - 4.2.4 [x] Create configuration interface for routing rules ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:22:00-04:00]**
+      - 4.2.T [x] Tests — unit/integration for routing policies and env selection (est: 0.2d)
       - 4.2.C [ ] Commit and push your work: `git add -A && git commit -m "4.2: progress" && git push`
   #4.3: ContextManager.py (basic memory window) [x] (est: 0.25d) ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00] [feature/context-manager]**
       - 4.3.1 [x] Design conversation context schema and storage ✅ **[COMPLETED: Sonnet-01 @2025-08-15T07:05:23-04:00]**

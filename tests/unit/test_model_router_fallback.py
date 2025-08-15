@@ -16,8 +16,16 @@ from unittest.mock import AsyncMock, patch
 backend_path = Path(__file__).parent.parent.parent / "backend"
 sys.path.insert(0, str(backend_path))
 
-from ai.model_router import ModelRouter, RoutingPolicy, RoutingStrategy
-from ai.providers.base import (
+import sys
+import os
+from pathlib import Path
+
+# Make backend importable
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from backend.ai.model_router import ModelRouter, RoutingPolicy, RoutingStrategy
+from backend.ai.providers.base import (
     LLMProvider,
     Message,
     MessageRole,
@@ -122,7 +130,7 @@ async def test_fallback_on_provider_error_routes_to_next():
 
     policy = RoutingPolicy(strategy=RoutingStrategy.FAILOVER, max_cost_threshold=1.0, retry_attempts=1)
 
-    with patch("ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
+    with patch("backend.ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
         resp = await router.route_request(
             messages=make_message(),
             config=ModelConfig(model_name="grok-3-mini"),
@@ -153,7 +161,7 @@ async def test_rate_limit_skips_and_uses_next_provider():
 
     policy = RoutingPolicy(strategy=RoutingStrategy.FAILOVER, max_cost_threshold=1.0, retry_attempts=1)
 
-    with patch("ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
+    with patch("backend.ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
         resp = await router.route_request(
             messages=make_message(),
             config=ModelConfig(model_name="grok-3-mini"),
@@ -193,7 +201,7 @@ async def test_circuit_breaker_trips_after_errors_and_skips_provider():
 
     policy = RoutingPolicy(strategy=RoutingStrategy.FAILOVER, max_cost_threshold=1.0, retry_attempts=1)
 
-    with patch("ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
+    with patch("backend.ai.model_router.asyncio.sleep", new=AsyncMock()) as _:
         resp = await router.route_request(
             messages=make_message(),
             config=ModelConfig(model_name="grok-3-mini"),

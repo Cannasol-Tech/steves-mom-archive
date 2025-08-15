@@ -19,22 +19,25 @@ from typing import List, Dict, Any, Optional, AsyncGenerator
 
 import pytest
 
-# Ensure backend is importable
-backend_path = Path(__file__).parent.parent.parent / "backend"
-sys.path.insert(0, str(backend_path))
+# Make backend importable
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
 
-from ai.model_router import (
+from backend.ai.model_router import (
     ModelRouter,
     RoutingPolicy,
     RoutingStrategy,
+    ProviderConfig,
 )
-from ai.providers.base import (
+from backend.ai.providers.base import (
     LLMProvider,
     Message,
     MessageRole,
     ModelConfig,
     ModelResponse,
     ModelCapability,
+    ProviderError,
+    RateLimitError,
 )
 
 

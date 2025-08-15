@@ -53,6 +53,8 @@ List any unclaimed tasks here as they are identified.
 | 3.4 | cascade-02 | feature/chat-errors-toasts | 15min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx | ✅ |
 | 4.3 | Sonnet-01 | feature/context-manager | 25min | backend/ai/context_manager.py; tests/unit/test_context_manager.py; pytest.ini | ✅ |
 | 4.4 | Sonnet-01 | feature/rate-limiting | 30min | backend/ai/rate_limiter.py; tests/unit/test_rate_limiter.py | ✅ |
+| 4.2.3 | Sonnet-01 | feature/model-router-env | 15min | backend/ai/model_router.py; tests/unit/test_model_router_env_selection.py | ✅ |
+| 4.2.4 | Sonnet-01 | feature/model-router-config | 20min | backend/ai/model_router.py; tests/unit/test_model_router_config_interface.py | ✅ |
 | 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/__tests__/ChatLiveUpdates.test.tsx | ✅ |
 | 3.6 | cascade-02 | feature/admin-panel-shell | 15min | frontend/src/pages/AdminPage.tsx; frontend/src/pages/__tests__/AdminPanel.test.tsx | ✅ |
 
@@ -77,6 +79,8 @@ List any unclaimed tasks here as they are identified.
 | 3.T | cascade-01 | 12/12 ✅ | N/A | N/A | N/A |
 | 4.3 | Sonnet-01 | 5/5 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
 | 4.4 | Sonnet-01 | 9/9 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
+| 4.2.3 | Sonnet-01 | 2/2 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
+| 4.2.4 | Sonnet-01 | 8/8 ✅ | 0/0 ✅ | 0/0 ✅ | 100% |
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |

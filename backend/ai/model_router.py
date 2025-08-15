@@ -381,6 +381,124 @@ class ModelRouter:
             self._error_counts[name] = 0
         
         logger.info("All circuit breakers reset")
+    
+    def update_default_policy(self, policy: RoutingPolicy) -> None:
+        """Update the default routing policy."""
+        if not isinstance(policy.strategy, RoutingStrategy):
+            raise ValueError(f"Invalid routing strategy: {policy.strategy}")
+        
+        self.default_policy = policy
+        logger.info(f"Updated default policy: {policy.strategy.value}")
+    
+    def update_provider_config(self, provider_name: str, config_updates: Dict[str, Any]) -> None:
+        """Update configuration for a specific provider."""
+        if provider_name not in self.providers:
+            raise ValueError(f"Provider '{provider_name}' not found")
+        
+        provider_config = self.providers[provider_name]
+        
+        # Validate updates
+        if "priority" in config_updates:
+            if config_updates["priority"] <= 0:
+                raise ValueError("Priority must be positive")
+            provider_config.priority = config_updates["priority"]
+        
+        if "weight" in config_updates:
+            if config_updates["weight"] <= 0:
+                raise ValueError("Weight must be positive")
+            provider_config.weight = config_updates["weight"]
+        
+        if "enabled" in config_updates:
+            provider_config.enabled = bool(config_updates["enabled"])
+        
+        if "max_requests_per_minute" in config_updates:
+            if config_updates["max_requests_per_minute"] <= 0:
+                raise ValueError("Max requests per minute must be positive")
+            provider_config.max_requests_per_minute = config_updates["max_requests_per_minute"]
+        
+        if "max_cost_per_request" in config_updates:
+            if config_updates["max_cost_per_request"] <= 0:
+                raise ValueError("Max cost per request must be positive")
+            provider_config.max_cost_per_request = config_updates["max_cost_per_request"]
+        
+        if "fallback_order" in config_updates:
+            if config_updates["fallback_order"] < 0:
+                raise ValueError("Fallback order must be non-negative")
+            provider_config.fallback_order = config_updates["fallback_order"]
+        
+        logger.info(f"Updated provider config for {provider_name}: {config_updates}")
+    
+    def enable_provider(self, provider_name: str) -> None:
+        """Enable a provider."""
+        if provider_name not in self.providers:
+            raise ValueError(f"Provider '{provider_name}' not found")
+        
+        self.providers[provider_name].enabled = True
+        logger.info(f"Enabled provider: {provider_name}")
+    
+    def disable_provider(self, provider_name: str) -> None:
+        """Disable a provider."""
+        if provider_name not in self.providers:
+            raise ValueError(f"Provider '{provider_name}' not found")
+        
+        self.providers[provider_name].enabled = False
+        logger.info(f"Disabled provider: {provider_name}")
+    
+    def get_configuration_snapshot(self) -> Dict[str, Any]:
+        """Get complete configuration snapshot."""
+        return {
+            "default_policy": {
+                "strategy": self.default_policy.strategy.value,
+                "max_cost_threshold": self.default_policy.max_cost_threshold,
+                "max_latency_threshold": self.default_policy.max_latency_threshold,
+                "required_capabilities": [cap.value for cap in self.default_policy.required_capabilities],
+                "preferred_providers": self.default_policy.preferred_providers,
+                "fallback_enabled": self.default_policy.fallback_enabled,
+                "retry_attempts": self.default_policy.retry_attempts
+            },
+            "providers": {
+                name: {
+                    "priority": config.priority,
+                    "weight": config.weight,
+                    "max_requests_per_minute": config.max_requests_per_minute,
+                    "max_cost_per_request": config.max_cost_per_request,
+                    "enabled": config.enabled,
+                    "fallback_order": config.fallback_order
+                }
+                for name, config in self.providers.items()
+            }
+        }
+    
+    def load_configuration(self, config_dict: Dict[str, Any]) -> None:
+        """Load configuration from dictionary."""
+        # Update default policy
+        if "default_policy" in config_dict:
+            policy_config = config_dict["default_policy"]
+            
+            strategy = RoutingStrategy(policy_config.get("strategy", "cost_optimized"))
+            required_capabilities = [
+                ModelCapability(cap) for cap in policy_config.get("required_capabilities", [])
+            ]
+            
+            new_policy = RoutingPolicy(
+                strategy=strategy,
+                max_cost_threshold=policy_config.get("max_cost_threshold", 0.05),
+                max_latency_threshold=policy_config.get("max_latency_threshold", 10.0),
+                required_capabilities=required_capabilities,
+                preferred_providers=policy_config.get("preferred_providers", []),
+                fallback_enabled=policy_config.get("fallback_enabled", True),
+                retry_attempts=policy_config.get("retry_attempts", 3)
+            )
+            
+            self.update_default_policy(new_policy)
+        
+        # Update provider configurations
+        if "providers" in config_dict:
+            for provider_name, provider_config in config_dict["providers"].items():
+                if provider_name in self.providers:
+                    self.update_provider_config(provider_name, provider_config)
+        
+        logger.info("Configuration loaded successfully")
 
 
 # Factory function for easy setup
