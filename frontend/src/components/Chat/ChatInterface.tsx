@@ -35,7 +35,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <div className="mb-2">
               <ModelSelector value={model} onChange={onModelChange} />
             </div>
-            <h2 className="text-lg font-semibold text-gray-900">Chat with Steve's Mom AI</h2>
+            <div className="flex items-center gap-2">
+              <img
+                src="/cannasol-logo.png"
+                alt="Cannasol Technologies"
+                className="h-6 w-6 object-contain hidden sm:block"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+              <h2 className="text-lg font-semibold text-gray-900">Chat with Steve's Mom AI</h2>
+            </div>
             <p className="text-sm text-gray-600">Ask me about inventory, documents, or business tasks — background inventory agent handles data.</p>
           </div>
         </div>
