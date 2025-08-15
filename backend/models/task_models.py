@@ -11,6 +11,9 @@ class TaskStatus(str, Enum):
     COMPLETED = "completed"
     FAILED = "failed"
     CANCELLED = "cancelled"
+    PENDING_APPROVAL = "pending_approval"
+    APPROVED = "approved"
+    REJECTED = "rejected"
 
 class Task(BaseModel):
     """Schema for a task."""
@@ -22,3 +25,9 @@ class Task(BaseModel):
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Timestamp when the task was last updated.")
 
     model_config = ConfigDict(from_attributes=True)
+
+class TaskUpdate(BaseModel):
+    """Schema for updating a task. All fields are optional."""
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[TaskStatus] = None

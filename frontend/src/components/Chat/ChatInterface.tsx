@@ -20,6 +20,8 @@ interface ChatInterfaceProps {
   onRetryStream?: () => void;
   onCancelStream?: () => void;
   toastMessage?: string;
+  onApproveTask: (taskId: string) => void;
+  onRejectTask: (taskId: string) => void;
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -36,7 +38,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   streamingActive,
   onRetryStream,
   onCancelStream,
-  toastMessage
+  toastMessage,
+  onApproveTask,
+  onRejectTask
 }) => {
   const [isTyping, setIsTyping] = React.useState(false);
   const [showLoading, setShowLoading] = React.useState(false);
@@ -114,7 +118,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent"></div>
         <div className="relative h-full">
-          <MessageList messages={messages} isTyping={isTyping} isLoading={showLoading} reasoningText={reasoningText} />
+          <MessageList messages={messages} isTyping={isTyping} isLoading={showLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
           {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
             <div className="px-6 py-3">
               <div className="mx-auto max-w-4xl">

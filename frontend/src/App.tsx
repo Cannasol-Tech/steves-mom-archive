@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import ChatPage from './pages/ChatPage';
 import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
+import TaskPage from './pages/TaskPage';
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ChatPage />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/tasks" element={<TaskPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

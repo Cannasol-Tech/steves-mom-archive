@@ -7,6 +7,8 @@ import uuid
 
 from ...models import task_models, orm
 from ...database import get_db
+from ..connection_manager import manager
+from ...functions.approval.approval_handler import ApprovalHandler
 
 router = APIRouter()
 
@@ -53,7 +55,8 @@ def read_tasks(
     return tasks
 
 @router.put("/tasks/{task_id}", response_model=task_models.Task)
-def update_task(task_id: uuid.UUID, task: task_models.Task, db: Session = Depends(get_db)):
+
+async def update_task(task_id: uuid.UUID, task: task_models.TaskUpdate, db: Session = Depends(get_db)):
     db_task = db.query(orm.task.Task).filter(orm.task.Task.id == task_id).first()
     if db_task is None:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -63,6 +66,8 @@ def update_task(task_id: uuid.UUID, task: task_models.Task, db: Session = Depend
         
     db.commit()
     db.refresh(db_task)
+    # Broadcast the update to all connected clients
+    await manager.broadcast(task_models.Task.model_validate(db_task).model_dump_json())
     return db_task
 
 @router.delete("/tasks/{task_id}", status_code=204)
@@ -74,3 +79,39 @@ def delete_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
     db.delete(db_task)
     db.commit()
     return
+
+@router.post("/tasks/{task_id}/approve", response_model=task_models.Task)
+async def approve_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
+    db_task = db.query(orm.task.Task).filter(orm.task.Task.id == task_id).first()
+    if db_task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    approval_handler = ApprovalHandler(db_task)
+    try:
+        approval_handler.approve()
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e))
+
+    db.commit()
+    db.refresh(db_task)
+    await manager.broadcast(task_models.Task.model_validate(db_task).model_dump_json())
+    return db_task
+
+
+@router.post("/tasks/{task_id}/reject", response_model=task_models.Task)
+async def reject_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
+    db_task = db.query(orm.task.Task).filter(orm.task.Task.id == task_id).first()
+    if db_task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    approval_handler = ApprovalHandler(db_task)
+    try:
+        approval_handler.reject()
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e))
+
+    db.commit()
+    db.refresh(db_task)
+    await manager.broadcast(task_models.Task.model_validate(db_task).model_dump_json())
+    return db_task
+

@@ -3,6 +3,7 @@ import ChatInterface from '../components/Chat/ChatInterface';
 import type { Message } from '../components/Chat/MessageList';
 import { startStream, type StreamHandle } from '../services/chatStream';
 import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
+import { TaskStatus } from '../types/tasks';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -25,6 +26,44 @@ const ChatPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const liveConnRef = useRef<LiveUpdateConnection | null>(null);
 
+  const handleApproveTask = async (taskId: string) => {
+    await updateTaskStatus(taskId, 'approved');
+  };
+
+  const handleRejectTask = async (taskId: string) => {
+    await updateTaskStatus(taskId, 'rejected');
+  };
+
+  const updateTaskStatus = async (taskId: string, status: 'approved' | 'rejected') => {
+    try {
+      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
+      const response = await fetch(`${apiBaseUrl}/api/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || `Failed to ${status} task`);
+      }
+
+            const updatedTask: { id: string, status: TaskStatus } = await response.json();
+
+      setMessages(prevMessages =>
+        prevMessages.map(msg =>
+          msg.taskId === taskId ? { ...msg, taskStatus: updatedTask.status } : msg
+        )
+      );
+      setToastMessage(`Task successfully ${status}.`);
+    } catch (error: any) {
+      setToastMessage(`Error: ${error.message}`);
+    }
+    setTimeout(() => setToastMessage(null), 5000);
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
@@ -32,6 +71,13 @@ const ChatPage: React.FC = () => {
   // Live updates connection: connect on mount, cleanup on unmount
   useEffect(() => {
     const conn = connectLiveUpdates({
+      onTaskUpdate: (updatedTask: Message) => {
+        setMessages(prevMessages =>
+          prevMessages.map(msg =>
+            msg.taskId === updatedTask.id ? { ...msg, taskStatus: updatedTask.status } : msg
+          )
+        );
+      },
       onMessage: (text) => {
         setMessages(prev => [
           ...prev,
@@ -116,10 +162,14 @@ const ChatPage: React.FC = () => {
       onDone: (reasoning?: string) => {
         const content = streamingContentRef.current;
         if (content && content.trim() && content.trim() !== '(no content)') {
+          const newTaskId = `task-${Date.now()}`;
           setMessages(prev => [
             ...prev,
             {
-              id: (Date.now() + 1).toString(),
+              // This is a mock for demonstration. In a real app, the backend would return this.
+              id: newTaskId,
+              taskId: newTaskId,
+              taskStatus: TaskStatus.PENDING_APPROVAL,
               content: content,
               role: 'assistant',
               timestamp: new Date(),
@@ -216,6 +266,8 @@ const ChatPage: React.FC = () => {
       onRetryStream={handleRetry}
       onCancelStream={handleCancel}
       toastMessage={toastMessage || undefined}
+      onApproveTask={handleApproveTask}
+      onRejectTask={handleRejectTask}
     />
   );
 };

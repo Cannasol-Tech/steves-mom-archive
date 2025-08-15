@@ -1,5 +1,9 @@
 import React from 'react';
 
+
+import { TaskStatus } from '../../types/tasks';
+import { CheckCircleIcon, XCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
+
 export interface Message {
   id: string;
   content: string;
@@ -7,6 +11,8 @@ export interface Message {
   timestamp: Date;
   reasoning?: string; // optional reasoning attached to assistant replies
   status?: 'sending' | 'sent' | 'failed';
+  taskId?: string;
+  taskStatus?: TaskStatus;
 }
 
 interface MessageListProps {
@@ -14,9 +20,37 @@ interface MessageListProps {
   isLoading?: boolean;
   isTyping?: boolean;
   reasoningText?: string;
+  onApproveTask: (taskId: string) => void;
+  onRejectTask: (taskId: string) => void;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping, reasoningText }) => {
+const getStatusIcon = (status: TaskStatus) => {
+  switch (status) {
+    case TaskStatus.APPROVED:
+      return <CheckCircleIcon className="h-5 w-5 text-green-500" />;
+    case TaskStatus.REJECTED:
+      return <XCircleIcon className="h-5 w-5 text-red-500" />;
+    case TaskStatus.PENDING_APPROVAL:
+      return <ClockIcon className="h-5 w-5 text-yellow-500" />;
+    default:
+      return null;
+  }
+};
+
+const getStatusColor = (status: TaskStatus) => {
+  switch (status) {
+    case TaskStatus.APPROVED:
+      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+    case TaskStatus.REJECTED:
+      return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+    case TaskStatus.PENDING_APPROVAL:
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+    default:
+      return '';
+  }
+};
+
+const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping, reasoningText, onApproveTask, onRejectTask }) => {
   return (
     <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 scroll-smooth custom-scrollbar">
       <div className="mx-auto max-w-4xl space-y-6">
@@ -92,6 +126,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                       fromUser ? 'text-white' : 'text-gray-800 dark:text-gray-200'
                     }`}>
                       {m.content}
+                      {m.taskStatus && (
+                        <div className={`mt-3 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-full ${getStatusColor(m.taskStatus)}`}>
+                          {getStatusIcon(m.taskStatus)}
+                          <span className="ml-1">{m.taskStatus.replace('_', ' ').toUpperCase()}</span>
+                        </div>
+                      )}
                     </div>
                     
                     {/* Reasoning section for AI messages */}
@@ -126,6 +166,29 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                   fromUser ? '-left-12' : '-right-12'
                 }`}>
                   <div className="flex flex-col gap-1">
+                    {!fromUser && m.taskId && m.taskStatus === 'pending_approval' && (
+                      <>
+                        <button 
+                          onClick={() => onApproveTask(m.taskId!)}
+                          className="w-8 h-8 rounded-full bg-green-100/90 dark:bg-green-600/90 backdrop-blur-sm shadow-lg border border-green-200/60 dark:border-green-500/60 flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-500 transition-colors duration-200"
+                          title="Approve Task"
+                        >
+                          <svg className="w-5 h-5 text-green-600 dark:text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </button>
+                        <button 
+                          onClick={() => onRejectTask(m.taskId!)}
+                          className="w-8 h-8 rounded-full bg-red-100/90 dark:bg-red-600/90 backdrop-blur-sm shadow-lg border border-red-200/60 dark:border-red-500/60 flex items-center justify-center hover:bg-red-200 dark:hover:bg-red-500 transition-colors duration-200"
+                          title="Reject Task"
+                        >
+                          <svg className="w-5 h-5 text-red-600 dark:text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </>
+                    )}
+
                     <button className="w-8 h-8 rounded-full bg-white/90 dark:bg-secondary-600/90 backdrop-blur-sm shadow-lg border border-gray-200/60 dark:border-secondary-500/60 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-secondary-500 transition-colors duration-200">
                       <svg className="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
