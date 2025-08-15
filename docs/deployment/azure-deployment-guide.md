@@ -294,6 +294,32 @@ After successful deployment:
 3. **Set up Monitoring**: Configure Application Insights and alerts
 4. **Security Review**: Implement additional security measures for production
 
+## CI/CD — Azure Functions (single-slot)
+
+The repository includes a GitHub Actions workflow for deploying the Functions app using a single production slot (no blue/green).
+
+- Workflow file: `.github/workflows/functions-deploy.yml`
+- App path: `backend/`
+- Runtime: Python 3.11
+
+**Triggers**
+
+- Pull Requests to `main`: build-only, upload zip artifact, run `pytest`
+- Push to `main`: build and deploy to the default slot
+- Manual: run via “Run workflow” in Actions tab
+
+**Required GitHub Secrets**
+
+- `AZURE_FUNCTIONAPP_NAME` — Name of the Function App
+- `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` — Publish profile XML (copy from Azure Portal: Function App ➜ Get publish profile)
+
+**How to trigger a deploy**
+
+1. Commit to `main` affecting `backend/**` or the workflow file; or
+2. From Actions ➜ “Azure Functions Deploy (Python)” ➜ Run workflow (leave slot blank for production)
+
+The workflow validates layout (`host.json`, `functions/`), installs dependencies, creates a zip, and deploys to the single production slot.
+
 ## Support
 
 For issues with deployment:
