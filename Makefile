@@ -1,8 +1,9 @@
 .PHONY: help setup setup-backend setup-frontend setup-dev
-.PHONY: test test-unit test-integration test-acceptance test-frontend test-infra
+.PHONY: test test-unit test-integration test-acceptance test-acceptance-pytest test-frontend test-infra test-router test-router-acceptance
 .PHONY: lint lint-py lint-js lint-md fix-lint
 .PHONY: preview dev clean
 .PHONY: deploy deploy-infra deploy-functions
+.PHONY: ci ci-fast infra-build infra-whatif
 .PHONY: md-lint md-fix
 
 # Main help target
@@ -20,8 +21,11 @@ help:
 	@echo "  test-unit     - Run unit tests only"
 	@echo "  test-integration - Run integration tests"
 	@echo "  test-acceptance - Run acceptance tests (behave)"
+	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
 	@echo "  test-infra    - Run infrastructure tests (Bicep validation)"
+	@echo "  test-router   - Run model router unit tests"
+	@echo "  test-router-acceptance - Run model router acceptance tests (pytest)"
 	@echo ""
 	@echo "Linting & Code Quality:"
 	@echo "  lint          - Run all linters (Python, JS, Markdown)"
@@ -39,6 +43,14 @@ help:
 	@echo "  deploy        - Deploy full application (infra + functions)"
 	@echo "  deploy-infra  - Deploy infrastructure only (Bicep)"
 	@echo "  deploy-functions - Deploy Azure Functions only"
+	@echo ""
+	@echo "CI Bundles:"
+	@echo "  ci            - Lint + unit + integration + frontend tests (fast CI bundle)"
+	@echo "  ci-fast       - Lint (py) + unit tests only (very fast)"
+	@echo ""
+	@echo "Infrastructure Utilities:"
+	@echo "  infra-build   - Build/validate Bicep templates"
+	@echo "  infra-whatif  - Run Azure what-if against current parameters"
 
 
 # Setup targets
@@ -60,27 +72,39 @@ setup-dev:
 	.venv/bin/pip install pytest-asyncio flake8 mypy black isort
 
 # Testing targets
-test: test-unit test-integration test-acceptance
+test: setup-dev test-unit test-integration test-acceptance
 
-test-unit:
+test-unit: setup-dev
 	@echo "Running unit tests..."
 	.venv/bin/pytest tests/unit/ -v
 
-test-integration:
+test-integration: setup-dev
 	@echo "Running integration tests..."
 	.venv/bin/pytest tests/integration/ -v
 
-test-acceptance:
+test-acceptance: setup-dev
 	@echo "Running acceptance tests..."
 	.venv/bin/behave tests/acceptance/
+
+test-acceptance-pytest: setup-dev
+	@echo "Running acceptance tests (pytest)..."
+	.venv/bin/pytest tests/acceptance/*.py -v
 
 test-frontend:
 	@echo "Running frontend tests..."
 	cd frontend && npm test -- --watchAll=false
 
-test-infra:
+test-infra: setup-dev
 	@echo "Running infrastructure tests..."
 	.venv/bin/pytest tests/infrastructure/ -v
+
+test-router: setup-dev
+	@echo "Running model router unit tests..."
+	.venv/bin/pytest tests/unit/test_model_router_* -v
+
+test-router-acceptance: setup-dev
+	@echo "Running model router acceptance tests (pytest)..."
+	.venv/bin/pytest tests/acceptance/test_model_router_acceptance.py -v
 
 # Linting targets
 lint: lint-py lint-js lint-md
@@ -142,6 +166,28 @@ deploy-infra:
 deploy-functions:
 	@echo "Deploying Azure Functions..."
 	cd scripts && ./deploy-azure-resources.sh
+
+# CI bundles
+ci:
+	@echo "Running CI bundle (lint + unit + integration + frontend)..."
+	$(MAKE) lint
+	$(MAKE) test-unit
+	$(MAKE) test-integration
+	$(MAKE) test-frontend
+
+ci-fast:
+	@echo "Running fast CI bundle (lint-py + unit)..."
+	$(MAKE) lint-py
+	$(MAKE) test-unit
+
+# Infrastructure utilities
+infra-build:
+	@echo "Building/validating Bicep templates..."
+	cd infrastructure && ./scripts/bicep-build.sh
+
+infra-whatif:
+	@echo "Running Azure what-if (non-destructive preview)..."
+	cd infrastructure && ./scripts/bicep-whatif.sh
 
 # Legacy targets (kept for compatibility)
 md-fix: fix-lint
