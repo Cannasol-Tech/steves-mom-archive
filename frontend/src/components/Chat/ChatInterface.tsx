@@ -42,31 +42,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onApproveTask,
   onRejectTask
 }) => {
-  const [isTyping, setIsTyping] = React.useState(false);
-  const [showLoading, setShowLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    let typingTimer: NodeJS.Timeout;
-
-    if (isLoading) {
-      setIsTyping(true);
-      setShowLoading(false);
-
-      // Show typing indicator for a short period, then switch to the main loading display
-      typingTimer = setTimeout(() => {
-        setIsTyping(false);
-        setShowLoading(true);
-      }, 1200); // 1.2-second typing simulation
-
-    } else {
-      setIsTyping(false);
-      setShowLoading(false);
-    }
-
-    return () => {
-      clearTimeout(typingTimer);
-    };
-  }, [isLoading]);
   return (
     <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl overflow-hidden rotating-glow pulse-glow">
       {/* Modern Chat Header */}
@@ -102,7 +77,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
           </div>
           {toastMessage && (
-            <div className="mt-4 bg-red-500/90 backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-red-400/30 shadow-lg animate-in slide-in-from-top-2 duration-300">
+                       <div role="alert" className="mt-4 bg-red-500/90 backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-red-400/30 shadow-lg animate-in slide-in-from-top-2 duration-300">
               <div className="flex items-center space-x-2">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -118,7 +93,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent"></div>
         <div className="relative h-full">
-          <MessageList messages={messages} isTyping={isTyping} isLoading={showLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
+                    <MessageList messages={messages} isTyping={false} isLoading={isLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
           {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
             <div className="px-6 py-3">
               <div className="mx-auto max-w-4xl">
