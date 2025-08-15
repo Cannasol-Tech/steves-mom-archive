@@ -41,10 +41,11 @@ jobs:
 
       # Optional: Add step to run tests here
 
-      - name: Zip backend for deployment
+      - name: Zip backend for deployment (rooted at backend/)
         run: |
-          zip -r backend.zip backend \
-            -x "backend/.venv/*" \
+          cd backend
+          zip -r ../backend.zip . \
+            -x ".venv/*" \
                "**/__pycache__/*" \
                "**/.pytest_cache/*" \
                "**/.mypy_cache/*"
