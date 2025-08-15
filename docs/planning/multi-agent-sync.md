@@ -29,7 +29,7 @@ List any unclaimed tasks here as they are identified.
 | 1.IaC-SEC-COST | IaC compliance: security soft-delete, Redis SKU metadata, naming | cascade-01 | fix/iac-security-cost | 2025-08-14T00:43:00-04:00 | 1.1/1.2 complete | Key Vault soft delete added; Redis Basic_C0 annotation added; storage constraints verified. Tests pending: pytest not installed locally. |
 | 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
-| 4.2.3 | Env-based provider selection + default routing policy | cascade-69 | feature/model-router | 2025-08-15T06:56:39-04:00 | 4.2.2 complete | TDD: ProviderConfigManager/env and default policy from env |
+| 3.T2 | Fix chat JSON display + eliminate "(no content)" messages | cascade-69 | agent-dev | 2025-08-15T07:06:41-04:00 | 3.T complete | Fixed frontend JSON parsing, reasoning integration, make preview target |
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
 | 3.6 | Minimal admin panel shell (feature toggles) | cascade-02 | feature/admin-panel-shell | 2025-08-15T07:08:45-04:00 | 3.5 complete | TDD: feature toggle UI, admin routing, basic controls |
 
