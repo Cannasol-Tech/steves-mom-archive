@@ -119,6 +119,18 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 #### 1.4: Repository and development environment [ ] (est: 0.25d)
 
 - **1.4.1** [ ] Set up repository structure and branching strategy **[CHECKED OUT: cascade-01 @2025-08-15T17:00:00-04:00] [agent-dev] [CURRENT-TASK]**
+  - Scope:
+    - Define top-level repo structure: `frontend/`, `backend/`, `infrastructure/`, `tests/`, `docs/`, `scripts/`, `alembic/`.
+    - Establish branching strategy: work on `agent-dev`; use `feature/*`, `fix/*`, `docs/*`, `chore/*`, `release/x.y.z`, `hotfix/*`.
+    - Commit convention: `[Agent-ID] type(scope): description`.
+    - PR policy: PRs target `agent-dev` with summary, scope, test results, coverage, affected files; link to plan tasks.
+    - CI gates aligned with `Makefile`: `make lint`, `make test`, infra `make whatif` when infra changes; optional `make acceptance`.
+    - Naming conventions: kebab-case (frontend paths), snake_case (Python), Bicep modules under `infrastructure/modules/`.
+    - Protections: require PR + passing checks on `agent-dev`.
+  - Acceptance Criteria:
+    - `docs/planning/repository-structure.md` added with details (structure tree, branching, PR/CI rules, naming, protections).
+    - This section reflects the same rules and references the new doc.
+    - `make test` passes and documentation lint passes.
 - **1.4.2** [ ] Configure development environment and dependencies
 - **1.4.3** [ ] Create frontend scaffold with React/TypeScript/Tailwind
 - **1.4.4** [ ] Set up development configuration files (.env, .gitignore, etc.)
