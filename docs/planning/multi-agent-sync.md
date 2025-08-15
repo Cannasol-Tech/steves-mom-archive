@@ -1,3 +1,4 @@
+🔒 EDITING: Sonnet-01 (2025-08-15T06:30:08-04:00)
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -25,7 +26,7 @@ List any unclaimed tasks here as they are identified.
 |---------|-------------|-------|--------|---------|--------------|-------|
 | 3.2 | Chat input, message list, timestamps | cascade-02 | feature/chat-input-messages | 2025-01-15T11:15:00-05:00 | 3.1 complete | Enhancing chat interface with better UX |
 | 1.IaC-SEC-COST | IaC compliance: security soft-delete, Redis SKU metadata, naming | cascade-01 | fix/iac-security-cost | 2025-08-14T00:43:00-04:00 | 1.1/1.2 complete | Key Vault soft delete added; Redis Basic_C0 annotation added; storage constraints verified. Tests pending: pytest not installed locally. |
-| 3.3 | Streaming display + retry/cancel | cascade-02 | feature/chat-streaming | 2025-08-15T05:47:40-04:00 | 3.2 in progress | TDD first: add tests for stream chunks and retry/cancel |
+| 3.4 | Error/loading states, toasts | cascade-02 | feature/chat-errors-toasts | 2025-08-15T06:20:36-04:00 | 3.3 complete | TDD: error boundaries, loading indicators, and toast notifications |
 | 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 
@@ -38,6 +39,7 @@ List any unclaimed tasks here as they are identified.
 | 1.2 | cascade-01 | feature/azure-provisioning | 30min | 8 files | ✅ |
 | 1.1 | cascade-01 | feature/infrastructure-iac-draft | 2h | 15 files | ✅ |
 | 3.1 | cascade-02 | feature/ui-shell-routing | 25min | 12 files | ✅ |
+| 3.3 | cascade-02 | feature/chat-streaming | 30min | frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 1.2.1 | cascade-01 | fix/iac-security-cost | 10min | infrastructure/modules/keyvault.bicep | ⏳ (awaiting test run) |
 | 1.2.2 | cascade-01 | fix/iac-security-cost | 5min | infrastructure/modules/redis.bicep | ⏳ (awaiting test run) |
 | 3.7.1 | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/public/cannasol-logo.png | ⏳ |
@@ -61,6 +63,8 @@ List any unclaimed tasks here as they are identified.
 | 3.1 | cascade-02 | 5/5 ✅ | N/A | N/A | 100% |
 | 1.IaC-SEC-COST | cascade-01 | N/A | N/A | N/A | Blocked: pytest not found (env setup needed) |
 | 4.2.1 | cascade-03 | 8/8 ✅ | N/A | N/A | N/A |
+| 3.3 | cascade-02 | 10/10 ✅ | 1/1 ✅ | N/A | 100% |
+| 4.2.2 | cascade-03 | 3/3 ✅ | N/A | N/A | N/A |
 
 ## Communication Log
 
@@ -74,3 +78,4 @@ List any unclaimed tasks here as they are identified.
 | 2025-08-13T17:30:00-04:00 | cascade-01 | ALL | Task 1.1 nearly complete: Created comprehensive IaC foundation with Bicep templates, naming conventions, SKU selection guide, and test suites. Ready for acceptance review. | Review IaC artifacts |
 | 2025-01-15T11:00:00-05:00 | cascade-02 | ALL | Completed task 3.1: UI shell with React/TS/Tailwind. Frontend foundation ready for Phase 3.2+ | Review frontend structure |
 | 2025-08-15T06:30:00-04:00 | cascade-03 | ALL | Completed TDD for 4.2.1: routing policy schema tests added (8/8 passing). Moving to 4.2.2 router fallback logic. | None |
+| 2025-08-15T06:20:15-04:00 | cascade-03 | ALL | Completed 4.2.2: Implemented fallback/retry and circuit breaker behavior for ModelRouter; added unit tests (3/3 passing). | None |
