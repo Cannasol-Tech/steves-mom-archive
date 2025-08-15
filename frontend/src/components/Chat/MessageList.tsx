@@ -209,7 +209,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                     <span className="opacity-70 dark:opacity-60">•</span>
                     <div className="flex items-center gap-1">
                       <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">Thinking...</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">Thinking…</span>
                     </div>
                   </div>
                   

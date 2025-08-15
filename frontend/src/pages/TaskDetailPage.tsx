@@ -32,11 +32,11 @@ const TaskDetailPage: React.FC = () => {
   }, [taskId]);
 
   if (isLoading) {
-    return <div className="p-4 sm:p-6 lg:p-8">Loading task details...</div>;
+    return <div className="p-4 sm:p-6 lg:p-8">Loading task...</div>;
   }
 
   if (error) {
-    return <div className="p-4 sm:p-6 lg:p-8 text-red-500">Error: {error}</div>;
+    return <div className="p-4 sm:p-6 lg:p-8">Task not found.</div>;
   }
 
   if (!task) {
