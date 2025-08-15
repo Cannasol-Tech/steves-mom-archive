@@ -66,7 +66,14 @@ const StevesMomCharacter: React.FC<Props> = ({ size = 140 }) => {
       // Return to idle after animation cycle
       const t = setTimeout(() => {
         // Only reset if action unchanged
-        if (actionRef.current === state.action) {
+    // Increment animationIdRef to uniquely identify this animation instance
+    animationIdRef.current += 1;
+    const currentAnimationId = animationIdRef.current;
+    if (state.action !== 'idle') {
+      // Return to idle after animation cycle
+      const t = setTimeout(() => {
+        // Only reset if this is the latest animation instance
+        if (animationIdRef.current === currentAnimationId) {
           characterController.set({ action: 'idle' });
         }
       }, 1800);
