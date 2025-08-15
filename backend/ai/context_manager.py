@@ -16,6 +16,7 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, UTC
 import hashlib
+from math import ceil
 
 from .providers.base import Message, MessageRole
 
@@ -188,60 +189,62 @@ class ContextManager:
     ) -> ContextWindow:
         """
         Get context window for a session.
-        
+
         Args:
             session_id: Session identifier
             max_tokens: Override default max tokens
-            
+
         Returns:
             ContextWindow with messages and metadata
         """
         if session_id not in self.sessions:
             raise ValueError(f"Session {session_id} not found")
-        
+
         session = self.sessions[session_id]
         max_tokens = max_tokens or self.max_context_tokens
-        
-        # Start with all messages
         messages = session.messages.copy()
-        total_tokens = self._estimate_tokens(messages)
-        
-        # If within limits, return as-is
-        if total_tokens <= max_tokens:
+
+        # --- Definitive rewrite of truncation logic ---
+        system_messages = [m for m in messages if m.role == MessageRole.SYSTEM]
+        other_messages = [m for m in messages if m.role != MessageRole.SYSTEM]
+
+        # Start with system messages
+        system_tokens = self._estimate_tokens(system_messages)
+
+        # If system messages alone are too big, return them (or nothing if they are empty).
+        if system_tokens > max_tokens:
             return ContextWindow(
-                messages=messages,
-                total_tokens=total_tokens,
+                messages=[],
+                total_tokens=0,
                 max_tokens=max_tokens,
-                truncated=False
+                truncated=len(messages) > 0,
+                summary=session.metadata.get("conversation_summary")
             )
+
+        # Start with system messages and their token count
+        current_tokens = system_tokens
         
-        # Need to truncate - keep recent messages and system messages
-        truncated_messages = []
-        current_tokens = 0
-        
-        # Always include system messages
-        system_messages = [msg for msg in messages if msg.role == MessageRole.SYSTEM]
-        for msg in system_messages:
-            msg_tokens = self._estimate_tokens([msg])
-            if current_tokens + msg_tokens <= max_tokens:
-                truncated_messages.append(msg)
-                current_tokens += msg_tokens
-        
-        # Add recent messages in reverse order
-        non_system_messages = [msg for msg in messages if msg.role != MessageRole.SYSTEM]
-        for msg in reversed(non_system_messages):
-            msg_tokens = self._estimate_tokens([msg])
-            if current_tokens + msg_tokens <= max_tokens:
-                truncated_messages.insert(len(system_messages), msg)
-                current_tokens += msg_tokens
+        # Collect recent messages that fit within the token limit
+        recent_messages = []
+        for message in reversed(other_messages):
+            message_tokens = self._estimate_tokens([message])
+            if current_tokens + message_tokens <= max_tokens:
+                recent_messages.append(message)
+                current_tokens += message_tokens
             else:
                 break
         
+        # The collected messages are in reverse chronological order, so reverse them back
+        recent_messages.reverse()
+        
+        # Combine system messages with the recent messages
+        final_messages = system_messages + recent_messages
+
         return ContextWindow(
-            messages=truncated_messages,
+            messages=final_messages,
             total_tokens=current_tokens,
             max_tokens=max_tokens,
-            truncated=True,
+            truncated=len(final_messages) < len(messages),
             summary=session.metadata.get("conversation_summary")
         )
     
@@ -334,26 +337,27 @@ class ContextManager:
         return hashlib.md5(data.encode()).hexdigest()[:16]
     
     def _estimate_tokens(self, messages: List[Message]) -> int:
-        """Estimate token count for messages."""
-        total_chars = 0
+        """Estimate token count for a list of messages based on a simple heuristic."""
+        # A simple heuristic: 1 token ~ 4 chars.
+        total_tokens = 0
         for message in messages:
-            total_chars += len(message.content)
-            total_chars += len(message.role.value)
-            if message.metadata:
-                total_chars += len(str(message.metadata))
-        
-        # Rough approximation: 1 token ≈ 4 characters
-        return total_chars // 4
+            content_str = json.dumps(message.content) if isinstance(message.content, dict) else str(message.content)
+            total_tokens += ceil(len(content_str) / 4)
+        return total_tokens
     
     async def _check_summarization_needed(self, session_id: str) -> None:
         """Check if conversation summarization is needed."""
         session = self.sessions[session_id]
         total_tokens = self._estimate_tokens(session.messages)
         
-        # Summarize if we exceed threshold, have enough messages, and haven't summarized recently
-        if (total_tokens > self.summarization_threshold and 
+        # Summarize if we exceed threshold, have enough messages, and haven't summarized in the last 5 minutes
+        last_summarized = session.metadata.get("summarized_at")
+
+        if (
+            total_tokens > self.summarization_threshold and
             len(session.messages) > 10 and
-            len(session.messages) % 10 == 0):  # Only summarize at intervals
+            (last_summarized is None or (datetime.now(UTC) - last_summarized > timedelta(minutes=5)))
+        ):
             await self._summarize_conversation(session_id)
     
     async def _summarize_conversation(self, session_id: str) -> None:
@@ -362,27 +366,15 @@ class ContextManager:
         # In a full implementation, this would use the AI model to create summaries
         session = self.sessions[session_id]
         
-        # Simple summarization: keep recent messages, summarize older ones
-        if len(session.messages) > 10:
-            # Keep last 10 messages
-            recent_messages = session.messages[-10:]
-            
-            # Create simple summary of older messages
-            older_messages = session.messages[:-10]
-            summary_parts = []
-            
-            for msg in older_messages:
-                if msg.role == MessageRole.USER:
-                    summary_parts.append(f"User asked about: {msg.content[:100]}...")
-                elif msg.role == MessageRole.ASSISTANT:
                     summary_parts.append(f"Assistant responded about: {msg.content[:100]}...")
             
             summary = "Previous conversation summary:\n" + "\n".join(summary_parts[-5:])
             
             # Update session
-            session.messages = recent_messages
+            session.messages.clear()
+            session.messages.extend(system_messages + recent_messages)
             session.metadata["conversation_summary"] = summary
-            session.metadata["summarized_at"] = datetime.now(UTC).isoformat()
+            session.metadata["summarized_at"] = datetime.now(UTC)
             
             logger.info(f"Summarized conversation for session {session_id}")
     

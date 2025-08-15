@@ -186,8 +186,6 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                     <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-secondary-600/60">
                       <details className="group/reasoning" open>
                         <summary className="cursor-pointer select-none text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-2 transition-colors duration-200">
-                        <summary className="cursor-pointer select-none text-xs text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-2 transition-colors duration-200">
-                        <summary className="cursor-pointer select-none text-xs text-emerald-700 hover:text-emerald-800 flex items-center gap-2 transition-colors duration-200">
                           <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-blue-500 animate-pulse"></div>
                           <span className="font-medium dark:text-emerald-300">Live reasoning process</span>
                         </summary>

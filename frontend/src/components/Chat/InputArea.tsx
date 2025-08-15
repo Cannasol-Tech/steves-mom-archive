@@ -12,7 +12,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, disabled, onChange, onSubm
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className="">
       <div className="mx-auto max-w-3xl">
-        <div className="px-4 sm:px-6 py-4 bg-white dark:bg-secondary-800 border-t border-gray-200 dark:border-secondary-700 transition-colors duration-300">
+        <div className="flex items-end rounded-2xl border border-blue-100 dark:border-secondary-700 bg-white dark:bg-secondary-800 shadow-sm focus-within:ring-2 focus-within:ring-blue-200 dark:focus-within:ring-secondary-600 transition-colors duration-300">
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -25,7 +25,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, disabled, onChange, onSubm
             <button
               type="submit"
               disabled={!value.trim() || disabled}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 w-9 sm:w-auto sm:px-4 sm:py-2 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-primary-300/50 dark:shadow-primary-900/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 dark:from-blue-600 dark:to-emerald-600 text-white font-medium shadow hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 sm:w-auto sm:px-4 sm:py-2 sm:text-sm"
               aria-label="Send message"
               title="Send (Enter)"
             >
@@ -36,7 +36,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, disabled, onChange, onSubm
             </button>
           </div>
         </div>
-        <div className="mt-2 text-center text-xs text-gray-500">Powered by Grok (Azure proxy) • Reasoning-aware</div>
+        <div className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">Powered by Grok (Azure proxy) • Reasoning-aware</div>
       </div>
     </form>
   );
