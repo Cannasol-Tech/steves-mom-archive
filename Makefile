@@ -15,6 +15,7 @@ help:
 	@echo "  setup-backend - Setup Python venv and install backend dependencies"
 	@echo "  setup-frontend- Install frontend npm dependencies"
 	@echo "  setup-dev     - Install development dependencies (pytest, linting, etc.)"
+	@echo "  setup-tools   - Install Azurite and Azure Functions Core Tools"
 	@echo ""
 	@echo "Testing:"
 	@echo "  test          - Run all tests (unit + integration + acceptance)"
@@ -36,7 +37,7 @@ help:
 	@echo "  fix-lint      - Auto-fix linting issues where possible"
 	@echo ""
 	@echo "Development:"
-	@echo "  preview       - Start dev servers (backend + frontend)"
+	@echo "  preview       - Start dev servers (Azurite + Azure Functions @8000 + Frontend @3000)"
 	@echo "  dev           - Start development environment with hot reload"
 	@echo "  clean         - Clean build artifacts and caches"
 	@echo ""
@@ -55,13 +56,17 @@ help:
 
 
 # Setup targets
-setup: setup-backend setup-frontend setup-dev
+setup: setup-backend setup-frontend setup-dev setup-tools
 
 setup-backend:
 	@echo "Setting up Python backend..."
 	python3 -m venv .venv || /opt/homebrew/bin/python3.12 -m venv .venv
 	.venv/bin/pip install --upgrade pip
 	.venv/bin/pip install fastapi uvicorn[standard] python-dotenv pydantic xai-sdk
+	@if [ -f src/backend/requirements.txt ]; then \
+		echo "Installing Azure Functions backend requirements..."; \
+		.venv/bin/pip install -r src/backend/requirements.txt; \
+	fi
 
 setup-frontend:
 	@echo "Setting up frontend dependencies..."
@@ -139,13 +144,15 @@ fix-lint:
 		--ignore "env/**" --ignore "venv312/**"
 
 # Development targets
-preview: setup-backend setup-frontend
+preview: setup-backend setup-frontend setup-tools
 	@echo "Starting preview servers..."
-	@echo "Backend will run on http://127.0.0.1:8000"
-	@echo "Frontend will run on http://localhost:3000"
-	@echo "Press Ctrl+C to stop both servers"
-	@trap 'kill %1 %2 2>/dev/null || true' EXIT; \
-	(.venv/bin/uvicorn backend.api.app:app --host 127.0.0.1 --port 8000 --reload &) && \
+	@echo "Azurite (storage emulator) on 127.0.0.1:10000/10001/10002"
+	@echo "Azure Functions on http://127.0.0.1:8000"
+	@echo "Frontend on http://localhost:3000"
+	@echo "Press Ctrl+C to stop all"
+	@trap 'kill %1 %2 %3 2>/dev/null || true' EXIT; \
+	(azurite >/dev/null 2>&1 &) && \
+	(cd src/backend && func start --port 8000 &) && \
 	(cd frontend && npm start &) && \
 	wait
 
