@@ -1,5 +1,22 @@
+import React from 'react';
 import { TaskStatus } from '../types/tasks';
-import { CheckCircleIcon, XCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
+
+// Lightweight local icons to avoid external dependency issues in tests
+export const CheckCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1.293 13.293a1 1 0 0 1-1.414 0l-2.293-2.293a1 1 0 1 1 1.414-1.414l1.586 1.586 4.586-4.586a1 1 0 0 1 1.414 1.414l-5.293 5.293z" />
+  </svg>
+);
+export const XCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 13.17l-1.41 1.41L12 13.41l-2.83 2.83-1.41-1.41L10.59 12 7.76 9.17l1.41-1.41L12 10.59l2.83-2.83 1.41 1.41L13.41 12l2.83 2.83z" />
+  </svg>
+);
+export const ClockIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5v5l4 2-1 1.7-5-2.7V7h2z" />
+  </svg>
+);
 
 export const getStatusIcon = (status: TaskStatus) => {
   switch (status) {
