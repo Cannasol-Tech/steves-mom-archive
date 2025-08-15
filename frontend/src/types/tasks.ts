@@ -9,6 +9,12 @@ export enum TaskStatus {
     REJECTED = "rejected",
 }
 
+export interface ApprovalHistory {
+  id: string;
+  status: TaskStatus;
+  timestamp: string;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -16,4 +22,5 @@ export interface Task {
   status: TaskStatus;
   created_at: string;
   updated_at: string;
+  approval_history: ApprovalHistory[];
 }

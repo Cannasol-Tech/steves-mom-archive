@@ -199,14 +199,14 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - Docs updated: release process in `docs/deployment/azure-deployment-guide.md`.
 - Planning updated: implementation plan and multi-agent sync.
 
-  #2.1: SWA GitHub Actions deploy (tune `.github/workflows/azure-static-web-apps-*.yml`) [ ] (est: 0.25d)
+  #2.1: SWA GitHub Actions deploy (tune `.github/workflows/azure-static-web-apps-*.yml`) [ ] (est: 0.25d) **[CHECKED OUT: cascade-69 @2025-08-15T08:25:01-04:00] [feature/swa-gha-deploy]**
       2.1.1 [ ] Configure SWA workflow with proper build commands and output directory
       2.1.2 [ ] Set up environment-specific deployment slots (staging/production)
       2.1.3 [ ] Configure secrets and environment variables in GitHub
       2.1.4 [ ] Test deployment pipeline with sample frontend changes
       2.1.T [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
       2.1.C [ ] Commit and push your work: `git add -A && git commit -m "2.1: progress" && git push`
-  #2.2: Functions build/deploy workflow (Python) [ ] (est: 0.25d)
+  #2.2: Functions build/deploy workflow (Python) [ ] (est: 0.25d) **[CHECKED OUT: Sonnet-01 @2025-08-15T09:00:30-04:00] [feature/functions-gha-deploy]**
       2.2.1 [ ] Create GitHub Actions workflow for Azure Functions deployment
       2.2.2 [ ] Configure Python build steps with requirements installation
       2.2.3 [ ] Set up deployment slots and blue-green deployment strategy
@@ -372,12 +372,12 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 5.3.4 [x] Create approval history and audit logging
       - 5.3.T [x] Tests — unit/integration for approval handling (est: 0.2d)
       - 5.3.C [ ] Commit and push your work: `git add -A && git commit -m "5.3: progress" && git push`
-  #5.4: UI approve/reject buttons + status updates [ ] (est: 0.5d) - `Checked out by cascade-01` (2025-08-15T08:30:00-04:00) on feature branch `feat/cascade-01/approve-reject-ui`
+  #5.4: UI approve/reject buttons + status updates [ ] (est: 0.5d)
       - 5.4.1 [ ] Design task approval interface with clear action buttons
       - 5.4.2 [ ] Implement real-time status updates and notifications
-      - 5.4.3 [ ] Add task details view with approval history
+      - 5.4.3 [x] Add task details view with approval history ✅ **[COMPLETED: cascade-01 @2025-08-15T09:00:00-04:00]**
       - 5.4.4 [ ] Create bulk approval functionality for multiple tasks
-      - 5.4.T [ ] Tests — UI integration for approvals/status updates [ ] (est: 0.2d)
+      - 5.4.T [ ] Tests — UI integration for approvals/status updates [ ] (est: 0.2d) [CURRENT-TASK]
       - 5.4.C [ ] Commit and push your work: `git add -A && git commit -m "5.4: progress" && git push`
   #5.T: Tests — unit, integration, acceptance for tasking [ ] (est: 0.5d)
 

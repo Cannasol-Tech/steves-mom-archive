@@ -67,6 +67,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               Chat
             </Link>
             <Link
+              to="/tasks"
+              className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                isActive('/tasks')
+                  ? 'bg-primary-100 dark:bg-primary-800/50 text-primary-700 dark:text-primary-200'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-secondary-700'
+              }`}
+            >
+              Tasks
+            </Link>
+            <Link
               to="/admin"
               className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 isActive('/admin')
@@ -93,6 +103,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 }`}
               >
                 Chat
+              </Link>
+              <Link
+                to="/tasks"
+                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                  isActive('/tasks')
+                    ? 'bg-primary-100 dark:bg-primary-800/50 text-primary-700 dark:text-primary-200'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-secondary-700'
+                }`}
+              >
+                Tasks
               </Link>
               <Link
                 to="/admin"

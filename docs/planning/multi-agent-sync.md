@@ -1,4 +1,4 @@
-<!-- 🔒 EDITING: cascade-01 (2025-08-15T08:30:00-04:00) -->
+<!-- 🔓 UNLOCKED (2025-08-15T09:01:10-04:00) -->
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -34,6 +34,7 @@ List any unclaimed tasks here as they are identified.
 | 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 | 5.4 | UI approve/reject buttons + status updates | cascade-01 | feature/approve-reject-ui | 2025-08-15T08:30:00-04:00 | 5.3 complete | Implementing UI for approval workflow |
+| 2.2 | Functions build/deploy workflow (Python) | Sonnet-01 | feature/functions-gha-deploy | 2025-08-15T09:00:30-04:00 | 1.3 complete | Checking out per implementation plan |
 
 ## Completed Tasks
 

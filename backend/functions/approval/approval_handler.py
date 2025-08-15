@@ -1,10 +1,6 @@
 import logging
+from backend.models.task_models import TaskStatus
 from enum import Enum
-
-class TaskStatus(Enum):
-    PENDING_APPROVAL = 'pending_approval'
-    APPROVED = 'approved'
-    REJECTED = 'rejected'
 
 class Task:
     def __init__(self, id, status):
@@ -22,14 +18,13 @@ class ApprovalHandler:
         }
 
     def _can_transition_to(self, new_status):
-        current_status = self.task.status
-        allowed_statuses = self.valid_transitions.get(current_status, [])
-        return new_status in allowed_statuses
+        current_status = TaskStatus(self.task.status)
+        return new_status in self.valid_transitions.get(current_status, [])
 
     def approve(self):
         if not self._can_transition_to(TaskStatus.APPROVED):
             raise ValueError(f"Cannot approve task in '{self.task.status.value}' state.")
-        self.task.status = TaskStatus.APPROVED
+        self.task.status = TaskStatus.APPROVED.value
         self._send_notification(TaskStatus.APPROVED)
         self._log_history(TaskStatus.APPROVED)
 

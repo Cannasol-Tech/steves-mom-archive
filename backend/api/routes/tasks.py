@@ -9,6 +9,7 @@ from ...models import task_models, orm
 from ...database import get_db
 from ..connection_manager import manager
 from ...functions.approval.approval_handler import ApprovalHandler
+from ...models.orm.approval_history import ApprovalHistory
 
 router = APIRouter()
 
@@ -86,6 +87,9 @@ async def approve_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
     if db_task is None:
         raise HTTPException(status_code=404, detail="Task not found")
 
+    history_entry = ApprovalHistory(task_id=db_task.id, status=task_models.TaskStatus.APPROVED)
+    db.add(history_entry)
+
     approval_handler = ApprovalHandler(db_task)
     try:
         approval_handler.approve()
@@ -103,6 +107,9 @@ async def reject_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
     db_task = db.query(orm.task.Task).filter(orm.task.Task.id == task_id).first()
     if db_task is None:
         raise HTTPException(status_code=404, detail="Task not found")
+
+    history_entry = ApprovalHistory(task_id=db_task.id, status=task_models.TaskStatus.REJECTED)
+    db.add(history_entry)
 
     approval_handler = ApprovalHandler(db_task)
     try:

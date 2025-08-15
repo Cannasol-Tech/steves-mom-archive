@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ChatInterface from '../components/Chat/ChatInterface';
 import type { Message } from '../components/Chat/MessageList';
+import type { Task } from '../types/tasks';
 import { startStream, type StreamHandle } from '../services/chatStream';
 import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
 import { TaskStatus } from '../types/tasks';
@@ -50,7 +51,7 @@ const ChatPage: React.FC = () => {
         throw new Error(errorData.detail || `Failed to ${status} task`);
       }
 
-            const updatedTask: { id: string, status: TaskStatus } = await response.json();
+      const updatedTask: { id: string, status: TaskStatus } = await response.json();
 
       setMessages(prevMessages =>
         prevMessages.map(msg =>
@@ -71,7 +72,7 @@ const ChatPage: React.FC = () => {
   // Live updates connection: connect on mount, cleanup on unmount
   useEffect(() => {
     const conn = connectLiveUpdates({
-      onTaskUpdate: (updatedTask: Message) => {
+      onTaskUpdate: (updatedTask: Task) => {
         setMessages(prevMessages =>
           prevMessages.map(msg =>
             msg.taskId === updatedTask.id ? { ...msg, taskStatus: updatedTask.status } : msg
@@ -170,6 +171,7 @@ const ChatPage: React.FC = () => {
               id: newTaskId,
               taskId: newTaskId,
               taskStatus: TaskStatus.PENDING_APPROVAL,
+              status: 'sending',
               content: content,
               role: 'assistant',
               timestamp: new Date(),

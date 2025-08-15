@@ -1,8 +1,8 @@
-import { type Message } from '../components/Chat/MessageList';
+import { type Task } from '../types/tasks';
 
 export type LiveUpdateHandlers = {
   onMessage: (text: string) => void;
-  onTaskUpdate: (task: Message) => void;
+  onTaskUpdate: (task: Task) => void;
   onError: (err: Error) => void;
   onClose: () => void;
 };
@@ -25,7 +25,7 @@ export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConn
     try {
       const data = JSON.parse(event.data);
       if (data.id && data.status) { // Simple check for task object
-        handlers.onTaskUpdate(data as Message);
+        handlers.onTaskUpdate(data as Task);
       } else {
         handlers.onMessage(event.data);
       }

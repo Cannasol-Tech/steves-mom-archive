@@ -1,7 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, List
 import uuid
 
 class TaskStatus(str, Enum):
@@ -15,6 +15,14 @@ class TaskStatus(str, Enum):
     APPROVED = "approved"
     REJECTED = "rejected"
 
+class ApprovalHistory(BaseModel):
+    """Schema for an approval history entry."""
+    id: uuid.UUID
+    status: TaskStatus
+    timestamp: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
 class Task(BaseModel):
     """Schema for a task."""
     id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique identifier for the task.")
@@ -23,6 +31,7 @@ class Task(BaseModel):
     status: TaskStatus = Field(TaskStatus.PENDING, description="The current status of the task.")
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Timestamp when the task was created.")
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Timestamp when the task was last updated.")
+    approval_history: List[ApprovalHistory] = Field([], description="A log of approval actions for the task.")
 
     model_config = ConfigDict(from_attributes=True)
 

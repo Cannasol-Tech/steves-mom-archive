@@ -1,0 +1,82 @@
+name: Azure Functions Deploy (Python)
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Deployment slot (leave blank for production)'
+        required: false
+        default: ''
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/functions-deploy.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    env:
+      PYTHON_VERSION: '3.11'
+      APP_PATH: '.'
+      ZIP_PATH: '../functionapp.zip'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Validate Azure Functions layout
+        run: |
+          test -f host.json
+          test -d functions
+
+      - name: Create deployment package (zip)
+        run: |
+          cd $APP_PATH
+          zip -r $ZIP_PATH . \
+            -x "__pycache__/*" \
+               "**/__pycache__/*" \
+               ".venv/*" \
+               "**/.pytest_cache/*" \
+               "**/.mypy_cache/*"
+
+      - name: Azure Functions Deploy
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
+          package: functionapp.zip
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          slot-name: ${{ github.event.inputs.slot }}
+        env:
+          SCM_DO_BUILD_DURING_DEPLOYMENT: true
+          ENABLE_ORYX_BUILD: true
+
+      - name: Post-deploy warmup
+        if: always()
+        run: |
+          echo "Deployment finished for slot: '${{ github.event.inputs.slot }}'"

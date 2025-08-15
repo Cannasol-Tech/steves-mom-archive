@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import { TaskStatus } from '../../types/tasks';
-import { CheckCircleIcon, XCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { getStatusIcon, getStatusColor } from '../../utils/taskUtils';
 
 export interface Message {
   id: string;
@@ -23,32 +23,6 @@ interface MessageListProps {
   onApproveTask: (taskId: string) => void;
   onRejectTask: (taskId: string) => void;
 }
-
-const getStatusIcon = (status: TaskStatus) => {
-  switch (status) {
-    case TaskStatus.APPROVED:
-      return <CheckCircleIcon className="h-5 w-5 text-green-500" />;
-    case TaskStatus.REJECTED:
-      return <XCircleIcon className="h-5 w-5 text-red-500" />;
-    case TaskStatus.PENDING_APPROVAL:
-      return <ClockIcon className="h-5 w-5 text-yellow-500" />;
-    default:
-      return null;
-  }
-};
-
-const getStatusColor = (status: TaskStatus) => {
-  switch (status) {
-    case TaskStatus.APPROVED:
-      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-    case TaskStatus.REJECTED:
-      return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-    case TaskStatus.PENDING_APPROVAL:
-      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-    default:
-      return '';
-  }
-};
 
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping, reasoningText, onApproveTask, onRejectTask }) => {
   return (
@@ -127,9 +101,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                     }`}>
                       {m.content}
                       {m.taskStatus && (
-                        <div className={`mt-3 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-full ${getStatusColor(m.taskStatus)}`}>
-                          {getStatusIcon(m.taskStatus)}
-                          <span className="ml-1">{m.taskStatus.replace('_', ' ').toUpperCase()}</span>
+                                                <div className={`mt-3 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-full ${getStatusColor(m.taskStatus)}`}>
+                          {(() => {
+                            const Icon = getStatusIcon(m.taskStatus);
+                            return Icon ? <Icon className="h-4 w-4 mr-1.5" /> : null;
+                          })()}
+                          <span>{m.taskStatus.replace(/_/g, ' ').toUpperCase()}</span>
                         </div>
                       )}
                     </div>
@@ -166,7 +143,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
                   fromUser ? '-left-12' : '-right-12'
                 }`}>
                   <div className="flex flex-col gap-1">
-                    {!fromUser && m.taskId && m.taskStatus === 'pending_approval' && (
+                    {!fromUser && m.taskId && m.taskStatus === TaskStatus.PENDING_APPROVAL && (
                       <>
                         <button 
                           onClick={() => onApproveTask(m.taskId!)}
