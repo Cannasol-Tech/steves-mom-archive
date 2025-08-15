@@ -1,4 +1,3 @@
-🔒 EDITING: cascade-02 (2025-08-15T06:56:05-04:00)
 # Multi-Agent Sync
 
 This file coordinates active agents and task statuses for the implementation plan.
@@ -30,10 +29,8 @@ List any unclaimed tasks here as they are identified.
 | 1.IaC-SEC-COST | IaC compliance: security soft-delete, Redis SKU metadata, naming | cascade-01 | fix/iac-security-cost | 2025-08-14T00:43:00-04:00 | 1.1/1.2 complete | Key Vault soft delete added; Redis Basic_C0 annotation added; storage constraints verified. Tests pending: pytest not installed locally. |
 | 1.3.1 | Create Functions Consumption plan | cascade-01 | feature/azure-functions-consumption-plan | 2025-08-15T03:41:29-04:00 | 1.2 complete | Checking out per implementation plan |
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
-| 4.3 | ContextManager.py (basic memory window) | Sonnet-01 | feature/context-manager | 2025-08-15T06:41:44-04:00 | 4.2 in progress | Design schema; implement sliding window + summarization |
-| 4.3 | ContextManager.py unit tests authored | Sonnet-01 | feature/context-manager | 2025-08-15T06:45:55-04:00 | 4.3 | Added tests at `tests/unit/test_context_manager.py` covering session lifecycle, truncation, summarization, cleanup, and session limits. Awaiting local pytest env setup to execute. |
-| 3.5 | Socket/client wiring for live updates | cascade-02 | feature/chat-sockets-live-updates | 2025-08-15T06:56:05-04:00 | 3.3 complete | Wire socket client; integration tests later in 3.5.T |
 | 4.2.3 | Env-based provider selection + default routing policy | cascade-69 | feature/model-router | 2025-08-15T06:56:39-04:00 | 4.2.2 complete | TDD: ProviderConfigManager/env and default policy from env |
+| 4.4 | Rate limiting/backoff + error normalization | Sonnet-01 | feature/rate-limiting-backoff | 2025-08-15T07:07:21-04:00 | 4.3 complete | TDD: token bucket, exponential backoff, circuit breaker patterns |
 
 ## Completed Tasks
 
@@ -53,6 +50,8 @@ List any unclaimed tasks here as they are identified.
 | 3.7.4 | cascade-01 | agent-dev | 5min | frontend/src/components/Layout.tsx; frontend/src/components/Chat/ChatInterface.tsx; frontend/src/components/Chat/MessageList.tsx | ⏳ |
 | 3.T | cascade-01 | agent-dev | 10min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx; frontend/src/pages/__tests__/ChatStreaming.test.tsx | ✅ |
 | 3.4 | cascade-02 | feature/chat-errors-toasts | 15min | frontend/src/components/Chat/ChatInterface.tsx; frontend/src/pages/ChatPage.tsx | ✅ |
+| 4.3 | Sonnet-01 | feature/context-manager | 25min | backend/ai/context_manager.py; tests/unit/test_context_manager.py; pytest.ini | ✅ |
+| 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/__tests__/ChatLiveUpdates.test.tsx | ✅ |
 
 ## Failed Tasks
 
@@ -73,8 +72,9 @@ List any unclaimed tasks here as they are identified.
 | 3.3 | cascade-02 | 10/10 ✅ | 1/1 ✅ | N/A | 100% |
 | 4.2.2 | cascade-03 | 3/3 ✅ | N/A | N/A | N/A |
 | 3.T | cascade-01 | 12/12 ✅ | N/A | N/A | N/A |
-| 4.3 | Sonnet-01 | Tests added (pending run) | N/A | N/A | Blocked: pytest not found locally |
+| 4.3 | Sonnet-01 | 5/5 ✅ | N/A | N/A | 100% |
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
+| 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
 
 ## Communication Log
 
