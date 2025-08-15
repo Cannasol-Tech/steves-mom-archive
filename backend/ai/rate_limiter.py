@@ -260,6 +260,7 @@ class ErrorNormalizer:
             r"server error",
             r"internal server error",
             r"bad gateway",
+            r"circuit breaker is open",
             r"502",
             r"503",
             r"504"
@@ -412,7 +413,11 @@ class RateLimiter:
                     normalized_error = self.error_normalizer.normalize_error(e, provider_type)
                 else:
                     normalized_error = e
-                
+
+                # If the error is a non-retriable ProviderError, raise it immediately.
+                if isinstance(normalized_error, ProviderError) and not normalized_error.retriable:
+                    raise normalized_error
+
                 # Don't retry on last attempt
                 if attempt == self.max_retries:
                     raise normalized_error

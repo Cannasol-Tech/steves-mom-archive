@@ -193,7 +193,7 @@ class ModelRouter:
                     last_error = e
                     continue
                     
-                except ProviderError as e:
+                except (ProviderError, Exception) as e:
                     logger.error(f"Provider error for {provider_name}: {e}")
                     self._record_error(provider_name)
                     last_error = e
@@ -252,18 +252,20 @@ class ModelRouter:
             eligible.append(name)
         
         # Sort by routing strategy
-        return self._sort_providers(eligible, policy)
+        return self._sort_providers(eligible, policy, messages, config)
     
     def _sort_providers(
         self,
         provider_names: List[str],
-        policy: RoutingPolicy
+        policy: RoutingPolicy,
+        messages: List[Message],
+        config: ModelConfig
     ) -> List[str]:
         """Sort providers based on routing strategy."""
         if policy.strategy == RoutingStrategy.COST_OPTIMIZED:
             # Sort by estimated cost (ascending)
             return sorted(provider_names, key=lambda name: 
-                         self.providers[name].provider.estimate_cost([], ModelConfig("grok-3-mini")))
+                         self.providers[name].provider.estimate_cost(messages, config))
         
         elif policy.strategy == RoutingStrategy.LATENCY_OPTIMIZED:
             # Sort by average latency (ascending)
@@ -346,6 +348,11 @@ class ModelRouter:
     def _record_error(self, provider_name: str) -> None:
         """Record an error for a provider."""
         self._error_counts[provider_name] += 1
+        
+        # Circuit breaker logic
+        if self._error_counts[provider_name] > 5:
+            self._circuit_breakers[provider_name] = True
+            logger.warning(f"Circuit breaker activated for {provider_name}")
     
     def _get_average_latency(self, provider_name: str) -> float:
         """Get average latency for a provider."""

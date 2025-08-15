@@ -14,7 +14,7 @@ import logging
 import json
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import hashlib
 
 from .providers.base import Message, MessageRole
@@ -121,7 +121,7 @@ class ContextManager:
         if session_id is None:
             session_id = self._generate_session_id(user_id)
         
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
         
         session = ConversationSession(
             session_id=session_id,
@@ -174,7 +174,7 @@ class ContextManager:
         )
         
         session.messages.append(message)
-        session.last_activity = datetime.utcnow()
+        session.last_activity = datetime.now(UTC)
         
         # Check if summarization is needed
         await self._check_summarization_needed(session_id)
@@ -232,7 +232,7 @@ class ContextManager:
         for msg in reversed(non_system_messages):
             msg_tokens = self._estimate_tokens([msg])
             if current_tokens + msg_tokens <= max_tokens:
-                truncated_messages.insert(-len(system_messages) if system_messages else 0, msg)
+                truncated_messages.insert(len(system_messages), msg)
                 current_tokens += msg_tokens
             else:
                 break
@@ -295,7 +295,7 @@ class ContextManager:
         Returns:
             Number of sessions cleaned up
         """
-        cutoff_time = datetime.utcnow() - timedelta(hours=self.max_session_age_hours)
+        cutoff_time = datetime.now(UTC) - timedelta(hours=self.max_session_age_hours)
         expired_sessions = []
         
         for session_id, session in self.sessions.items():
@@ -329,7 +329,7 @@ class ContextManager:
     
     def _generate_session_id(self, user_id: str) -> str:
         """Generate a unique session ID."""
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(UTC).isoformat()
         data = f"{user_id}:{timestamp}:{id(self)}"
         return hashlib.md5(data.encode()).hexdigest()[:16]
     
@@ -382,7 +382,7 @@ class ContextManager:
             # Update session
             session.messages = recent_messages
             session.metadata["conversation_summary"] = summary
-            session.metadata["summarized_at"] = datetime.utcnow().isoformat()
+            session.metadata["summarized_at"] = datetime.now(UTC).isoformat()
             
             logger.info(f"Summarized conversation for session {session_id}")
     

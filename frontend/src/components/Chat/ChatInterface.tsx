@@ -38,6 +38,31 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onCancelStream,
   toastMessage
 }) => {
+  const [isTyping, setIsTyping] = React.useState(false);
+  const [showLoading, setShowLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    let typingTimer: NodeJS.Timeout;
+
+    if (isLoading) {
+      setIsTyping(true);
+      setShowLoading(false);
+
+      // Show typing indicator for a short period, then switch to the main loading display
+      typingTimer = setTimeout(() => {
+        setIsTyping(false);
+        setShowLoading(true);
+      }, 1200); // 1.2-second typing simulation
+
+    } else {
+      setIsTyping(false);
+      setShowLoading(false);
+    }
+
+    return () => {
+      clearTimeout(typingTimer);
+    };
+  }, [isLoading]);
   return (
     <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl overflow-hidden rotating-glow pulse-glow">
       {/* Modern Chat Header */}
@@ -89,7 +114,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent"></div>
         <div className="relative h-full">
-          <MessageList messages={messages} isLoading={isLoading} reasoningText={reasoningText} />
+          <MessageList messages={messages} isTyping={isTyping} isLoading={showLoading} reasoningText={reasoningText} />
           {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
             <div className="px-6 py-3">
               <div className="mx-auto max-w-4xl">
@@ -106,6 +131,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           )}
         </div>
       </div>
+
+      {/* Persona Avatars */}
+      <img 
+        src="/cannasol-logo.png"
+        alt="Persona Avatar Left"
+        className="persona-avatar bottom-0 -left-8 z-0"
+        style={{ animationDelay: '0s' }}
+      />
+      <img 
+        src="/cannasol-logo.png"
+        alt="Persona Avatar Right"
+        className="persona-avatar bottom-0 -right-8 z-0"
+        style={{ animationDelay: '-3s' }}
+      />
 
       {/* Modern Input Area */}
       <div className="relative bg-gradient-to-r from-white/95 via-slate-50/90 to-white/95 backdrop-blur-xl border-t border-white/60">

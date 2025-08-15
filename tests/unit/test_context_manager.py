@@ -11,15 +11,15 @@ Covers:
 
 import sys
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import pytest
 
 # Ensure backend package is importable
 backend_path = Path(__file__).parent.parent.parent / "backend"
 sys.path.insert(0, str(backend_path))
 
-from ai.providers.base import MessageRole  # type: ignore
-from ai.context_manager import ContextManager  # type: ignore
+from backend.models.ai_models import MessageRole
+from backend.ai.context_manager import ContextManager
 
 
 @pytest.mark.asyncio
@@ -50,10 +50,11 @@ async def test_context_window_truncation_keeps_system_and_recent():
         role = MessageRole.USER if i % 2 == 0 else MessageRole.ASSISTANT
         await cm.add_message(sid, role, f"m{i}")
 
+    initial_messages = await cm.get_session_messages(sid)
     window = await cm.get_context_window(sid, max_tokens=10)
 
     # Should be truncated
-    assert window.truncated is True
+    assert len(window.messages) < len(initial_messages)
     # System message must be present if possible
     assert any(m.role == MessageRole.SYSTEM for m in window.messages)
     # Total tokens should not exceed max
@@ -92,7 +93,7 @@ async def test_cleanup_expired_sessions_removes_old():
     sid = await cm.create_session(user_id="u4")
 
     # Manually age the session beyond cutoff
-    cm.sessions[sid].last_activity = datetime.utcnow() - timedelta(hours=2)
+    cm.sessions[sid].last_activity = datetime.now(UTC) - timedelta(hours=2)
 
     cleaned = await cm.cleanup_expired_sessions()
     assert cleaned >= 1
@@ -107,10 +108,10 @@ async def test_enforce_max_sessions_per_user_removes_oldest():
     # Create 3 sessions; the oldest should be deleted
     s1 = await cm.create_session(user)
     # Make s1 the oldest by time
-    cm.sessions[s1].last_activity = datetime.utcnow() - timedelta(hours=3)
+    cm.sessions[s1].last_activity = datetime.now(UTC) - timedelta(hours=3)
 
     s2 = await cm.create_session(user)
-    cm.sessions[s2].last_activity = datetime.utcnow() - timedelta(hours=2)
+    cm.sessions[s2].last_activity = datetime.now(UTC) - timedelta(hours=2)
 
     s3 = await cm.create_session(user)  # triggers enforcement
 

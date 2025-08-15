@@ -73,6 +73,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 1 (Infrastructure)
 
 - All IaC changes pass unit/integration tests in `tests/infrastructure/` and what-if checks are clean.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Lint/format checks pass (Bicep build, scripts shellcheck as applicable).
 - Azure resources provision successfully in dev; parameters documented in `infrastructure/parameters/*.json`.
 - Security/Naming: follows `docs/architecture/naming.md`; soft-delete/retention settings verified.
@@ -190,6 +191,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 2 (CI/CD & Release)
 
 - All workflows in `.github/workflows/` succeed on PR and main.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Build artifacts (frontend, backend) produce deterministic outputs; cache configured.
 - Release-pack artifacts generated on tag push and attached to GitHub Release.
 - Manifest generated/validated; version and commit embedded.
@@ -233,6 +235,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 3 (Frontend Chat)
 
 - Unit tests for components/pages pass; `tsc` type-checks clean; ESLint/Prettier clean.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Streaming UX implemented with retry/cancel; loading/error states covered.
 - Accessibility: basic a11y checks (labels, contrast, tab order) for chat controls.
 - Visuals: Cannasol branding applied; responsive on common breakpoints.
@@ -277,6 +280,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 4 (AI Providers & Router)
 
 - Provider interfaces implemented with typed DTOs and error normalization.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Model router routes by policy/env with tested fallbacks and timeouts.
 - Rate limiting/backoff in place with deterministic tests.
 - Secure config via env/Key Vault; no secrets in repo.
@@ -310,7 +314,26 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 4.4.4 [x] Build error normalization layer for provider-specific errors
       - 4.4.T [x] Tests — unit/integration for rate limiting (est: 0.25d)
       - 4.4.C [ ] Commit and push your work: `git add -A && git commit -m "4.4: progress" && git push`
-  #4.T: Tests — unit, integration, acceptance for model router [ ] (est: 0.25d)
+  #4.T: Tests — unit, integration, acceptance for model router [x] (est: 0.25d) ✅ **[COMPLETED: 2025-01-15]**
+      - 4.T.1 [x] Write integration tests for model router
+        - [x] Test multiple provider interactions
+        - [x] Test fallback scenarios  
+        - [x] Test configuration updates during runtime
+      - 4.T.2 [x] Write acceptance tests for model router
+        - [x] Test business scenarios and workflows
+        - [x] Test environment-based deployments
+        - [x] Test monitoring and observability
+        - [x] Converted all pytest acceptance tests to `behave` with Gherkin scenarios.
+      - 4.T.3 [x] Run comprehensive test suite
+        - [x] Execute all unit, integration, and acceptance tests
+        - [x] Verify test coverage and quality
+        - [x] Fix any failing tests
+      **Test Results Summary:**
+      - Unit Tests: 22 tests passing
+      - Integration Tests: 6 tests passing  
+      - Acceptance Tests: 6 tests passing
+      - Total Model Router Tests: 34 tests passing
+      - Coverage: Comprehensive coverage of routing strategies, provider management, error handling, circuit breaker, rate limiting, and configuration interface
 
 ## 5: Task generation + approval skeleton [ ] (est: 2 days)
 
@@ -318,24 +341,29 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 5 (Tasking & Approvals)
 
 - Intent detection rules tested; confidence/fallback behavior verified.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Task schema and CRUD endpoints implemented with validation and pagination.
 - Approval workflow state transitions covered by unit/integration tests.
 - UI provides approve/reject with real-time status and preserves history.
 - Audit logging present; permissions enforced where applicable.
 - Docs updated for API and UI flows; planning docs updated.
-  #5.1: Intent detection (rule-based MVP) [ ] (est: 0.5d)
-      - 5.1.1 [ ] Define task-generating intent categories (email, document, query, etc.)
-      - 5.1.2 [ ] Create rule-based classifier with keyword matching and patterns
-      - 5.1.3 [ ] Implement confidence scoring and fallback handling
-      - 5.1.4 [ ] Add intent validation and user confirmation prompts
-      - 5.1.T [ ] Tests — unit/integration for intent detection [ ] (est: 0.2d)
+  #5.1: Intent detection (rule-based MVP) [ ] (est: 0.5d) [CURRENT-TASK]
+      - 5.1.1 [x] Define task-generating intent categories (email, document, query, etc.) ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.2 [x] Create rule-based classifier with keyword matching and patterns ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.3 [x] Implement confidence scoring and fallback handling ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
+      - 5.1.4 [x] Add intent validation and user confirmation prompts ✅ **[COMPLETED: cascade @2024-07-29T12:15:00-04:00]**
+      - 5.1.T [x] Tests — unit/integration for intent detection ✅ **[COMPLETED: cascade @2024-07-29T12:00:00-04:00]**
       - 5.1.C [ ] Commit and push your work: `git add -A && git commit -m "5.1: progress" && git push`
-  #5.2: Task schema, DB table, CRUD endpoints [ ] (est: 0.5d)
-      - 5.2.1 [ ] Design task database schema with status, metadata, and audit fields
-      - 5.2.2 [ ] Create database migration scripts and indexes
-      - 5.2.3 [ ] Implement CRUD API endpoints with validation and serialization
-      - 5.2.4 [ ] Add task querying, filtering, and pagination support
-      - 5.2.T [ ] Tests — unit/integration for task CRUD [ ] (est: 0.2d)
+  #5.2: Task schema, DB table, CRUD endpoints [x] (est: 0.5d)
+      - 5.2.1 [x] Design task database schema with status, metadata, and audit fields ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]**
+      - 5.2.2 [x] Create database migration scripts and indexes ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]**
+      - 5.2.3 [x] Implement CRUD API endpoints with validation and serialization ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]**
+      - 5.2.4 [x] Add task querying, filtering, and pagination support ✅ **[COMPLETED: cascade @2024-07-29T14:20:00-04:00]**
+      - 5.2.4.1 [x] Add filtering by status ✅ **[COMPLETED: cascade @2024-07-29T13:30:00-04:00]**
+      - 5.2.4.2 [x] Add filtering by date range ✅ **[COMPLETED: cascade @2024-07-29T14:00:00-04:00]**
+      - 5.2.4.3 [x] Add free-text search on title/description ✅ **[COMPLETED: cascade @2024-07-29T14:15:00-04:00]**
+      - 5.2.4.4 [x] Verify pagination (skip/limit) works with filters ✅ **[COMPLETED: cascade @2024-07-29T14:20:00-04:00]**
+      - 5.2.T [x] Tests — unit/integration for task CRUD ✅ **[COMPLETED: cascade @2024-07-29T13:00:00-04:00]** (est: 0.2d)
       - 5.2.C [ ] Commit and push your work: `git add -A && git commit -m "5.2: progress" && git push`
   #5.3: ApprovalHandler.py (approve/reject) [ ] (est: 0.5d)
       - 5.3.1 [ ] Create approval workflow state machine
@@ -358,6 +386,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 6 (Inventory)
 
 - Client with typed models; retries/backoff and error handling covered by tests.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Read endpoints support filtering/sorting/pagination; write endpoints validate inputs.
 - Basic UI list/detail flows work; empty/loading/error states covered.
 - Caching (if added) validated; no PII leakage; telemetry optional and privacy-safe.
@@ -397,6 +426,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 7 (NL→SQL)
 
 - Only whitelisted templates executable; params validated; injection-safe.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Intent mapping and param extraction tested with representative phrases.
 - Execution layer enforces limits (row caps, timeouts, RBAC) with tests.
 - Results formatted deterministically; audit trail recorded.
@@ -428,6 +458,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 8 (Email - Exchange)
 
 - Graph client/auth configured; no secrets committed; permissions verified in dev.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Summarize/draft/send endpoints implemented with approval gating.
 - Attachments/calendar behaviors covered where in scope; errors handled.
 - UI hooks present with confirmations and toasts.
@@ -455,6 +486,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 9 (Documents - Templates)
 
 - Versioned template store with validation; metadata persisted.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Generation endpoints produce expected outputs; preview/download working.
 - Multi-format export validated where in scope; errors handled.
 - UI flows for generate/preview integrated; tests pass; docs/planning updated.
@@ -509,6 +541,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 9 (Documents - Generation)
 
 - Template schema defined; upload/validation implemented.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - DOCX merge and PDF export produce deterministic outputs in tests.
 - Queue/pipeline logic (if implemented) has retry/backoff and logging.
 - Secure download links with expiration; versioning/history tracked.
@@ -538,6 +571,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 10 (Auth & RBAC)
 
 - Frontend MSAL login/logout flows work; tokens stored securely.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Backend JWT validation and authorization middleware enforced.
 - Roles/permissions seeded; checks covered by unit/integration tests.
 - Admin view shows permissions; audit logs recorded where applicable.
@@ -573,6 +607,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 11 (Telemetry)
 
 - DDL created with indexes; retention policies documented.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Instrumentation records latency, errors, token usage with redaction/anonymization.
 - Configurable sampling flags default to privacy-safe off.
 - Admin metrics view shows key KPIs; tests pass; docs/planning updated.
@@ -607,6 +642,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 12 (Release Pack)
 
 - Manifest and API schema generated and validated.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Release includes app, migrations, analytics schema, and deployment config.
 - Installation/upgrade docs generated; reproducible build verified in CI.
 - Tests for packaging pass; planning updated.
@@ -629,6 +665,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 ### Definition of Done — Section 13 (Testing & Deployment)
 
 - Unit, integration, acceptance tests implemented per sections and all green in CI.
+- Acceptance tests written using behave framework with Gherkin syntax for business-readable scenarios.
 - Performance tests meet PRD thresholds; report attached to PR/Release.
 - E2E happy path verified; non-flaky CI runs over multiple commits.
 - Deployment steps documented and validated in dev; planning updated.

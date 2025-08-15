@@ -53,20 +53,24 @@ class TestTokenBucket:
     
     @pytest.mark.asyncio
     async def test_token_bucket_consume_tokens(self):
-        """Test consuming tokens from bucket."""
-        bucket = TokenBucket(capacity=10, refill_rate=2.0)
-        
-        # Should be able to consume tokens when available
-        assert await bucket.consume(3) is True
-        assert bucket.tokens == 7
-        
-        # Should be able to consume remaining tokens
-        assert await bucket.consume(7) is True
-        assert bucket.tokens == 0
-        
-        # Should fail when no tokens available
-        assert await bucket.consume(1) is False
-        assert bucket.tokens == 0
+        """Test consuming tokens from bucket with controlled time."""
+        with patch('time.time') as mock_time:
+            # Initialize bucket at time 0
+            mock_time.return_value = 0.0
+            bucket = TokenBucket(capacity=10, refill_rate=2.0)
+            assert bucket.tokens == 10
+
+            # Consume 3 tokens at the same time
+            assert await bucket.consume(3) is True
+            assert bucket.tokens == 7
+
+            # Consume 7 more tokens at the same time
+            assert await bucket.consume(7) is True
+            assert bucket.tokens == 0
+
+            # Try to consume 1 more token, should fail
+            assert await bucket.consume(1) is False
+            assert bucket.tokens == 0
     
     @pytest.mark.asyncio
     async def test_token_bucket_refill(self):
@@ -420,11 +424,11 @@ class TestRateLimiter:
         # Should fail twice and open circuit
         for _ in range(2):
             with pytest.raises(Exception):
-                await limiter.execute(mock_func)
+                await limiter.execute(mock_func, provider_type=ProviderType.LOCAL)
         
         # Circuit should now be open
         assert limiter.circuit_breaker.state == "open"
         
-        # Next call should be rejected by circuit breaker
-        with pytest.raises(Exception, match="Circuit breaker is open"):
-            await limiter.execute(mock_func)
+        # Next call should be rejected by circuit breaker and normalized
+        with pytest.raises(ProviderUnavailableError, match="Circuit breaker is open"):
+            await limiter.execute(mock_func, provider_type=ProviderType.LOCAL)

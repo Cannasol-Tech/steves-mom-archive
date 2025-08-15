@@ -10,6 +10,7 @@ Version: 1.0.0
 """
 
 import pytest
+import pytest_asyncio
 import asyncio
 import sys
 import os
@@ -82,7 +83,7 @@ class MockProvider(LLMProvider):
         return {"status": "healthy", "initialized": self._initialized}
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def router_with_providers():
     """Create router with test providers."""
     router = ModelRouter()
@@ -99,7 +100,7 @@ async def router_with_providers():
 @pytest.mark.asyncio
 async def test_update_routing_policy(router_with_providers):
     """Test updating the default routing policy."""
-    router = await router_with_providers
+    router = router_with_providers
     
     # Initial policy
     assert router.default_policy.strategy == RoutingStrategy.COST_OPTIMIZED
@@ -124,7 +125,7 @@ async def test_update_routing_policy(router_with_providers):
 @pytest.mark.asyncio
 async def test_update_provider_config(router_with_providers):
     """Test updating provider configuration."""
-    router = await router_with_providers
+    router = router_with_providers
     
     # Initial config
     config = router.providers["provider1"]
@@ -150,7 +151,7 @@ async def test_update_provider_config(router_with_providers):
 @pytest.mark.asyncio
 async def test_enable_disable_provider(router_with_providers):
     """Test enabling and disabling providers."""
-    router = await router_with_providers
+    router = router_with_providers
     
     # Initially enabled
     assert router.providers["provider1"].enabled == True

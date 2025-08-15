@@ -11,8 +11,11 @@ try:
 except Exception:  # pragma: no cover
     XAI = None
 from .schemas import ChatRequest, ChatResponse, ChatMessage
+from .routes import tasks
 
 app = FastAPI(title="Steve's Mom API", version="0.1.0")
+
+app.include_router(tasks.router, prefix="/api", tags=["tasks"])
 
 # Allow local dev origins
 app.add_middleware(

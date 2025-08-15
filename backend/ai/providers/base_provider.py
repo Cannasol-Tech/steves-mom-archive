@@ -290,27 +290,36 @@ class LLMProvider(ABC):
 class ProviderError(Exception):
     """Base exception for provider-related errors."""
     
-    def __init__(self, message: str, provider_type: ProviderType, error_code: Optional[str] = None):
+    def __init__(self, message: str, provider_type: 'ProviderType', error_code: str, retriable: bool = False):
         super().__init__(message)
+        self.message = message
         self.provider_type = provider_type
         self.error_code = error_code
+        self.retriable = retriable
+    
+    def __str__(self) -> str:
+        return f"{self.provider_type.value.upper()} Error ({self.error_code}): {self.message}"
 
 
 class ProviderAuthError(ProviderError):
     """Authentication error with provider."""
-    pass
+    def __init__(self, message: str, provider_type: 'ProviderType', error_code: str):
+        super().__init__(message, provider_type, error_code)
 
 
 class ProviderRateLimitError(ProviderError):
-    """Rate limit exceeded error."""
-    pass
+    """Raised for rate limit errors."""
+    def __init__(self, message: str, provider_type: 'ProviderType', error_code: str):
+        super().__init__(message, provider_type, error_code, retriable=True)
 
 
 class ProviderTimeoutError(ProviderError):
-    """Request timeout error."""
-    pass
+    """Raised for timeout errors."""
+    def __init__(self, message: str, provider_type: 'ProviderType', error_code: str):
+        super().__init__(message, provider_type, error_code, retriable=True)
 
 
 class ProviderUnavailableError(ProviderError):
-    """Provider service unavailable error."""
-    pass
+    """Raised for service unavailable errors."""
+    def __init__(self, message: str, provider_type: 'ProviderType', error_code: str):
+        super().__init__(message, provider_type, error_code, retriable=False)

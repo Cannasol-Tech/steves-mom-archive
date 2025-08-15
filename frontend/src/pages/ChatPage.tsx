@@ -66,7 +66,8 @@ const ChatPage: React.FC = () => {
       id: Date.now().toString(),
       content: prompt,
       role: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      status: 'sending'
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -85,12 +86,31 @@ const ChatPage: React.FC = () => {
       ...messages.slice(-3).map(m => ({ role: m.role as any, content: m.content })),
       { role: 'user' as const, content: userMessage.content }
     ];
+    let statusUpdated = false;
     const handle = startStream({
       messages: history,
       model: model.includes('grok') ? 'grok-3-mini' : undefined,
       temperature: 0.2,
       max_tokens: 512,
       onChunk: (t) => {
+        if (!statusUpdated) {
+          setMessages(prev => {
+            const newMessages = [...prev];
+            let lastUserMessageIndex = -1;
+            for (let i = newMessages.length - 1; i >= 0; i--) {
+              if (newMessages[i].role === 'user') {
+                lastUserMessageIndex = i;
+                break;
+              }
+            }
+            if (lastUserMessageIndex !== -1) {
+              const updatedMessage = { ...newMessages[lastUserMessageIndex], status: 'sent' as const };
+              newMessages[lastUserMessageIndex] = updatedMessage;
+            }
+            return newMessages;
+          });
+          statusUpdated = true;
+        }
         setStreamingContent(prev => prev + t);
       },
       onDone: (reasoning?: string) => {
@@ -125,6 +145,21 @@ const ChatPage: React.FC = () => {
           return next;
         });
         // Show a toast for the error
+        setMessages(prev => {
+          const newMessages = [...prev];
+          let lastUserMessageIndex = -1;
+          for (let i = newMessages.length - 1; i >= 0; i--) {
+            if (newMessages[i].role === 'user' && newMessages[i].status === 'sending') {
+              lastUserMessageIndex = i;
+              break;
+            }
+          }
+          if (lastUserMessageIndex !== -1) {
+            const updatedMessage = { ...newMessages[lastUserMessageIndex], status: 'failed' as const };
+            newMessages[lastUserMessageIndex] = updatedMessage;
+          }
+          return newMessages;
+        });
         setToastMessage(`Network error: ${err.message}`);
         cleanupStream();
       }

@@ -130,4 +130,70 @@
       box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), 0 0 80px rgba(16, 185, 129, 0.2);
     }
   }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--brand-green) 40%, transparent);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--brand-green) 70%, transparent);
+  }
+
+  .reasoning-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reasoning-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: conic-gradient(
+      from 90deg,
+      rgba(255, 255, 255, 0) 0deg,
+      rgba(255, 255, 255, 0.3) 45deg,
+      rgba(255, 255, 255, 0.8) 90deg,
+      rgba(255, 255, 255, 0.3) 135deg,
+      rgba(255, 255, 255, 0) 180deg
+    );
+    border-radius: inherit;
+    animation: rotate-glow 3s linear infinite;
+    z-index: 0;
+  }
+
+  .persona-avatar {
+    @apply absolute w-24 h-24 opacity-80 transition-transform duration-300 hover:opacity-100 hover:scale-110;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @media (max-width: 768px) {
+    .persona-avatar {
+      @apply hidden;
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
 }

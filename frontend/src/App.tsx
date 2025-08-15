@@ -4,18 +4,21 @@ import Layout from './components/Layout';
 import ChatPage from './pages/ChatPage';
 import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<ChatPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Layout>
+      <ThemeProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<ChatPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Layout>
+      </ThemeProvider>
     </Router>
   );
 }
