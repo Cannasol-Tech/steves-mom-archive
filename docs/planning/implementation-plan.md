@@ -51,6 +51,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 | 3.T | cascade-01 | 12/12 ✅ | N/A | N/A | N/A |
 | 3.4 | cascade-02 | ✅ (unit only) | N/A | N/A | N/A |
 | 3.5 | cascade-02 | 1/1 ✅ | 1/1 ✅ | N/A | N/A |
+| 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
 
 ### Completed Tasks
 
@@ -205,9 +206,9 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #3.5: Socket/client wiring for live updates [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00] [feature/chat-sockets-live-updates]**
      3.5.C [ ] Commit and push your work: `git add -A && git commit -m "3.5: progress" && git push`
      3.5.T [x] Tests — integration for socket/client live updates ✅ **[COMPLETED: cascade-02 @2025-08-15T06:58:32-04:00]** (est: 0.2d)
-  #3.6: Minimal admin panel shell (feature toggles) [ ] (est: 0.25d) **[CHECKED OUT: cascade-02 @2025-08-15T07:08:45-04:00] [feature/admin-panel-shell] [CURRENT-TASK]**
+  #3.6: Minimal admin panel shell (feature toggles) [x] (est: 0.25d) ✅ **[COMPLETED: cascade-02 @2025-08-15T07:16:56-04:00] [feature/admin-panel-shell]**
       3.6.C [ ] Commit and push your work: `git add -A && git commit -m "3.6: progress" && git push`
-      3.6.T [ ] Tests — unit for admin shell and toggles [ ] (est: 0.1d)
+      3.6.T [x] Tests — unit for admin shell and toggles ✅ **[COMPLETED: cascade-02 @2025-08-15T07:16:56-04:00]** (est: 0.1d)
   #3.7: **REQUIRED** Cannasol logo integration [ ] (est: 0.15d)
       3.7.1 [x] Add Cannasol logo to header/navigation bar **[COMPLETED: cascade-01 @2025-08-15T06:08:35-04:00] [agent-dev]**
 {{ ... }}
