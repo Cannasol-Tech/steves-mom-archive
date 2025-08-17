@@ -25,6 +25,7 @@ This document outlines the process for setting up custom domains and SSL certifi
 ### 2. DNS Configuration
 
 #### For Subdomain (CNAME Record)
+
 ```dns
 Type: CNAME
 Name: stevesmom (or your subdomain)
@@ -33,6 +34,7 @@ TTL: 3600
 ```
 
 #### For Apex Domain (TXT Record)
+
 ```dns
 Type: TXT
 Name: @
@@ -78,14 +80,17 @@ If you need to use your own SSL certificate:
 ## Environment-Specific Domains
 
 ### Development
+
 - Default: `<app-name>-dev.azurestaticapps.net`
 - Custom: `dev.stevesmom.cannasol.tech`
 
 ### Staging
+
 - Default: `<app-name>-staging.azurestaticapps.net`
 - Custom: `staging.stevesmom.cannasol.tech`
 
 ### Production
+
 - Default: `<app-name>.azurestaticapps.net`
 - Custom: `stevesmom.cannasol.tech`
 

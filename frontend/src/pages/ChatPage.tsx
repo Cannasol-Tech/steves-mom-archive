@@ -27,6 +27,7 @@ const ChatPage: React.FC = () => {
   const lastPromptRef = useRef<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const liveConnRef = useRef<LiveUpdateConnection | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleApproveTask = async (taskId: string) => {
     await updateTaskStatus(taskId, 'approved');
@@ -129,6 +130,8 @@ const ChatPage: React.FC = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    // Return focus to input promptly after sending
+    setTimeout(() => textareaRef.current?.focus(), 0);
     setIsLoading(true);
     lastPromptRef.current = userMessage.content;
     setStreamingContent('');
@@ -193,7 +196,7 @@ Keep normal content readable; place control directives once per reply when appro
               id: newTaskId,
               taskId: newTaskId,
               taskStatus: TaskStatus.PENDING_APPROVAL,
-              status: 'sending',
+              status: 'sent',
               content: content,
               role: 'assistant',
               timestamp: new Date(),
@@ -250,6 +253,8 @@ Keep normal content readable; place control directives once per reply when appro
     setStreamingActive(false);
     setReasoningText(undefined);
     streamRef.current = null;
+    // Focus input after stream ends/cancels
+    setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
   const handleCancel = () => {
@@ -266,11 +271,28 @@ Keep normal content readable; place control directives once per reply when appro
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    // Cmd/Ctrl+Enter always sends
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      const form = (e.currentTarget.closest('form')) as HTMLFormElement | null;
+      form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      return;
+    }
+    // Enter without Shift sends
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       // trigger submit from keyboard
       const form = (e.currentTarget.closest('form')) as HTMLFormElement | null;
       form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      return;
+    }
+    // Esc cancels active stream
+    if (e.key === 'Escape') {
+      if (streamingActive) {
+        e.preventDefault();
+        handleCancel();
+        setTimeout(() => textareaRef.current?.focus(), 0);
+      }
     }
   };
 
@@ -284,6 +306,7 @@ Keep normal content readable; place control directives once per reply when appro
       onChangeInput={setInputValue}
       onSubmit={() => handleSendMessage()}
       onKeyDown={handleKeyDown}
+      textareaRef={textareaRef}
       reasoningText={reasoningText}
       streamingContent={streamingContent}
       streamingActive={streamingActive}

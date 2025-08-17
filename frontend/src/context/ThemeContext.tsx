@@ -11,15 +11,21 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    const storedTheme = localStorage.getItem('theme');
-    return (storedTheme as Theme) || 'light';
+    try {
+      const storedTheme = localStorage.getItem('theme') as Theme | null;
+      if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+      // Default to dark when no stored preference
+      return 'dark';
+    } catch {
+      return 'dark';
+    }
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
-    localStorage.setItem('theme', theme);
+    try { localStorage.setItem('theme', theme); } catch {}
   }, [theme]);
 
   const toggleTheme = () => {

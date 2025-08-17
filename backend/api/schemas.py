@@ -1,11 +1,14 @@
-from typing import Optional, List, Literal
+from typing import List, Literal, Optional
+
 from pydantic import BaseModel, Field
 
 Role = Literal["user", "assistant", "system"]
 
+
 class ChatMessage(BaseModel):
     role: Role
     content: str
+
 
 class ChatRequest(BaseModel):
     messages: List[ChatMessage] = Field(min_length=1)
@@ -13,6 +16,7 @@ class ChatRequest(BaseModel):
     temperature: Optional[float] = 0.2
     max_tokens: Optional[int] = 512
     stream_reasoning: bool = False
+
 
 class ChatResponse(BaseModel):
     message: ChatMessage

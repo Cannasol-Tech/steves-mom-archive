@@ -1,18 +1,20 @@
 import os
 import time
+from pathlib import Path
+
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from pathlib import Path
-from dotenv import load_dotenv
+
 try:
     # xai_sdk 1.x exposes `Client`. Alias to XAI for backward-compat usage below.
     from xai_sdk import Client as XAI
-    from xai_sdk.chat import system, user, assistant
+    from xai_sdk.chat import assistant, system, user
 except Exception:  # pragma: no cover
     XAI = None
-from .schemas import ChatRequest, ChatResponse, ChatMessage
-from .routes import tasks
 from .connection_manager import manager
+from .routes import tasks
+from .schemas import ChatMessage, ChatRequest, ChatResponse
 
 app = FastAPI(title="Steve's Mom API", version="0.1.0")
 
@@ -66,9 +68,9 @@ def _parse_animation_cmd(text: str):
     if m:
         try:
             js = m.group(0)
-            js = js[js.find('{') :]
+            js = js[js.find("{") :]
             cmd = _json.loads(js)
-            cmd.setdefault('type', 'smom')
+            cmd.setdefault("type", "smom")
             return cmd
         except Exception:
             pass
@@ -78,11 +80,11 @@ def _parse_animation_cmd(text: str):
         try:
             params = {}
             for part in m.group(1).split():
-                if '=' in part:
-                    k, v = part.split('=', 1)
+                if "=" in part:
+                    k, v = part.split("=", 1)
                     params[k.strip()] = v.strip()
             if params:
-                params.setdefault('type', 'smom')
+                params.setdefault("type", "smom")
                 return params
         except Exception:
             pass
@@ -99,6 +101,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
@@ -111,7 +114,9 @@ async def chat(req: ChatRequest):
         raise HTTPException(status_code=500, detail="GROK_API_KEY not set")
 
     if XAI is None:
-        raise HTTPException(status_code=500, detail="xai_sdk is not installed on the server")
+        raise HTTPException(
+            status_code=500, detail="xai_sdk is not installed on the server"
+        )
 
     client = XAI(api_key=api_key)
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Task } from '../types/tasks';
 import { getStatusColor, getStatusIcon } from '../utils/taskUtils';
+import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
 
 const TaskDetailPage: React.FC = () => {
   const { taskId } = useParams<{ taskId: string }>();
@@ -43,6 +44,47 @@ const TaskDetailPage: React.FC = () => {
     }
   }, [taskId]);
 
+  // Live updates via WebSocket
+  useEffect(() => {
+    let conn: LiveUpdateConnection | null = null;
+    try {
+      conn = connectLiveUpdates({
+        onMessage: () => {},
+        onTaskUpdate: (updated) => {
+          if (updated && task && updated.id === task.id) {
+            setTask(updated);
+          }
+        },
+        onError: () => {},
+        onClose: () => {},
+      });
+    } catch {}
+    return () => {
+      if (conn) conn.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [task?.id]);
+
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
+
+  const handleApprove = async () => {
+    if (!task) return;
+    const res = await fetch(`${apiBaseUrl}/api/tasks/${task.id}/approve`, { method: 'POST' });
+    if (res.ok) {
+      const data = await res.json();
+      setTask(data);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!task) return;
+    const res = await fetch(`${apiBaseUrl}/api/tasks/${task.id}/reject`, { method: 'POST' });
+    if (res.ok) {
+      const data = await res.json();
+      setTask(data);
+    }
+  };
+
   if (isLoading) {
     return <div className="p-4 sm:p-6 lg:p-8">Loading task...</div>;
   }
@@ -68,6 +110,23 @@ const TaskDetailPage: React.FC = () => {
               })()}
               <span>{task.status.replace(/_/g, ' ')}</span>
             </div>
+          </div>
+          {/* Approval Actions */}
+          <div className="mb-6 flex gap-3">
+            <button
+              type="button"
+              onClick={handleApprove}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Approve
+            </button>
+            <button
+              type="button"
+              onClick={handleReject}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Reject
+            </button>
           </div>
           <p className="text-md text-gray-600 dark:text-gray-400 mb-6">
             {task.description || <span className="italic">No description provided.</span>}

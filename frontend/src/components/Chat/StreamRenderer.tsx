@@ -17,11 +17,32 @@ export interface StreamRendererProps {
  */
 const StreamRenderer: React.FC<StreamRendererProps> = ({ content, isStreaming, onRetry, onCancel }) => {
   return (
-    <div className="rounded-2xl px-4 py-3 shadow-sm bg-white border border-emerald-100 text-gray-900 max-w-[80%] w-full">
-      <div className="text-xs text-gray-500 mb-2" aria-live="polite">
-        Steve's Mom AI {isStreaming ? '• Streaming…' : ''}
+    <div
+      className="rounded-2xl px-4 py-3 shadow-sm bg-white border border-emerald-100 text-gray-900 max-w-[80%] w-full"
+      aria-busy={isStreaming}
+      aria-describedby="stream-status"
+    >
+      {/* Live status header */}
+      <div id="stream-status" className="text-xs text-gray-500 mb-2" role="status" aria-live="polite">
+        Steve's Mom AI {isStreaming ? '• Streaming…' : '• Ready'}
       </div>
-      <div data-testid="stream-content" className="whitespace-pre-wrap">{content}</div>
+
+      {/* Screen-reader only announcements for start/stop to ensure they are read */}
+      <span className="sr-only" aria-live="assertive">
+        {isStreaming ? 'Response streaming started' : 'Response streaming completed'}
+      </span>
+
+      <div
+        id="stream-region"
+        data-testid="stream-content"
+        className="whitespace-pre-wrap"
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-atomic="false"
+      >
+        {content}
+      </div>
       <div className="mt-3 flex gap-2">
         <button
           type="button"

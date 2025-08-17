@@ -52,6 +52,7 @@ const StevesMomCharacter: React.FC<Props> = ({ size = 140 }) => {
   const [state, setState] = useState<CharacterState>(characterController.get());
   const [isMirrored, setIsMirrored] = useState(false);
   const actionRef = useRef(state.action);
+  const animationIdRef = useRef(0);
 
   useEffect(() => characterController.subscribe(setState), []);
 
@@ -62,18 +63,13 @@ const StevesMomCharacter: React.FC<Props> = ({ size = 140 }) => {
 
   useEffect(() => {
     actionRef.current = state.action;
-    if (state.action !== 'idle') {
-      // Return to idle after animation cycle
-      const t = setTimeout(() => {
-        // Only reset if action unchanged
-    // Increment animationIdRef to uniquely identify this animation instance
+    // Increment id to invalidate previous timers when action changes
     animationIdRef.current += 1;
-    const currentAnimationId = animationIdRef.current;
+    const currentId = animationIdRef.current;
     if (state.action !== 'idle') {
       // Return to idle after animation cycle
       const t = setTimeout(() => {
-        // Only reset if this is the latest animation instance
-        if (animationIdRef.current === currentAnimationId) {
+        if (animationIdRef.current === currentId) {
           characterController.set({ action: 'idle' });
         }
       }, 1800);

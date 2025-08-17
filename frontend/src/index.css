@@ -9,12 +9,18 @@
     --brand-green: #10b981;  /* tailwind emerald-500 */
     --bg-base: #f1f5f9;      /* slate-100 (darker than slate-50) */
   }
+  .dark {
+    /* Dark mode tokens */
+    --bg-base: #0b1220; /* near slate-950 */
+    --brand-blue: #60a5fa; /* blue-400 for contrast */
+    --brand-green: #34d399; /* emerald-400 */
+  }
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
-    @apply text-gray-900;
+    @apply text-gray-900 dark:text-gray-100;
     background-color: var(--bg-base);
     /* Spatial gradient + faint starfield dots */
     background-image:

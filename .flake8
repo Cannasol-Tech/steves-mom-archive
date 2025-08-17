@@ -1,0 +1,15 @@
+[flake8]
+max-line-length = 100
+extend-ignore =
+    # use per-file-ignores below
+per-file-ignores =
+    backend/ai/steves_mom.py: E501, F401, F841, F541, E203, W291
+    backend/ai/providers/*.py: F401, E501, F841
+    backend/ai/model_router.py: E501, F401
+    backend/api/app.py: E402, E203
+    backend/functions/chat_function.py: F401, E501, F841
+    backend/models/ai_models.py: F401
+    backend/models/orm/approval_history.py: F401, E501
+    backend/test_xai_steves_mom.py: F841
+    backend/ai/test_steves_mom.py: F401
+    backend/ai/rate_limiter.py: F401

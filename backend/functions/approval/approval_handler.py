@@ -1,15 +1,17 @@
 import logging
+
 from backend.models.task_models import TaskStatus
-from enum import Enum
+
 
 class Task:
     def __init__(self, id, status):
         self.id = id
         self.status = status
 
+
 class ApprovalHandler:
     def __init__(self, task):
-        if not hasattr(task, 'status'):
+        if not hasattr(task, "status"):
             raise TypeError("Task object must have a 'status' attribute.")
         self.task = task
         self.logger = logging.getLogger(__name__)
@@ -23,7 +25,9 @@ class ApprovalHandler:
 
     def approve(self):
         if not self._can_transition_to(TaskStatus.APPROVED):
-            raise ValueError(f"Cannot approve task in '{self.task.status.value}' state.")
+            raise ValueError(
+                f"Cannot approve task in '{self.task.status.value}' state."
+            )
         self.task.status = TaskStatus.APPROVED.value
         self._send_notification(TaskStatus.APPROVED)
         self._log_history(TaskStatus.APPROVED)

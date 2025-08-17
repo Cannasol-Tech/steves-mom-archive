@@ -20,6 +20,7 @@ make test-unit
 ## 📋 Make Targets (Standardized Workflow)
 
 ### Testing
+
 - `make test` - Run all tests (unit + integration + acceptance)
 - `make test-unit` - Run unit tests only
 - `make test-integration` - Run integration tests
@@ -28,16 +29,19 @@ make test-unit
 - `make test-infra` - Run infrastructure tests (Bicep validation)
 
 ### Development
+
 - `make setup` - Complete project setup (backend + frontend + dev deps)
 - `make preview` - Start dev servers (backend + frontend)
 - `make dev` - Start development environment with hot reload
 - `make clean` - Clean build artifacts and caches
 
 ### Code Quality
+
 - `make lint` - Run all linters (Python, JS, Markdown)
 - `make fix-lint` - Auto-fix linting issues where possible
 
 ### Deployment
+
 - `make deploy` - Deploy full application (infra + functions)
 - `make deploy-infra` - Deploy infrastructure only (Bicep)
 - `make deploy-functions` - Deploy Azure Functions only

@@ -101,7 +101,10 @@ class ContextManager:
         self._cleanup_task = asyncio.create_task(cleanup_loop())
 
     async def create_session(
-        self, user_id: str, session_id: Optional[str] = None, metadata: Optional[Dict[str, Any]] = None
+        self,
+        user_id: str,
+        session_id: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Create a new conversation session.
@@ -143,7 +146,11 @@ class ContextManager:
         return session_id
 
     async def add_message(
-        self, session_id: str, role: MessageRole, content: str, metadata: Optional[Dict[str, Any]] = None
+        self,
+        session_id: str,
+        role: MessageRole,
+        content: str,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Add a message to a session.
@@ -169,7 +176,9 @@ class ContextManager:
 
         logger.debug(f"Added {role.value} message to session {session_id}")
 
-    async def get_context_window(self, session_id: str, max_tokens: Optional[int] = None) -> ContextWindow:
+    async def get_context_window(
+        self, session_id: str, max_tokens: Optional[int] = None
+    ) -> ContextWindow:
         """
         Get context window for a session.
 
@@ -263,7 +272,9 @@ class ContextManager:
 
         # Remove from user sessions
         if user_id in self.user_sessions:
-            self.user_sessions[user_id] = [sid for sid in self.user_sessions[user_id] if sid != session_id]
+            self.user_sessions[user_id] = [
+                sid for sid in self.user_sessions[user_id] if sid != session_id
+            ]
 
             # Clean up empty user session lists
             if not self.user_sessions[user_id]:
@@ -279,7 +290,9 @@ class ContextManager:
         Returns:
             Number of sessions cleaned up
         """
-        cutoff_time = datetime.now(timezone.utc) - timedelta(hours=self.max_session_age_hours)
+        cutoff_time = datetime.now(timezone.utc) - timedelta(
+            hours=self.max_session_age_hours
+        )
         expired_sessions = []
 
         for session_id, session in self.sessions.items():
@@ -322,7 +335,11 @@ class ContextManager:
         # A simple heuristic: 1 token ~ 4 chars.
         total_tokens = 0
         for message in messages:
-            content_str = json.dumps(message.content) if isinstance(message.content, dict) else str(message.content)
+            content_str = (
+                json.dumps(message.content)
+                if isinstance(message.content, dict)
+                else str(message.content)
+            )
             # Simple heuristic: 1 token ~ 4 chars, plus a fixed cost.
             total_tokens += (len(content_str) + 3) // 4 + 5
         return total_tokens
@@ -359,18 +376,26 @@ class ContextManager:
             if msg.role == MessageRole.USER:
                 summary_parts.append(f"User asked about: {msg.content[:100]}...")
             elif msg.role == MessageRole.ASSISTANT:
-                summary_parts.append(f"Assistant responded about: {msg.content[:100]}...")
+                summary_parts.append(
+                    f"Assistant responded about: {msg.content[:100]}..."
+                )
 
         summary = "Previous conversation summary:\n" + "\n".join(summary_parts)
 
         # Create a new system message with the summary
-        summary_message = Message(role=MessageRole.SYSTEM, content=summary, metadata={"type": "summary"})
+        summary_message = Message(
+            role=MessageRole.SYSTEM, content=summary, metadata={"type": "summary"}
+        )
 
         # Filter out any old summary messages from the original system messages
-        non_summary_system_messages = [m for m in system_messages if m.metadata.get("type") != "summary"]
+        non_summary_system_messages = [
+            m for m in system_messages if m.metadata.get("type") != "summary"
+        ]
 
         # Reconstruct the messages list
-        session.messages = non_summary_system_messages + [summary_message] + recent_messages
+        session.messages = (
+            non_summary_system_messages + [summary_message] + recent_messages
+        )
         session.metadata["conversation_summary"] = summary
         session.metadata["summarized_at"] = datetime.now(timezone.utc).isoformat()
 
