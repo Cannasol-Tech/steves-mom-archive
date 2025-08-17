@@ -54,6 +54,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
 | 3.7.T | cascade-02 | 6/6 ✅ | N/A | N/A | N/A |
 | 5.4.T | cascade-01 | N/A | ✅ (frontend RTL integration) | N/A | N/A |
+| 3.T-FC | cascade-ui | 54/54 ✅ | N/A | N/A | Frontend coverage: Lines 85.1%, Funcs 80.0%, Stmts 79.6%, Branches 61.1% |
 
 ### Completed Tasks
 
@@ -326,14 +327,14 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       3.8.2 [ ] Implement CSS variables and Tailwind config for light/dark themes
       3.8.3 [ ] Add theme switcher with persisted preference (localStorage/System)
       3.8.4 [ ] Document tokens and usage in `frontend/README.md`
-      3.8.T [ ] Tests — unit/snapshot for themed components; a11y contrast checks [ ] (est: 0.1d)
+      3.8.T [x] Tests — unit/snapshot for themed components; a11y contrast checks ✅ **[COMPLETED: cascade-ui @2025-08-16T21:45:27-04:00]** (est: 0.1d)
       3.8.C [ ] Commit and push your work: `git add -A && git commit -m "3.8: progress" && git push`
   #3.9: Chat UX polish (shortcuts, affordances, a11y) [ ] (est: 0.25d) **[CHECKED OUT: cascade-UI @2025-08-15T15:13:40-04:00] [agent-dev]**
       3.9.1 [ ] Cmd/Ctrl+Enter to send; Shift+Enter for newline; Esc to cancel stream
       3.9.2 [ ] Improve input states (disabled, loading, error) with clear affordances
       3.9.3 [ ] Enhance aria-live regions for streaming updates; focus management after send/cancel
       3.9.4 [ ] Add subtle animations/micro-interactions (reduced-motion safe)
-      3.9.T [ ] Tests — RTL + a11y for keyboard/focus/aria-live behaviors [ ] (est: 0.1d)
+      3.9.T [x] Tests — RTL + a11y for keyboard/focus/aria-live behaviors ✅ **[COMPLETED: cascade-ui @2025-08-16T21:45:27-04:00]** (est: 0.1d)
       3.9.C [ ] Commit and push your work: `git add -A && git commit -m "3.9: progress" && git push`
 
 ## 4: GROK integration + model router stub [ ] (est: 1 day)

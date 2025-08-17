@@ -69,6 +69,7 @@ List any unclaimed tasks here as they are identified.
 | 4.2.4 | Sonnet-01 | feature/model-router-config | 20min | backend/ai/model_router.py; tests/unit/test_model_router_config_interface.py | ✅ |
 | 3.5 | cascade-02 | feature/chat-sockets-live-updates | 20min | frontend/src/pages/ChatPage.tsx; frontend/src/services/socketClient.ts; frontend/src/pages/**tests**/ChatLiveUpdates.test.tsx | ✅ |
 | 3.6 | cascade-02 | feature/admin-panel-shell | 15min | frontend/src/pages/AdminPage.tsx; frontend/src/pages/**tests**/AdminPanel.test.tsx | ✅ |
+| 3.T-FC | cascade-ui | agent-dev | 20min | frontend/src/setupTests.ts; frontend/src/components/__tests__/Layout.test.tsx; frontend/src/pages/__tests__/TaskPage.test.tsx | ⏳ |
 
 ## Failed Tasks
 
@@ -98,6 +99,7 @@ List any unclaimed tasks here as they are identified.
 | 3.6 | cascade-02 | 5/5 ✅ | N/A | N/A | N/A |
 | 5.4.T | cascade-01 | N/A | ✅ (frontend RTL integration) | N/A | N/A |
 | 3.2.1 | cascade-02 | ✅ (RTL unit: InputArea autosize/limits) | N/A | N/A | N/A |
+| 3.T-FC | cascade-ui | 54/54 ✅ | N/A | N/A | Frontend coverage: Lines 85.1%, Funcs 80.0%, Stmts 79.6%, Branches 61.1% |
 
 ## Communication Log
 
