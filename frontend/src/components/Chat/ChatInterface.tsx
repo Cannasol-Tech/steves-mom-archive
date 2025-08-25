@@ -3,6 +3,7 @@ import MessageList, { Message } from './MessageList';
 import ModelSelector from './ModelSelector';
 import InputArea from './InputArea';
 import StreamRenderer from './StreamRenderer';
+import StevesMomCharacter from '../Character/StevesMomCharacter';
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -13,6 +14,7 @@ interface ChatInterfaceProps {
   onChangeInput: (v: string) => void;
   onSubmit: () => void;
   onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  textareaRef?: React.Ref<HTMLTextAreaElement>;
   reasoningText?: string;
   // Streaming UI (optional)
   streamingContent?: string;
@@ -33,6 +35,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onChangeInput,
   onSubmit,
   onKeyDown,
+  textareaRef,
   reasoningText,
   streamingContent,
   streamingActive,
@@ -91,6 +94,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
       {/* Messages Area */}
       <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50">
+        {/* SR-only live region for loading/streaming state announcements */}
+        <p className="sr-only" role="status" aria-live="polite">
+          {isLoading || streamingActive ? 'Assistant is generating a response' : 'Assistant is idle'}
+        </p>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent"></div>
         <div className="relative h-full">
                     <MessageList messages={messages} isTyping={false} isLoading={isLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
@@ -109,16 +116,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
           )}
         </div>
+
+      {/* Steve's Mom Character Overlay */}
+      <StevesMomCharacter size={160} />
+
       </div>
 
       {/* Persona Avatars */}
-      <img 
+      <img
         src="/cannasol-logo.png"
         alt="Persona Avatar Left"
         className="persona-avatar bottom-0 -left-8 z-0"
         style={{ animationDelay: '0s' }}
       />
-      <img 
+      <img
         src="/cannasol-logo.png"
         alt="Persona Avatar Right"
         className="persona-avatar bottom-0 -right-8 z-0"
@@ -132,9 +143,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <InputArea
             value={inputValue}
             disabled={isLoading}
+            loading={isLoading}
             onChange={onChangeInput}
             onSubmit={onSubmit}
             onKeyDown={onKeyDown}
+            textareaRef={textareaRef}
           />
         </div>
       </div>

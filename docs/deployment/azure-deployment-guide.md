@@ -302,18 +302,18 @@ The repository includes a GitHub Actions workflow for deploying the Functions ap
 - App path: `backend/`
 - Runtime: Python 3.11
 
-**Triggers**
+### Triggers
 
 - Pull Requests to `main`: build-only, upload zip artifact, run `pytest`
 - Push to `main`: build and deploy to the default slot
 - Manual: run via “Run workflow” in Actions tab
 
-**Required GitHub Secrets**
+### Required GitHub Secrets
 
 - `AZURE_FUNCTIONAPP_NAME` — Name of the Function App
 - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` — Publish profile XML (copy from Azure Portal: Function App ➜ Get publish profile)
 
-**How to trigger a deploy**
+### How to trigger a deploy
 
 1. Commit to `main` affecting `backend/**` or the workflow file; or
 2. From Actions ➜ “Azure Functions Deploy (Python)” ➜ Run workflow (leave slot blank for production)

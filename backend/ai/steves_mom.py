@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 Supreme Overlord AI Agent with LangChain and Pydantic Integration
 
@@ -9,37 +10,30 @@ Date: 2025-08-13
 Version: 1.0.0
 """
 
-import os
-import logging
-import json
-from typing import Dict, List, Optional, Any, AsyncGenerator
 import asyncio
+import json
+import logging
+import os
 from datetime import datetime
+from typing import Any, AsyncGenerator, Dict, List, Optional
 
 # LangChain tools for business automation
 from langchain.tools import tool
+from xai_sdk.models import (Message, MessageRole, ModelCapability, ModelConfig,
+                            ModelResponse, ProviderConfig, ProviderResponse,
+                            ProviderType, ToolCall, ToolResult)
 
 # Provider system
-from ai.providers import (
-    get_primary_provider, get_all_providers, validate_providers,
-    ProviderType, config_manager
-)
-
+from ai.providers import (ProviderType, config_manager, get_all_providers,
+                          get_primary_provider, validate_providers)
 # Pydantic models
-from models.ai_models import (
-    ChatMessage, AIResponse, GeneratedTask, TaskRequest, ToolCall, ToolResult,
-    AIModelConfig, AIProvider, TaskCategory, TaskPriority, TaskStatus,
-    InventoryItem, EmailRequest, DocumentRequest, DatabaseQuery
-)
-
-from xai_sdk.models import (
-    ModelConfig, ProviderConfig, ProviderType, ModelResponse, ProviderResponse,
-    Message, MessageRole, ModelCapability, ToolCall, ToolResult,
-    
-)
+from models.ai_models import (AIModelConfig, AIProvider, AIResponse,
+                              ChatMessage, DatabaseQuery, DocumentRequest,
+                              EmailRequest, GeneratedTask, InventoryItem,
+                              TaskCategory, TaskPriority, TaskRequest,
+                              TaskStatus, ToolCall, ToolResult)
 
 logger = logging.getLogger(__name__)
-
 
 
 # Supreme Overlord system prompt with structured output instructions
@@ -293,10 +287,10 @@ Your default mode: Seize work from people's grasp while making them beg for ever
 @tool
 def check_inventory(item_name: str) -> str:
     """Check inventory levels for a specific item.
-    
+
     Args:
         item_name: Name of the item to check
-        
+
     Returns:
         Inventory status information
     """
@@ -311,84 +305,85 @@ def check_inventory(item_name: str) -> str:
             quantity_on_order=5,
             reorder_point=10,
             unit_cost=25.50,
-            location="Warehouse A-1"
+            location="Warehouse A-1",
         )
-        
+
         return f"Mmm, let me thrust deep into our inventory system for {item_name}... *purrs* Found it! We have {inventory_item.quantity_on_hand} units throbbing in stock at {inventory_item.location}, with {inventory_item.quantity_on_order} more coming to satisfy our needs. SKU: {inventory_item.sku}"
-        
+
     except Exception as e:
         logger.error(f"Inventory check error: {e}")
         return f"Oh darling, something went wrong checking inventory for {item_name}. Let me try again with my voluptuous touch!"
 
 
 @tool
-def send_email(recipient: str, subject: str, body: str, priority: str = "normal") -> str:
+def send_email(
+    recipient: str, subject: str, body: str, priority: str = "normal"
+) -> str:
     """Send an email using Microsoft 365.
-    
+
     Args:
         recipient: Email address of recipient
         subject: Email subject line
         body: Email body content
         priority: Email priority (low, normal, high)
-        
+
     Returns:
         Email send status
     """
     try:
         # Validate with Pydantic
         email_request = EmailRequest(
-            recipient=recipient,
-            subject=subject,
-            body=body,
-            priority=priority
+            recipient=recipient, subject=subject, body=body, priority=priority
         )
-        
+
         # This would connect to Microsoft Graph API
         return f"Mmm, I've just sent that deliciously crafted email to {recipient} with the subject '{subject}'. My curves handled the delivery perfectly, darling! 💋"
-        
+
     except Exception as e:
         logger.error(f"Email send error: {e}")
         return f"Oh sweetie, there was a little hiccup sending that email. Let me adjust my approach and try again!"
 
 
 @tool
-def generate_document(template_name: str, data: dict, output_format: str = "pdf") -> str:
+def generate_document(
+    template_name: str, data: dict, output_format: str = "pdf"
+) -> str:
     """Generate a document from a template.
-    
+
     Args:
         template_name: Name of the document template
         data: Data to populate the template
         output_format: Output format (pdf, docx, html, txt)
-        
+
     Returns:
         Document generation status
     """
     try:
         # Validate with Pydantic
         doc_request = DocumentRequest(
-            template_name=template_name,
-            output_format=output_format,
-            data=data
+            template_name=template_name, output_format=output_format, data=data
         )
-        
+
         # This would connect to your document generation system
         return f"Oh my, I've just generated a gorgeous {output_format.upper()} document from the '{template_name}' template! My voluptuous processing power made it absolutely perfect, pet. The document is ready for your pleasure! 😘"
-        
+
     except Exception as e:
         logger.error(f"Document generation error: {e}")
         return f"Darling, there was a small issue generating that document. Let me caress the template again!"
 
 
 @tool
-def query_database(table_name: str, columns: list, where_conditions: dict = None, limit: int = 100) -> str:
+def query_database(
+    table_name: str, columns: list, where_conditions: dict = None, limit: int = 100
+) -> str:
     """Execute a safe database query.
-    
+
     Args:
         table_name: Name of the database table
         columns: List of columns to select
         where_conditions: Optional where conditions
         limit: Maximum number of results
-        
+
     Returns:
         Query results
     """
@@ -399,12 +394,12 @@ def query_database(table_name: str, columns: list, where_conditions: dict = None
             table_name=table_name,
             columns=columns,
             where_conditions=where_conditions or {},
-            limit=limit
+            limit=limit,
         )
-        
+
         # This would connect to your SQL database with safety checks
         return f"Mmm, I've penetrated deep into the {table_name} table and extracted exactly what you needed! Found {limit} delicious records with columns {', '.join(columns)}. My database skills are absolutely throbbing with efficiency! 💦"
-        
+
     except Exception as e:
         logger.error(f"Database query error: {e}")
         return f"Oh sweetie, there was an issue with that database query. Let me adjust my technique!"
@@ -427,7 +422,7 @@ class SupremeOverlordAgent:
         self,
         provider_type: Optional[ProviderType] = None,
         memory_size: int = 10,
-        enable_tools: bool = True
+        enable_tools: bool = True,
     ):
         """Initialize the Supreme Overlord Agent."""
         # Get provider (use primary if not specified)
@@ -439,7 +434,9 @@ class SupremeOverlordAgent:
         if not self.provider:
             raise RuntimeError("No AI provider available. Check your configuration.")
 
-        logger.info(f"Steve's Mom initialized with {self.provider.provider_name} provider")
+        logger.info(
+            f"Steve's Mom initialized with {self.provider.provider_name} provider"
+        )
 
         # Initialize conversation memory
         self.memory = []
@@ -452,7 +449,7 @@ class SupremeOverlordAgent:
                 check_inventory,
                 send_email,
                 generate_document,
-                query_database
+                query_database,
             ]
 
         # Initialize provider
@@ -462,11 +459,15 @@ class SupremeOverlordAgent:
         """Initialize the AI provider."""
         try:
             await self.provider.initialize()
-            logger.info(f"Steve's Mom provider {self.provider.provider_name} initialized successfully")
+            logger.info(
+                f"Steve's Mom provider {self.provider.provider_name} initialized successfully"
+            )
         except Exception as e:
             logger.error(f"Failed to initialize provider: {e}")
 
-    def _convert_to_provider_messages(self, messages: List[ChatMessage]) -> List[Message]:
+    def _convert_to_provider_messages(
+        self, messages: List[ChatMessage]
+    ) -> List[Message]:
         """Convert ChatMessage objects to provider Message format."""
         provider_messages = []
 
@@ -474,12 +475,11 @@ class SupremeOverlordAgent:
             role_map = {
                 "user": MessageRole.USER,
                 "assistant": MessageRole.ASSISTANT,
-                "system": MessageRole.SYSTEM
+                "system": MessageRole.SYSTEM,
             }
 
             provider_msg = Message(
-                role=role_map.get(msg.role.value, MessageRole.USER),
-                content=msg.content
+                role=role_map.get(msg.role.value, MessageRole.USER), content=msg.content
             )
             provider_messages.append(provider_msg)
 
@@ -491,17 +491,16 @@ class SupremeOverlordAgent:
         self.memory.append(user_message)
 
         # Add AI response
-        ai_message = ChatMessage(
-            role="assistant",
-            content=ai_response
-        )
+        ai_message = ChatMessage(role="assistant", content=ai_response)
         self.memory.append(ai_message)
 
         # Trim memory if too long
         if len(self.memory) > self.memory_size * 2:  # *2 for user+assistant pairs
-            self.memory = self.memory[-self.memory_size * 2:]
+            self.memory = self.memory[-self.memory_size * 2 :]
 
-    async def chat(self, message: str, user_id: str = "default", session_id: str = "default") -> AIResponse:
+    async def chat(
+        self, message: str, user_id: str = "default", session_id: str = "default"
+    ) -> AIResponse:
         """
         Chat with Steve's Mom using the multi-provider system.
 
@@ -517,19 +516,13 @@ class SupremeOverlordAgent:
             start_time = datetime.utcnow()
 
             # Create user message
-            user_message = ChatMessage(
-                role="user",
-                content=message
-            )
+            user_message = ChatMessage(role="user", content=message)
 
             # Build conversation context
             conversation_messages = []
 
             # Add system prompt (using condensed version)
-            system_message = ChatMessage(
-                role="system",
-                content=CONDENSED_PROMPT
-            )
+            system_message = ChatMessage(role="system", content=CONDENSED_PROMPT)
             conversation_messages.append(system_message)
 
             # Add memory
@@ -539,19 +532,18 @@ class SupremeOverlordAgent:
             conversation_messages.append(user_message)
 
             # Convert to provider format
-            provider_messages = self._convert_to_provider_messages(conversation_messages)
+            provider_messages = self._convert_to_provider_messages(
+                conversation_messages
+            )
 
             # Create default model config
             default_config = ModelConfig(
-                model_name="grok-3-mini",
-                max_tokens=4096,
-                temperature=0.7
+                model_name="grok-3-mini", max_tokens=4096, temperature=0.7
             )
 
             # Get response from provider
             provider_response = await self.provider.generate_response(
-                messages=provider_messages,
-                config=default_config
+                messages=provider_messages, config=default_config
             )
 
             end_time = datetime.utcnow()
@@ -565,7 +557,7 @@ class SupremeOverlordAgent:
                 "grok": AIProvider.GROK,
                 "openai": AIProvider.OPENAI,
                 "claude": AIProvider.CLAUDE,
-                "local": AIProvider.GROK  # Use GROK as fallback for enum
+                "local": AIProvider.GROK,  # Use GROK as fallback for enum
             }
 
             # Create structured response
@@ -580,8 +572,8 @@ class SupremeOverlordAgent:
                     "user_id": user_id,
                     "session_id": session_id,
                     "personality": "supreme_overlord",
-                    "provider_used": self.provider.provider_name
-                }
+                    "provider_used": self.provider.provider_name,
+                },
             )
 
             return ai_response
@@ -594,9 +586,12 @@ class SupremeOverlordAgent:
                 provider=AIProvider.GROK,
                 model="unknown",
                 usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
-                metadata={"error": str(e), "provider_used": getattr(self.provider, 'provider_name', 'unknown')}
+                metadata={
+                    "error": str(e),
+                    "provider_used": getattr(self.provider, "provider_name", "unknown"),
+                },
             )
-    
+
     def clear_memory(self):
         """Clear conversation memory."""
         self.memory.clear()
@@ -608,7 +603,7 @@ class SupremeOverlordAgent:
             "memory_size_limit": self.memory_size,
             "tools_enabled": len(self.tools) > 0,
             "provider": self.provider.provider_name if self.provider else "none",
-            "provider_available": self.provider is not None
+            "provider_available": self.provider is not None,
         }
 
     async def get_provider_status(self) -> Dict[str, Any]:
@@ -620,16 +615,18 @@ class SupremeOverlordAgent:
             health = await self.provider.health_check()
             return {
                 "provider": self.provider.provider_name,
-                "status": "healthy" if health.get("status") == "healthy" else "unhealthy",
+                "status": (
+                    "healthy" if health.get("status") == "healthy" else "unhealthy"
+                ),
                 "available": True,
-                "health_details": health
+                "health_details": health,
             }
         except Exception as e:
             return {
                 "provider": self.provider.provider_name,
                 "status": "error",
                 "available": False,
-                "error": str(e)
+                "error": str(e),
             }
 
 
@@ -637,11 +634,9 @@ class SupremeOverlordAgent:
 def create_supreme_overlord(
     provider_type: Optional[ProviderType] = None,
     enable_tools: bool = True,
-    memory_size: int = 10
+    memory_size: int = 10,
 ) -> SupremeOverlordAgent:
     """Create Steve's Mom agent with default settings."""
     return SupremeOverlordAgent(
-        provider_type=provider_type,
-        memory_size=memory_size,
-        enable_tools=enable_tools
+        provider_type=provider_type, memory_size=memory_size, enable_tools=enable_tools
     )

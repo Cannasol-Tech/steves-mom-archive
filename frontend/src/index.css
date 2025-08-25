@@ -9,12 +9,18 @@
     --brand-green: #10b981;  /* tailwind emerald-500 */
     --bg-base: #f1f5f9;      /* slate-100 (darker than slate-50) */
   }
+  .dark {
+    /* Dark mode tokens */
+    --bg-base: #0b1220; /* near slate-950 */
+    --brand-blue: #60a5fa; /* blue-400 for contrast */
+    --brand-green: #34d399; /* emerald-400 */
+  }
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
-    @apply text-gray-900;
+    @apply text-gray-900 dark:text-gray-100;
     background-color: var(--bg-base);
     /* Spatial gradient + faint starfield dots */
     background-image:
@@ -186,14 +192,90 @@
   }
 
   @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  /* Steve's Mom character animation classes */
+  .smom-idle { animation: smom-float 4s ease-in-out infinite; }
+  .smom-enter { animation: smom-enter 700ms ease-out; }
+  .smom-wink .smom-eye { animation: smom-wink 900ms ease-in-out; }
+  .smom-kiss .smom-lips { animation: smom-kiss 1100ms ease-in-out; }
+  .smom-shimmy { animation: smom-shimmy 1400ms ease-in-out; }
+  .smom-dance { animation: smom-dance 1600ms ease-in-out; }
+  .smom-bounce { animation: smom-bounce 900ms ease-out; }
+  .smom-point-left { animation: smom-point-left 1200ms ease-in-out; }
+  .smom-point-right { animation: smom-point-right 1200ms ease-in-out; }
+  .smom-breathe { animation: smom-breathe 2.8s ease-in-out infinite; }
+  .smom-sway { animation: smom-sway 3.2s ease-in-out infinite; transform-origin: top center; }
+
+  @keyframes smom-float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes smom-enter {
+    0% { opacity: 0; transform: translateY(10px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes smom-wink {
+    0%, 100% { height: 4%; }
+    40% { height: 1%; }
+    60% { height: 5%; }
+  }
+
+  @keyframes smom-kiss {
+    0% { transform: scale(1); background-color: #fb7185; }
+    40% { transform: scale(1.2); background-color: #f43f5e; }
+    100% { transform: scale(1); background-color: #fb7185; }
+  }
+
+  @keyframes smom-shimmy {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(0); }
+    75% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes smom-dance {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(4deg) translateY(-4px); }
+    50% { transform: rotate(0deg) translateY(0); }
+    75% { transform: rotate(-4deg) translateY(-4px); }
+    100% { transform: rotate(0deg) translateY(0); }
+  }
+
+  @keyframes smom-bounce {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes smom-point-left {
+    0% { transform: translateX(0); }
+    30% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes smom-point-right {
+    0% { transform: translateX(0); }
+    30% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes smom-breathe {
+    0% { transform: scaleY(1); }
+    50% { transform: scaleY(1.03); }
+    100% { transform: scaleY(1); }
+  }
+
+  @keyframes smom-sway {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(1.5deg); }
+    100% { transform: rotate(0deg); }
   }
 }

@@ -24,7 +24,7 @@
             "type": "String"
         },
         "skuCode": {
-            "type": "String"
+            "type": "string"
         },
         "workerSize": {
             "type": "String"

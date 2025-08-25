@@ -118,6 +118,7 @@ Create custom roles in your `staticwebapp.config.json`:
 ### 2. Assign Roles to Users
 
 Via Azure Portal:
+
 1. Go to your Static Web App
 2. Navigate to **Role management**
 3. Click **Invite**
@@ -125,6 +126,7 @@ Via Azure Portal:
 5. Send invitation
 
 Via Azure CLI:
+
 ```bash
 az staticwebapp users invite \
   --name <static-web-app-name> \
@@ -382,6 +384,7 @@ curl -H "Authorization: Bearer <token>" \
 ### 1. Azure AD Sign-in Logs
 
 Monitor authentication events in Azure AD:
+
 - Go to **Azure Active Directory** > **Sign-in logs**
 - Filter by application name
 - Review failed sign-ins and errors
@@ -389,6 +392,7 @@ Monitor authentication events in Azure AD:
 ### 2. Application Insights
 
 Track authentication metrics:
+
 - User sign-in success/failure rates
 - Token validation errors
 - Role-based access patterns

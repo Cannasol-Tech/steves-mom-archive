@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Layout from '../Layout';
 import ChatInterface from '../Chat/ChatInterface';
 import type { Message } from '../Chat/MessageList';
+import { withTheme } from '../../test-utils';
 
 // Mock messages for chat interface testing
 const mockMessages: Message[] = [
@@ -18,13 +19,15 @@ const mockMessages: Message[] = [
 describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo displays in header with correct attributes and responsive sizing', () => {
     render(
-      <BrowserRouter>
-        <Layout>
-          <div>Test content</div>
-        </Layout>
-      </BrowserRouter>
+      withTheme(
+        <BrowserRouter>
+          <Layout>
+            <div>Test content</div>
+          </Layout>
+        </BrowserRouter>
+      )
     );
-    
+
     const logo = screen.getByAltText('Cannasol Technologies');
     expect(logo).toBeInTheDocument();
     expect(logo).toHaveAttribute('src', '/cannasol-logo.png');
@@ -33,13 +36,15 @@ describe('Cannasol Logo Visual Regression Tests', () => {
 
   test('logo appears alongside Steve\'s Mom branding text', () => {
     render(
-      <BrowserRouter>
-        <Layout>
-          <div>Test content</div>
-        </Layout>
-      </BrowserRouter>
+      withTheme(
+        <BrowserRouter>
+          <Layout>
+            <div>Test content</div>
+          </Layout>
+        </BrowserRouter>
+      )
     );
-    
+
     const logo = screen.getByAltText('Cannasol Technologies');
     const brandingText = screen.getByText('Steve\'s Mom');
     
@@ -53,13 +58,15 @@ describe('Cannasol Logo Visual Regression Tests', () => {
 
   test('logo has error handling for missing image', () => {
     render(
-      <BrowserRouter>
-        <Layout>
-          <div>Test content</div>
-        </Layout>
-      </BrowserRouter>
+      withTheme(
+        <BrowserRouter>
+          <Layout>
+            <div>Test content</div>
+          </Layout>
+        </BrowserRouter>
+      )
     );
-    
+
     const logo = screen.getByAltText('Cannasol Technologies') as HTMLImageElement;
     
     // Verify the logo element exists and has proper structure
@@ -73,13 +80,15 @@ describe('Cannasol Logo Visual Regression Tests', () => {
 
   test('logo maintains accessibility with proper alt text', () => {
     render(
-      <BrowserRouter>
-        <Layout>
-          <div>Test content</div>
-        </Layout>
-      </BrowserRouter>
+      withTheme(
+        <BrowserRouter>
+          <Layout>
+            <div>Test content</div>
+          </Layout>
+        </BrowserRouter>
+      )
     );
-    
+
     const logo = screen.getByRole('img', { name: /cannasol technologies/i });
     expect(logo).toBeInTheDocument();
     expect(logo).toHaveAttribute('alt', 'Cannasol Technologies');
@@ -111,13 +120,15 @@ describe('Cannasol Logo Visual Regression Tests', () => {
 
   test('logo responsive classes work across breakpoints', () => {
     render(
-      <BrowserRouter>
-        <Layout>
-          <div>Test content</div>
-        </Layout>
-      </BrowserRouter>
+      withTheme(
+        <BrowserRouter>
+          <Layout>
+            <div>Test content</div>
+          </Layout>
+        </BrowserRouter>
+      )
     );
-    
+
     const logo = screen.getByAltText('Cannasol Technologies');
     
     // Verify responsive classes are present

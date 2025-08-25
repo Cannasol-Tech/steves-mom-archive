@@ -14,6 +14,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js for frontend build
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Python for backend packaging
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Generate manifest.json
         run: |
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -28,6 +38,9 @@ jobs:
             "generatedAt": "${TS}",
             "apiVersion": "mvp",
             "includes": [
+              "frontend/build/",
+              "src/backend/",
+              "docs/",
               "docs/planning/implementation-plan.md",
               "db/migrations/",
               "analytics-schema.json",
@@ -37,14 +50,35 @@ jobs:
           }
           EOF
 
-      - name: Collect artifacts
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Collect artifacts (frontend, backend, docs)
         run: |
           mkdir -p release-pack/db/migrations
-          # Optional files; copy if they exist
+          # Frontend build
+          if [ -d frontend/build ]; then mkdir -p release-pack/frontend && cp -R frontend/build release-pack/frontend/; fi
+
+          # Backend function source (exclude local dev files)
+          if [ -d src/backend ]; then \
+            mkdir -p release-pack/backend && \
+            rsync -a --exclude '.venv' --exclude '__pycache__' --exclude '*.pyc' --exclude 'local.settings.json' src/backend/ release-pack/backend/; \
+          fi
+
+          # Docs and schemas
+          if [ -d docs ]; then cp -R docs release-pack/; fi
           if [ -f docs/planning/implementation-plan.md ]; then cp docs/planning/implementation-plan.md release-pack/; fi
           if [ -f api-schema.json ]; then cp api-schema.json release-pack/; fi
           if [ -f analytics-schema.json ]; then cp analytics-schema.json release-pack/; fi
           if [ -f deployment.json ]; then cp deployment.json release-pack/; fi
+
+          # Backend Python dependencies manifest (freeze only, not vendored)
+          if [ -f requirements.txt ]; then pip install -r requirements.txt >/dev/null 2>&1 || true; fi
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt >/dev/null 2>&1 || true; fi
+          python -m pip freeze > release-pack/backend-requirements.lock || true
 
       - name: Create archive
         run: |
