@@ -12,7 +12,8 @@ Version: 1.0.0
 import asyncio
 import logging
 import os
-from typing import Any, AsyncGenerator, Dict, List, Optional
+from dataclasses import asdict
+from typing import Any, AsyncGenerator, Dict, List, Optional, cast
 
 from .base import (AuthenticationError, LLMProvider, Message, MessageRole,
                    ModelCapability, ModelConfig, ModelNotFoundError,
@@ -56,8 +57,8 @@ class OpenAIProvider(LLMProvider):
     }
 
     def __init__(
-        self, api_key: Optional[str] = None, base_url: Optional[str] = None, **kwargs
-    ):
+        self, api_key: Optional[str] = None, base_url: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """Initialize OpenAI provider with configuration."""
         if api_key is None:
             api_key = os.environ.get("OPENAI_API_KEY")
@@ -97,14 +98,14 @@ class OpenAIProvider(LLMProvider):
         self, messages: List[Message], config: ModelConfig
     ) -> ModelResponse:
         """Generate response using OpenAI (placeholder)."""
-        return await self.generate(messages, config.dict() if config else None)
+        return await self.generate(messages, asdict(config) if config else None)
 
     async def stream_response(
         self, messages: List[Message], config: ModelConfig
     ) -> AsyncGenerator[str, None]:
         """Stream response from OpenAI (placeholder)."""
         async for chunk in self.stream_generate(
-            messages, config.dict() if config else None
+            messages, asdict(config) if config else None
         ):
             yield chunk
 
@@ -163,22 +164,26 @@ class OpenAIProvider(LLMProvider):
 
     def get_capabilities(self) -> List[ModelCapability]:
         """Get OpenAI provider capabilities."""
-        model_info = self.MODELS.get(self.config.model_name, {})
-        return model_info.get("capabilities", [ModelCapability.TEXT_GENERATION])
+        model_name = str(self.config.get("model_name", "gpt-4"))
+        model_info = cast(Dict[str, Any], self.MODELS.get(model_name, {}))
+        caps = model_info.get("capabilities", [ModelCapability.TEXT_GENERATION])
+        return cast(List[ModelCapability], caps)
 
     def get_cost_estimate(self, input_tokens: int, output_tokens: int) -> float:
         """Get cost estimate for OpenAI usage."""
-        model_info = self.MODELS.get(self.config.model_name, {})
-        input_cost = (input_tokens / 1000) * model_info.get("cost_per_1k_input", 0.001)
-        output_cost = (output_tokens / 1000) * model_info.get(
+        model_name = str(self.config.get("model_name", "gpt-4"))
+        model_info = cast(Dict[str, Any], self.MODELS.get(model_name, {}))
+        input_cost = (input_tokens / 1000) * float(model_info.get("cost_per_1k_input", 0.001))
+        output_cost = (output_tokens / 1000) * float(model_info.get(
             "cost_per_1k_output", 0.002
-        )
-        return input_cost + output_cost
+        ))
+        return float(input_cost + output_cost)
 
     def get_max_tokens(self) -> int:
         """Get maximum tokens for OpenAI model."""
-        model_info = self.MODELS.get(self.config.model_name, {})
-        return model_info.get("max_tokens", 4096)
+        model_name = str(self.config.get("model_name", "gpt-4"))
+        model_info = cast(Dict[str, Any], self.MODELS.get(model_name, {}))
+        return int(model_info.get("max_tokens", 4096))
 
     async def cleanup(self) -> None:
         """Clean up OpenAI provider resources."""
@@ -186,6 +191,6 @@ class OpenAIProvider(LLMProvider):
 
 
 # Factory function for easy instantiation
-def create_openai_provider(api_key: Optional[str] = None, **kwargs) -> OpenAIProvider:
+def create_openai_provider(api_key: Optional[str] = None, **kwargs: Any) -> OpenAIProvider:
     """Create OpenAI provider with default configuration."""
     return OpenAIProvider(api_key=api_key, **kwargs)

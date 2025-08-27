@@ -28,7 +28,7 @@ Branch Tagging: Tag each branch with the agent ID and timestamp when it is check
 
 ## Branch Completion Tagging
 
-Branch Completion Tagging: Tag each branch with the agent ID and timestamp when it is completed. For example, `feature/descriptive-feature-name **[COMPLETED: Agent-ID @timestamp]**`.  
+Branch Completion Tagging: Tag each branch with the agent ID and timestamp when it is completed. For example, `feature/descriptive-feature-name **[COMPLETED: Agent-ID @timestamp]**`.
 
 ## Task Dependencies
 
@@ -174,17 +174,30 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
 - **1.4.C** [ ] Commit and push your work: `git add -A && git commit -m "1.4: progress" && git push`
 - **1.4.T** [ ] Tests — unit, integration, acceptance for infra setup [ ] (est: 0.25d)
 
-#### 1.4.MY: Incremental mypy hardening for backend/ai/ [ ] (est: 0.25d)
+#### 1.4.MY: Incremental mypy hardening for backend/ai/ [ ] (est: 0.25d) **[CHECKED OUT: augment-02 @2025-08-27T12:00:00-04:00] [feature/mypy-hardening-ai]**
 
 - Goals: Re-enable strict typing gradually for `backend/ai/` without breaking CI.
 - Approach: tighten per-module settings and address errors iteratively.
 - Steps:
-  - 1.4.MY.1 [ ] Enable `warn-unused-ignores`, `warn-redundant-casts` globally
+  - 1.4.MY.1 [x] Enable `warn-unused-ignores`, `warn-redundant-casts` globally ✅ **[COMPLETED: augment-02 @2025-08-27T12:10:00-04:00]**
   - 1.4.MY.2 [ ] For `backend/ai/base_provider.py`: set `disallow_untyped_defs = True`; fix signatures
   - 1.4.MY.3 [ ] For `backend/ai/config_manager.py`: add types for config shapes; enable `no_implicit_optional = True`
   - 1.4.MY.4 [ ] For `backend/ai/model_router.py`: add explicit `TypedDict`/`Protocol` for policies
   - 1.4.MY.5 [ ] For each provider (`grok_provider.py`, `openai_provider.py`, `claude_provider.py`, `local_provider.py`): add precise request/response DTOs
   - 1.4.MY.6 [ ] Remove `ignore_errors` for `backend/ai.*` package in `mypy.ini`, module-by-module
+- Subtasks — TDD for 1.4.MY:
+  - 1.4.MY.2.T [ ] Write unit tests for base_provider.py (LLMProvider base):
+    - Assert get_provider_info returns required keys and types
+    - Validate validate_messages rejects empty/whitespace content; accepts valid content
+    - Ensure _calculate_tokens is positive and scales with input length
+  - 1.4.MY.2.I [ ] Apply typing hardening to base_provider.py (disallow_untyped_defs, explicit attributes, precise return types)
+  - 1.4.MY.2.V [ ] Verify mypy clean for ai.providers.base_provider; run tests (`make test-unit`)
+  - 1.4.MY.4.T [ ] Add/adjust unit tests for model_router typed policy/config interfaces:
+    - Configuration snapshot includes typed policy fields; invalid updates raise clear errors
+    - Round-trip load_configuration/get_configuration_snapshot preserves schema
+  - 1.4.MY.4.I [ ] Introduce TypedDict/Protocol for routing policies and provider interfaces in model_router.py
+  - 1.4.MY.4.V [ ] Verify mypy clean for ai.model_router; run tests (`make test-unit`)
+
 - Deliverables:
   - Updated `mypy.ini` with per-module overrides (dropping ignores as we fix types)
   - Type annotations and DTOs added to targeted modules
@@ -378,7 +391,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
   #4.T: Tests — unit, integration, acceptance for model router [x] (est: 0.25d) ✅ **[COMPLETED: 2025-01-15]**
       - 4.T.1 [x] Write integration tests for model router
         - [x] Test multiple provider interactions
-        - [x] Test fallback scenarios  
+        - [x] Test fallback scenarios
         - [x] Test configuration updates during runtime
       - 4.T.2 [x] Write acceptance tests for model router
         - [x] Test business scenarios and workflows
@@ -391,7 +404,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
         - [x] Fix any failing tests
       **Test Results Summary:**
       - Unit Tests: 22 tests passing
-      - Integration Tests: 6 tests passing  
+      - Integration Tests: 6 tests passing
       - Acceptance Tests: 6 tests passing
       - Total Model Router Tests: 34 tests passing
       - Coverage: Comprehensive coverage of routing strategies, provider management, error handling, circuit breaker, rate limiting, and configuration interface
@@ -439,7 +452,7 @@ Task Dependencies: Tag each task/subtask with the agent ID and timestamp when it
       - 5.4.2 [x] Implement real-time status updates and notifications ✅ **[COMPLETED: cascade-01 @2025-08-15T16:02:29-04:00] [feature/approve-reject-ui]**
       - 5.4.3 [x] Add task details view with approval history ✅ **[COMPLETED: cascade-01 @2025-08-15T09:00:00-04:00]**
       - 5.4.4 [ ] Create bulk approval functionality for multiple tasks
-      - 5.4.T [x] Tests — UI integration for approvals/status updates ✅ **[COMPLETED: cascade-01 @2025-08-15T16:02:29-04:00] [feature/approve-reject-ui]** (est: 0.2d)
+      - 5.4.T [ ] Tests — UI integration for approvals/status updates [ ] (est: 0.2d) [CURRENT-TASK] **[CHECKED OUT: cascade-01 @2025-08-25T13:14:47-04:00] [feature/approve-reject-ui-tests]**
       - 5.4.C [ ] Commit and push your work: `git add -A && git commit -m "5.4: progress" && git push`
   #5.T: Tests — unit, integration, acceptance for tasking [ ] (est: 0.5d)
 

@@ -113,7 +113,7 @@ class LLMProvider(ABC):
     must implement, ensuring consistency across different services.
     """
 
-    def __init__(self, api_key: str, base_url: Optional[str] = None, **kwargs):
+    def __init__(self, api_key: str, base_url: Optional[str] = None, **kwargs: Any) -> None:
         """
         Initialize the LLM provider.
 
@@ -122,10 +122,10 @@ class LLMProvider(ABC):
             base_url: Base URL for the provider's API (if applicable)
             **kwargs: Additional provider-specific configuration
         """
-        self.api_key = api_key
-        self.base_url = base_url
-        self.config = kwargs
-        self._client = None
+        self.api_key: str = api_key
+        self.base_url: Optional[str] = base_url
+        self.config: Dict[str, Any] = kwargs
+        self._client: Optional[Any] = None
 
     @property
     @abstractmethod
@@ -180,7 +180,10 @@ class LLMProvider(ABC):
         Yields:
             Chunks of the AI's response as they become available
         """
-        pass
+        # Mark as async generator for type checkers while remaining abstract
+        if False:  # pragma: no cover
+            yield ""  # type: ignore[misc]
+        raise NotImplementedError
 
     @abstractmethod
     async def validate_api_key(self) -> bool:

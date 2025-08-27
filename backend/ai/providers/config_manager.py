@@ -13,9 +13,9 @@ import logging
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Type, Tuple, TypedDict
 
-from .base import ModelCapability, ModelConfig
+from .base import LLMProvider, ModelCapability, ModelConfig
 from .claude_provider import ClaudeProvider
 from .grok_provider import GROKProvider
 from .local_provider import LocalProvider
@@ -31,6 +31,13 @@ class ProviderType(str, Enum):
     OPENAI = "openai"
     CLAUDE = "claude"
     LOCAL = "local"
+
+
+class DefaultConfig(TypedDict):
+    base_url: str
+    model_name: str
+    env_key: Optional[str]
+    priority: int
 
 
 @dataclass
@@ -55,7 +62,7 @@ class ProviderConfigManager:
     """
 
     # Default configurations for each provider
-    DEFAULT_CONFIGS = {
+    DEFAULT_CONFIGS: Dict[ProviderType, DefaultConfig] = {
         ProviderType.GROK: {
             "base_url": "https://api.x.ai",
             "model_name": "grok-3-mini",
@@ -90,7 +97,7 @@ class ProviderConfigManager:
         ProviderType.LOCAL: LocalProvider,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the configuration manager."""
         self._credentials: Dict[ProviderType, ProviderCredentials] = {}
         self._load_from_environment()
@@ -101,25 +108,26 @@ class ProviderConfigManager:
 
         for provider_type, defaults in self.DEFAULT_CONFIGS.items():
             # Get API key from environment if specified
-            api_key = None
-            if defaults.get("env_key"):
-                api_key = os.environ.get(defaults["env_key"])
+            api_key: Optional[str] = None
+            env_key = defaults.get("env_key")
+            if env_key is not None:
+                api_key = os.environ.get(env_key)
 
             # Check if provider is explicitly disabled
             enabled_key = f"{provider_type.value.upper()}_ENABLED"
-            enabled = os.environ.get(enabled_key, "true").lower() == "true"
+            enabled: bool = os.environ.get(enabled_key, "true").lower() == "true"
 
             # Override model name if specified
             model_key = f"{provider_type.value.upper()}_MODEL"
-            model_name = os.environ.get(model_key, defaults["model_name"])
+            model_name: str = os.environ.get(model_key, str(defaults["model_name"]))
 
             # Override base URL if specified
             url_key = f"{provider_type.value.upper()}_BASE_URL"
-            base_url = os.environ.get(url_key, defaults["base_url"])
+            base_url: Optional[str] = os.environ.get(url_key, str(defaults["base_url"]))
 
             # Override priority if specified
             priority_key = f"{provider_type.value.upper()}_PRIORITY"
-            priority = int(os.environ.get(priority_key, defaults["priority"]))
+            priority: int = int(os.environ.get(priority_key, str(defaults["priority"])))
 
             # Create credentials object
             credentials = ProviderCredentials(
@@ -167,7 +175,7 @@ class ProviderConfigManager:
 
         return sorted(available, key=lambda x: x.priority)
 
-    def create_provider(self, provider_type: ProviderType) -> Optional[Any]:
+    def create_provider(self, provider_type: ProviderType) -> Optional[LLMProvider]:
         """Create and configure a provider instance."""
         credentials = self.get_credentials(provider_type)
         if not credentials or not credentials.enabled:
@@ -196,13 +204,13 @@ class ProviderConfigManager:
             logger.error(f"Failed to create {provider_type.value} provider: {e}")
             return None
 
-    def create_all_providers(self) -> Dict[ProviderType, Any]:
+    def create_all_providers(self) -> Dict[ProviderType, LLMProvider]:
         """Create all available provider instances."""
-        providers = {}
+        providers: Dict[ProviderType, LLMProvider] = {}
 
         for provider_type in ProviderType:
             provider = self.create_provider(provider_type)
-            if provider:
+            if provider is not None:
                 providers[provider_type] = provider
 
         logger.info(f"Created {len(providers)} providers: {list(providers.keys())}")
@@ -210,7 +218,7 @@ class ProviderConfigManager:
 
     def validate_configuration(self) -> Dict[str, Any]:
         """Validate current provider configuration."""
-        validation_results = {
+        validation_results: Dict[str, Any] = {
             "valid": True,
             "providers": {},
             "warnings": [],
@@ -224,7 +232,7 @@ class ProviderConfigManager:
             validation_results["errors"].append("No providers have valid credentials")
 
         for provider_type, credentials in self._credentials.items():
-            provider_result = {
+            provider_result: Dict[str, Any] = {
                 "enabled": credentials.enabled,
                 "has_credentials": bool(credentials.api_key)
                 or provider_type == ProviderType.LOCAL,
@@ -237,7 +245,9 @@ class ProviderConfigManager:
                     f"{provider_type.value} is enabled but missing credentials"
                 )
 
-            validation_results["providers"][provider_type.value] = provider_result
+            providers_dict = validation_results["providers"]
+            assert isinstance(providers_dict, dict)
+            providers_dict[provider_type.value] = provider_result
 
         return validation_results
 
@@ -268,7 +278,7 @@ config_manager = ProviderConfigManager()
 
 
 # Convenience functions
-def get_primary_provider():
+def get_primary_provider() -> Optional[LLMProvider]:
     """Get the primary (highest priority) available provider."""
     available = config_manager.get_available_providers()
     if available:
@@ -276,11 +286,11 @@ def get_primary_provider():
     return None
 
 
-def get_all_providers():
+def get_all_providers() -> Dict[ProviderType, LLMProvider]:
     """Get all available provider instances."""
     return config_manager.create_all_providers()
 
 
-def validate_providers():
+def validate_providers() -> Dict[str, Any]:
     """Validate provider configuration."""
     return config_manager.validate_configuration()

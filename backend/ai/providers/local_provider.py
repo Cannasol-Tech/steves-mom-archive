@@ -12,7 +12,8 @@ Version: 1.0.0
 import asyncio
 import logging
 import os
-from typing import Any, AsyncGenerator, Dict, List, Optional
+from dataclasses import asdict
+from typing import Any, AsyncGenerator, Dict, List, Optional, cast
 
 from .base import (AuthenticationError, LLMProvider, Message, MessageRole,
                    ModelCapability, ModelConfig, ModelNotFoundError,
@@ -62,8 +63,8 @@ class LocalProvider(LLMProvider):
     }
 
     def __init__(
-        self, api_key: Optional[str] = None, base_url: Optional[str] = None, **kwargs
-    ):
+        self, api_key: Optional[str] = None, base_url: Optional[str] = None, **kwargs: Any
+    ) -> None:
         """Initialize Local provider with configuration."""
         if base_url is None:
             base_url = "http://localhost:11434"  # Default Ollama URL
@@ -101,14 +102,14 @@ class LocalProvider(LLMProvider):
         self, messages: List[Message], config: ModelConfig
     ) -> ModelResponse:
         """Generate response using local model (placeholder)."""
-        return await self.generate(messages, config.dict() if config else None)
+        return await self.generate(messages, asdict(config) if config else None)
 
     async def stream_response(
         self, messages: List[Message], config: ModelConfig
     ) -> AsyncGenerator[str, None]:
         """Stream response from local model (placeholder)."""
         async for chunk in self.stream_generate(
-            messages, config.dict() if config else None
+            messages, asdict(config) if config else None
         ):
             yield chunk
 
@@ -168,8 +169,10 @@ class LocalProvider(LLMProvider):
 
     def get_capabilities(self) -> List[ModelCapability]:
         """Get local provider capabilities."""
-        model_info = self.MODELS.get(self.config.model_name, {})
-        return model_info.get("capabilities", [ModelCapability.TEXT_GENERATION])
+        model_name = str(self.config.get("model_name", "llama-3.1-8b"))
+        model_info = cast(Dict[str, Any], self.MODELS.get(model_name, {}))
+        caps = model_info.get("capabilities", [ModelCapability.TEXT_GENERATION])
+        return cast(List[ModelCapability], caps)
 
     def get_cost_estimate(self, input_tokens: int, output_tokens: int) -> float:
         """Get cost estimate for local usage (always free)."""
@@ -177,8 +180,9 @@ class LocalProvider(LLMProvider):
 
     def get_max_tokens(self) -> int:
         """Get maximum tokens for local model."""
-        model_info = self.MODELS.get(self.config.model_name, {})
-        return model_info.get("max_tokens", 4096)
+        model_name = str(self.config.get("model_name", "llama-3.1-8b"))
+        model_info = cast(Dict[str, Any], self.MODELS.get(model_name, {}))
+        return int(model_info.get("max_tokens", 4096))
 
     async def cleanup(self) -> None:
         """Clean up local provider resources."""
@@ -187,8 +191,7 @@ class LocalProvider(LLMProvider):
 
 # Factory function for easy instantiation
 def create_local_provider(
-    model_name: str = "llama-3.1-8b", base_url: str = "http://localhost:11434", **kwargs
+    model_name: str = "llama-3.1-8b", base_url: str = "http://localhost:11434", **kwargs: Any
 ) -> LocalProvider:
     """Create Local provider with default configuration."""
-    config = ModelConfig(model_name=model_name, base_url=base_url, **kwargs)
-    return LocalProvider(config)
+    return LocalProvider(api_key=None, base_url=base_url, **kwargs)

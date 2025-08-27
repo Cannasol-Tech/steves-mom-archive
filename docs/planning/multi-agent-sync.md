@@ -18,12 +18,13 @@ This file coordinates active agents and task statuses for the implementation pla
 | cascade-69 | 2025-08-15T06:45:47-04:00 | Backend router + infra sync |
 | Sonnet-01 | 2025-08-15T06:41:44-04:00 | Context manager and memory window (Section 4.3) |
 | cascade-UI | 2025-08-15T15:13:40-04:00 | UI/UX specialist – design system, accessibility, modern UX |
+| augment-02 | 2025-08-27T12:00:00-04:00 | Type safety and testing specialist — mypy hardening for backend/ai/ |
 
 ## Available Tasks
 
 List any unclaimed tasks here as they are identified.
 
-- 1.4.MY: Incremental mypy hardening for `backend/ai/` — tighten per-module settings, remove ignores module-by-module, maintain CI green. **[UNCLAIMED]**
+- 1.4.MY: Incremental mypy hardening for `backend/ai/` — tighten per-module settings, remove ignores module-by-module, maintain CI green. **[CHECKED OUT: augment-02 @2025-08-27T12:00:00-04:00] [feature/mypy-hardening-ai]**
 
 ## In Progress
 
@@ -38,6 +39,7 @@ List any unclaimed tasks here as they are identified.
 | 4.2 | ModelRouter.py (route by policy/env flag) | cascade-03 | feature/model-router | 2025-08-15T05:57:58-04:00 | 4.1 complete | Starting with policy schema and fallback |
 | 2.2 | Functions build/deploy workflow (Python) | Sonnet-01 | feature/functions-gha-deploy | 2025-08-15T09:00:30-04:00 | 1.3 complete | Checking out per implementation plan |
 | 2.1 | SWA GitHub Actions deploy | cascade-69 | feature/swa-gha-deploy | 2025-08-15T08:25:01-04:00 | 1.5 complete | Workflow file added; awaiting token and CI run |
+| 1.4.MY | Incremental mypy hardening for backend/ai/ | augment-02 | feature/mypy-hardening-ai | 2025-08-27T12:00:00-04:00 | 1.4.1 complete | Starting with base_provider and model_router strict flags |
 
 ## Completed Tasks
 

@@ -96,12 +96,12 @@ class LLMProvider(ABC):
     ensuring consistency and interoperability across different AI services.
     """
 
-    def __init__(self, config: ProviderConfig):
+    def __init__(self, config: ProviderConfig) -> None:
         """Initialize the provider with configuration."""
-        self.config = config
-        self.provider_type = config.provider_type
-        self.is_initialized = False
-        self._client = None
+        self.config: ProviderConfig = config
+        self.provider_type: ProviderType = config.provider_type
+        self.is_initialized: bool = False
+        self._client: Optional[Any] = None
 
     @abstractmethod
     async def initialize(self) -> bool:
@@ -111,7 +111,7 @@ class LLMProvider(ABC):
         Returns:
             bool: True if initialization successful, False otherwise
         """
-        pass
+        ...
 
     @abstractmethod
     async def chat(
@@ -131,7 +131,7 @@ class LLMProvider(ABC):
         Returns:
             ProviderResponse: Standardized response object
         """
-        pass
+        ...
 
     @abstractmethod
     async def stream_chat(
@@ -151,7 +151,7 @@ class LLMProvider(ABC):
         Yields:
             str: Streaming response chunks
         """
-        pass
+        ...
 
     @abstractmethod
     async def health_check(self) -> Dict[str, Any]:
@@ -161,7 +161,7 @@ class LLMProvider(ABC):
         Returns:
             Dict containing health status, latency, and other metrics
         """
-        pass
+        ...
 
     @abstractmethod
     def get_capabilities(self) -> List[ProviderCapability]:
@@ -171,7 +171,7 @@ class LLMProvider(ABC):
         Returns:
             List of supported capabilities
         """
-        pass
+        ...
 
     @abstractmethod
     def get_cost_per_token(self, model_name: Optional[str] = None) -> Dict[str, float]:
@@ -197,7 +197,7 @@ class LLMProvider(ABC):
         Returns:
             Maximum context window size in tokens
         """
-        pass
+        ...
 
     # Common utility methods (implemented in base class)
 
@@ -249,7 +249,7 @@ class LLMProvider(ABC):
             Estimated token count
         """
         # Rough approximation: 1 token ≈ 4 characters
-        return len(text) // 4
+        return max(1, len(text) // 4)
 
     async def _handle_rate_limit(self, attempt: int) -> None:
         """

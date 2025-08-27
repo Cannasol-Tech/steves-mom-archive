@@ -16,7 +16,7 @@ import random
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, TypedDict, Protocol, Awaitable
 
 from .providers.base import (LLMProvider, Message, ModelCapability,
                              ModelConfig, ModelResponse, ProviderError,
@@ -632,3 +632,28 @@ async def create_router_from_env() -> ModelRouter:
         )
 
     return router
+
+
+# Typed configuration snapshot types (type-only documentation for static checkers)
+class PolicySnapshot(TypedDict):
+    strategy: str
+    max_cost_threshold: float
+    max_latency_threshold: float
+    required_capabilities: List[str]
+    preferred_providers: List[str]
+    fallback_enabled: bool
+    retry_attempts: int
+
+
+class ProviderSnapshot(TypedDict):
+    priority: int
+    weight: float
+    max_requests_per_minute: int
+    max_cost_per_request: float
+    enabled: bool
+    fallback_order: int
+
+
+class ConfigurationSnapshot(TypedDict):
+    default_policy: PolicySnapshot
+    providers: Dict[str, ProviderSnapshot]
