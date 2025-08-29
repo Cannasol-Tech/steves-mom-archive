@@ -1,4 +1,3 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import TaskPage from '../TaskPage';
@@ -26,7 +25,6 @@ describe('TaskPage', () => {
   });
 
   test('shows loading then renders tasks', async () => {
-    // @ts-expect-error global fetch mock
     global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => mockTasks });
 
     render(
@@ -43,7 +41,6 @@ describe('TaskPage', () => {
   });
 
   test('shows error state when fetch fails', async () => {
-    // @ts-expect-error global fetch mock
     global.fetch = jest.fn().mockResolvedValue({ ok: false });
 
     render(

@@ -20,7 +20,7 @@ export function startStream(params: StartStreamParams): StreamHandle {
 
   (async () => {
     try {
-      const res = await fetch(chatUrl, {
+      const response = await fetch(chatUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -32,26 +32,31 @@ export function startStream(params: StartStreamParams): StreamHandle {
         signal: controller.signal,
       });
 
-      if (!res.ok) {
-        const txt = await res.text().catch(() => '');
-        throw new Error(`API ${res.status}: ${txt}`);
+      if (!response.ok) {
+        const txt = await response.text().catch(() => '');
+        throw new Error(`API ${response.status}: ${txt}`);
       }
 
-      // Parse JSON response from backend
-      const data = await res.json();
-      
-      // Extract message content and reasoning
-      const messageContent = data.message?.content || '';
-      const reasoningContent = data.reasoning_content || '';
-      
-      // Only send content if it's not empty or "(no content)"
-      if (messageContent && messageContent.trim() !== '(no content)') {
-        params.onChunk(messageContent);
+      if (!response.body) {
+        throw new Error('Response body is empty');
       }
-      
-      params.onDone(reasoningContent);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        const chunk = decoder.decode(value, { stream: true });
+        params.onChunk(chunk);
+      }
+
+      params.onDone();
+
     } catch (e: any) {
-      if (controller.signal.aborted) return; // cancelled, ignore error callback
+      if (controller.signal.aborted) return; // Cancelled, ignore error callback
       params.onError(e instanceof Error ? e : new Error(String(e)));
     }
   })();
