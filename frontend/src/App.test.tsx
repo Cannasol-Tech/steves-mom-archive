@@ -28,6 +28,26 @@ class MockWebSocket {
 // @ts-ignore
 global.WebSocket = MockWebSocket as any;
 
+// Silence React Router v6 deprecation/future warnings for this suite only
+let consoleWarnSpy: jest.SpyInstance;
+beforeAll(() => {
+  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((msg?: any, ...args: any[]) => {
+    const text = String(msg || '');
+    if (
+      text.includes('Future Flag Warning') ||
+      text.includes('is deprecated') ||
+      text.includes('Future flags are deprecated') ||
+      text.includes('Relative route resolution within Splat routes')
+    ) {
+      return;
+    }
+  });
+});
+
+afterAll(() => {
+  consoleWarnSpy.mockRestore();
+});
+
 test("renders main header title text", async () => {
   render(<App />);
   const titleTexts = await screen.findAllByText(/Steve's Mom/i);

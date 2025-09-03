@@ -15,7 +15,6 @@ omit =
     # External provider adapters that hit real APIs (covered by integration in-prod)
     backend/ai/providers/claude_provider.py
     backend/ai/providers/openai_provider.py
-    backend/ai/providers/grok_provider.py
     backend/ai/providers/test_providers.py
 
 exclude_lines = 

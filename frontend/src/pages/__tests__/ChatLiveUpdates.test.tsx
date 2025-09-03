@@ -9,6 +9,28 @@ type Handlers = {
   onClose: () => void;
 };
 
+// Silence React Router v6 deprecation/future warnings for this suite only
+let consoleWarnSpy: jest.SpyInstance;
+beforeAll(() => {
+  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((msg?: any, ...args: any[]) => {
+    const text = String(msg || '');
+    if (
+      text.includes('Future Flag Warning') ||
+      text.includes('is deprecated') ||
+      text.includes('Future flags are deprecated') ||
+      text.includes('Relative route resolution within Splat routes')
+    ) {
+      return;
+    }
+    // Let other warnings through
+    console.warn = console.warn;
+  });
+});
+
+afterAll(() => {
+  consoleWarnSpy.mockRestore();
+});
+
 // IMPORTANT: Keep mock state INSIDE the mock factory (mocks are hoisted)
 jest.mock('../../services/socketClient', () => {
   let lastHandlers: Handlers | null = null;
@@ -47,11 +69,13 @@ const socketMock = require('../../services/socketClient').__testing__ as {
 };
 
 beforeEach(() => {
+  jest.useFakeTimers();
   socketMock.reset();
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  jest.useRealTimers();
 });
 
 describe('ChatPage live updates wiring', () => {
@@ -78,6 +102,8 @@ describe('ChatPage live updates wiring', () => {
     const error = new Error('socket disconnected');
     await act(async () => {
       socketMock.emitError(error);
+      // Advance timers to pass the 50ms toast delay in ChatPage.onError
+      jest.advanceTimersByTime(60);
     });
 
     // Prefer findByText to avoid race conditions

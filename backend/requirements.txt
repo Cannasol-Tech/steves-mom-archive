@@ -8,18 +8,22 @@ azure-storage-blob==12.19.0
 # LangChain Framework
 langchain==0.1.0
 langchain-community==0.0.10
-langchain-core==0.1.0
+# Align with langchain 0.1.0 which requires core >=0.1.7,<0.2
+langchain-core>=0.1.7,<0.2
 langchain-openai==0.0.5
 
 # AI and ML Dependencies
-openai==1.6.1
+# Align with langchain-openai 0.0.5 which requires openai>=1.10.0,<2.0
+openai>=1.10.0,<2.0
 tiktoken==0.5.2
 anthropic==0.8.1
 transformers==4.36.2
-torch==2.1.2
+# Relax torch to avoid conflicts with CPU wheel installed separately
+torch>=2.1.0
 
 # Data Validation and Serialization
-pydantic==2.5.2
+# Use newer pydantic for Python 3.12 compatibility
+pydantic>=2.8.0
 pydantic-settings==2.1.0
 
 # HTTP and API Dependencies
@@ -30,14 +34,16 @@ fastapi==0.108.0
 uvicorn==0.25.0
 
 # Database and Storage
-sqlalchemy==2.0.25
+# SQLAlchemy 2.0.25 is incompatible with Python 3.13 (TypingOnly assertion). Use a newer 2.0.x.
+sqlalchemy>=2.0.36
 alembic==1.13.1
 redis==5.0.1
 pymongo==4.6.1
 
 # Microsoft Graph and Office 365 Integration
 msal==1.26.0
-msgraph-core==0.2.2
+# Align with msgraph-sdk 1.0.0 which requires msgraph-core>=1.0.0a2
+msgraph-core>=1.0.0a2
 msgraph-sdk==1.0.0
 
 # Document Processing
@@ -74,12 +80,12 @@ pre-commit==3.6.0
 # Blockchain and Web3 (for future features)
 web3==6.15.1
 eth-account==0.10.0
-hedera-sdk-py==2.30.0
+# Use a version available for Python 3.12+
+hedera-sdk-py>=2.31.0
 
 # Additional Utilities
 python-dateutil==2.8.2
 pytz==2023.3
-uuid==1.30
-hashlib-compat==1.0.1
-cryptography==41.0.8
+# Newer cryptography builds provide wheels for py3.12 on macOS arm64
+cryptography>=42.0.0
 bcrypt==4.1.2

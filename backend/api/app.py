@@ -150,6 +150,11 @@ async def websocket_endpoint(websocket: WebSocket):
 async def health():
     return {"status": "ok"}
 
+# Provide /api/health alias so CRA proxy checks succeed in local preview
+@app.get("/api/health")
+async def api_health():
+    return {"status": "ok"}
+
 
 async def stream_response(req: ChatRequest):
     """Generator function to stream response from the ModelRouter."""

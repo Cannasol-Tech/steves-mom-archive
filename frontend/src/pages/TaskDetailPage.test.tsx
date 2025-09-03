@@ -27,6 +27,28 @@ const mockTask: Task = {
   ],
 };
 
+// Suppress noisy React Router v6 deprecation/future flag warnings for this suite only
+let consoleWarnSpy: jest.SpyInstance;
+beforeAll(() => {
+  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((msg?: any, ...args: any[]) => {
+    const text = String(msg || '');
+    if (
+      text.includes('is deprecated') ||
+      text.includes('Future flags are deprecated') ||
+      text.includes('Relative route resolution within Splat routes')
+    ) {
+      return;
+    }
+    // Forward other warnings
+    // eslint-disable-next-line no-console
+    (console.warn as any).orig ? (console.warn as any).orig(text, ...args) : void 0;
+  });
+});
+
+afterAll(() => {
+  consoleWarnSpy.mockRestore();
+});
+
 describe('TaskDetailPage', () => {
   beforeEach(() => {
     (fetch as jest.Mock).mockClear();

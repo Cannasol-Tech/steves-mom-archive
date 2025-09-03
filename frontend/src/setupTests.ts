@@ -56,3 +56,18 @@ class WS {
   removeEventListener() {}
 }
 (globalThis as unknown as { WebSocket?: unknown }).WebSocket = WS as unknown as typeof WebSocket;
+
+// TextEncoder/TextDecoder polyfills for Node/jsdom
+// Some tests (e.g., streaming) rely on these being present. In Node 18+, they are available via 'util'.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { TextEncoder, TextDecoder } = require('util');
+  if (!(globalThis as any).TextEncoder) {
+    (globalThis as any).TextEncoder = TextEncoder;
+  }
+  if (!(globalThis as any).TextDecoder) {
+    (globalThis as any).TextDecoder = TextDecoder;
+  }
+} catch {
+  // noop if util not available; environments with native implementations will be fine
+}

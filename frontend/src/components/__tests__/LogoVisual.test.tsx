@@ -16,6 +16,26 @@ const mockMessages: Message[] = [
   }
 ];
 
+// Silence React Router future/deprecation warnings that are noisy in jsdom
+let warnSpy: jest.SpyInstance;
+beforeAll(() => {
+  warnSpy = jest.spyOn(console, 'warn').mockImplementation((msg?: any, ...args: any[]) => {
+    const text = String(msg || '');
+    if (
+      text.includes('is deprecated') ||
+      text.includes('Future flags are deprecated') ||
+      text.includes('Relative route resolution within Splat routes')
+    ) {
+      return;
+    }
+    // passthrough other warnings
+  });
+});
+
+afterAll(() => {
+  warnSpy.mockRestore();
+});
+
 describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo displays in header with correct attributes and responsive sizing', () => {
     render(

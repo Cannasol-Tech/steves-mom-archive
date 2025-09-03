@@ -1,6 +1,6 @@
 .PHONY: help setup setup-backend setup-frontend setup-dev
 .PHONY: test test-unit test-integration test-acceptance test-acceptance-pytest test-frontend test-infra test-router test-router-acceptance
-.PHONY: test-coverage test-backend-coverage test-frontend-coverage
+.PHONY: test-coverage test-backend-coverage test-frontend-coverage test-frontend-verbose test-frontend-inband test-frontend-bail test-frontend-each
 .PHONY: lint lint-py lint-js lint-md fix-lint
 .PHONY: preview dev clean
 .PHONY: deploy deploy-infra deploy-functions
@@ -27,6 +27,10 @@ help:
 	@echo "  test-acceptance - Run acceptance tests (behave)"
 	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
+	@echo "  test-frontend-verbose - Run frontend tests with --verbose for detailed suite/test reporting"
+	@echo "  test-frontend-inband  - Run frontend tests serially (--runInBand) and verbose to isolate failures"
+	@echo "  test-frontend-bail    - Run frontend tests with --bail=1 to stop at first failure and show details"
+	@echo "  test-frontend-each    - Run each frontend test file individually to isolate failing suite"
 	@echo "  test-frontend-coverage - Run frontend tests with coverage"
 	@echo "  test-coverage - Run backend + frontend coverage suites"
 	@echo "  test-infra    - Run infrastructure tests (Bicep validation)"
@@ -65,18 +69,41 @@ setup: setup-backend setup-frontend setup-dev setup-tools
 
 setup-backend:
 	@echo "Setting up Python backend..."
-	python3 -m venv .venv || /opt/homebrew/bin/python3.12 -m venv .venv
+	/opt/homebrew/bin/python3.12 -m venv .venv || python3.12 -m venv .venv || python3 -m venv .venv
 	.venv/bin/pip install --upgrade pip
 	@if [ -f backend/requirements.txt ]; then \
 		echo "Preparing backend requirements (handling torch separately for compatibility)..."; \
 		TMP_REQ=$$(mktemp); \
-		grep -v '^torch==' backend/requirements.txt > $$TMP_REQ; \
+		grep -v '^torch' backend/requirements.txt > $$TMP_REQ; \
 		echo "Installing backend requirements (without torch)..."; \
 		.venv/bin/pip install -r $$TMP_REQ; \
 		rm -f $$TMP_REQ; \
 		echo "Attempting to install a compatible torch version (CPU) as best-effort..."; \
 		.venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.7.0" || true; \
 	fi
+
+# Minimal backend setup for local preview (installs only core deps for FastAPI app)
+setup-backend-preview:
+	@echo "Setting up Python backend (preview-optimized minimal deps)..."
+	/opt/homebrew/bin/python3.12 -m venv .venv || python3.12 -m venv .venv || python3 -m venv .venv || true
+	# Ensure python3 and python shims exist inside venv for shebang compatibility
+	@if [ ! -x .venv/bin/python3 ]; then \
+		PYREAL=$$(ls .venv/bin/python3* .venv/bin/python 2>/dev/null | head -n1); \
+		[ -n "$$PYREAL" ] && ln -sf "$$PYREAL" .venv/bin/python3 || true; \
+	fi
+	@if [ ! -x .venv/bin/python ]; then \
+		PYREAL=$$(ls .venv/bin/python3* .venv/bin/python 2>/dev/null | head -n1); \
+		[ -n "$$PYREAL" ] && ln -sf "$$PYREAL" .venv/bin/python || true; \
+	fi
+	.venv/bin/pip install --upgrade pip
+	@echo "Installing minimal runtime deps (FastAPI, Uvicorn, SQLAlchemy, Pydantic, Dotenv, HTTP libs)..."
+	# Install with conservative pins, fallback to latest if specific versions fail
+	.venv/bin/pip install "fastapi>=0.108,<0.110" || .venv/bin/pip install fastapi || true
+	.venv/bin/pip install "uvicorn>=0.25,<0.29" || .venv/bin/pip install uvicorn || true
+	.venv/bin/pip install "sqlalchemy>=2.0,<2.1" || .venv/bin/pip install sqlalchemy || true
+	.venv/bin/pip install "pydantic>=2.8,<3" "pydantic-settings>=2.1,<3" || .venv/bin/pip install pydantic pydantic-settings || true
+	.venv/bin/pip install "python-dotenv>=1.0,<2" || .venv/bin/pip install python-dotenv || true
+	.venv/bin/pip install "aiohttp>=3.9,<4" "httpx>=0.26,<0.28" || true
 
 setup-frontend:
 	@echo "Setting up frontend dependencies..."
@@ -95,7 +122,7 @@ setup-tools:
 	@echo "  brew tap azure/functions && brew install azure-functions-core-tools@4"
 
 # Testing targets
-test: setup-backend setup-dev test-unit test-integration test-acceptance test-frontend
+test: setup-backend-preview setup-dev test-unit test-integration test-acceptance test-frontend
 
 test-unit: setup-backend setup-dev
 	@echo "Running unit tests..."
@@ -116,6 +143,28 @@ test-acceptance-pytest: setup-backend setup-dev
 test-frontend:
 	@echo "Running frontend tests..."
 	cd frontend && npm test -- --watchAll=false
+
+test-frontend-verbose:
+	@echo "Running frontend tests (verbose)..."
+	cd frontend && npm test -- --watchAll=false --verbose
+
+test-frontend-inband:
+	@echo "Running frontend tests (in-band, verbose)..."
+	cd frontend && npm test -- --watchAll=false --verbose --runInBand
+
+test-frontend-bail:
+	@echo "Running frontend tests (bail at first failure)..."
+	cd frontend && npm test -- --watchAll=false --verbose --bail=1
+
+test-frontend-each:
+	@echo "Running each frontend test file individually to isolate failures..."
+	@set -e; \
+	FILES=$$(cd frontend && find src -type f \( -name "*.test.tsx" -o -name "*.test.ts" \) | sort); \
+	for f in $$FILES; do \
+	  echo "\n--- Running $$f ---"; \
+	  (cd frontend && npm test -- --watchAll=false --verbose --runInBand $$f) || exit $$?; \
+	done; \
+	echo "All individual frontend tests passed."
 
 # Coverage targets
 test-backend-coverage: setup-backend setup-dev
@@ -198,7 +247,7 @@ fix-lint:
 # -----------------------------------------------------------------------------
 
 # Development targets
-preview: setup-backend setup-frontend
+preview: setup-backend-preview setup-frontend
 	@echo "Starting local preview (FastAPI backend + Frontend)..."
 	@echo "Backend (FastAPI) on http://127.0.0.1:9696 (WebSocket: /ws)"
 	@echo "Frontend (CRA) on http://localhost:6969"

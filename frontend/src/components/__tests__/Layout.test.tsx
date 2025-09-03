@@ -4,6 +4,26 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Layout from '../Layout';
 import { ThemeProvider } from '../../context/ThemeContext';
 
+// Silence React Router v6 deprecation/future warnings for this suite only
+let consoleWarnSpy: jest.SpyInstance;
+beforeAll(() => {
+  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((msg?: any, ...args: any[]) => {
+    const text = String(msg || '');
+    if (
+      text.includes('Future Flag Warning') ||
+      text.includes('is deprecated') ||
+      text.includes('Future flags are deprecated') ||
+      text.includes('Relative route resolution within Splat routes')
+    ) {
+      return;
+    }
+  });
+});
+
+afterAll(() => {
+  consoleWarnSpy.mockRestore();
+});
+
 function renderWithRoute(pathname: string, ui: React.ReactNode) {
   return render(
     <MemoryRouter initialEntries={[pathname]}>
