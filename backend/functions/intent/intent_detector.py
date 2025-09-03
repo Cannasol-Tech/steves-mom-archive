@@ -5,6 +5,7 @@ class IntentDetector:
     """Detects user intent from a given text query."""
 
     def __init__(self):
+        # TODO: Design config database for the IntentDetector
         # In the future, this could load rules from a config file or database
         self.rules = {
             Intent.CREATE_TASK: ["create a task", "new task", "add a to-do"],

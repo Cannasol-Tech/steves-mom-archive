@@ -41,7 +41,8 @@ help:
 	@echo "  fix-lint      - Auto-fix linting issues where possible"
 	@echo ""
 	@echo "Development:"
-	@echo "  preview       - Start dev servers (Azurite + Azure Functions @8000 + Frontend @3000)"
+	@echo "  preview       - Start local preview (FastAPI backend @9696 + Frontend @6969)"
+	@echo "  preview-smoke - Smoke test: check backend (9696), frontend (6969), and proxy"
 	@echo "  dev           - Start development environment with hot reload"
 	@echo "  clean         - Clean build artifacts and caches"
 	@echo ""
@@ -175,20 +176,44 @@ fix-lint:
 		--ignore "node_modules/**" --ignore ".venv/**" --ignore "venv/**" \
 		--ignore "env/**" --ignore "venv312/**"
 
+# -----------------------------------------------------------------------------
+# All-in-one Local Preview
+#
+# make preview
+# - Starts FastAPI backend on 127.0.0.1:9696 (also serves WebSocket at /ws)
+# - Starts CRA frontend on http://localhost:6969
+# - CRA proxy forwards /api/* and /ws to 127.0.0.1:9696 (see frontend/package.json)
+# - Press Ctrl+C to stop both processes (trap handles cleanup)
+#
+# Notes:
+# - The backend auto-initializes the local SQLite DB schema on startup so task
+#   endpoints work out of the box (Base.metadata.create_all).
+# - To enable real AI responses (instead of local placeholder), set provider keys
+#   in a repo-root .env (auto-loaded by FastAPI):
+#     GROK_API_KEY=...
+#     OPENAI_API_KEY=...
+#     ANTHROPIC_API_KEY=...
+# - Requirements: Python 3.12+, Node.js 18+, run `make setup` first.
+# - This target does NOT require Azurite or Azure Functions Core Tools.
+# -----------------------------------------------------------------------------
+
 # Development targets
-preview: setup-backend setup-frontend setup-tools
-	@echo "Starting preview servers..."
-	@echo "Azurite (storage emulator) on 127.0.0.1:10000/10001/10002"
-	@echo "Azure Functions on http://127.0.0.1:8000"
-	@echo "Frontend on http://localhost:3000"
+preview: setup-backend setup-frontend
+	@echo "Starting local preview (FastAPI backend + Frontend)..."
+	@echo "Backend (FastAPI) on http://127.0.0.1:9696 (WebSocket: /ws)"
+	@echo "Frontend (CRA) on http://localhost:6969"
+	@echo "Note: CRA proxies /api/* and /ws to 127.0.0.1:9696 (see frontend/package.json)"
 	@echo "Press Ctrl+C to stop all"
-	@trap 'kill %1 %2 %3 2>/dev/null || true' EXIT; \
-	(azurite >/dev/null 2>&1 &) && \
-	(cd src/backend && func start --port 8000 &) && \
-	(cd frontend && npm start &) && \
+	@trap 'kill %1 %2 2>/dev/null || true' EXIT; \
+	(.venv/bin/uvicorn backend.api.app:app --host 127.0.0.1 --port 9696 --reload &) && \
+	(cd frontend && BROWSER=none PORT=6969 npm start &) && \
 	wait
 
 dev: preview
+
+# Quick smoke check for local preview stack
+preview-smoke: setup-backend setup-frontend
+	@bash ./scripts/preview-smoke.sh
 
 clean:
 	@echo "Cleaning build artifacts and caches..."

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1756929880465" clover="3.2.0">
-  <project timestamp="1756929880465" name="All files">
-    <metrics statements="496" coveredstatements="316" conditionals="345" coveredconditionals="194" methods="148" coveredmethods="84" elements="989" coveredelements="594" complexity="0" loc="496" ncloc="496" packages="10" files="25" classes="25"/>
+<coverage generated="1756930618387" clover="3.2.0">
+  <project timestamp="1756930618387" name="All files">
+    <metrics statements="543" coveredstatements="360" conditionals="379" coveredconditionals="215" methods="164" coveredmethods="97" elements="1086" coveredelements="672" complexity="0" loc="543" ncloc="543" packages="10" files="26" classes="26"/>
     <package name="src">
       <metrics statements="5" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="App.tsx" path="/Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/frontend/src/App.tsx">
@@ -238,7 +238,7 @@
       </file>
     </package>
     <package name="src.pages">
-      <metrics statements="184" coveredstatements="143" conditionals="86" coveredconditionals="44" methods="52" coveredmethods="36"/>
+      <metrics statements="231" coveredstatements="187" conditionals="120" coveredconditionals="65" methods="68" coveredmethods="49"/>
       <file name="AdminPage.tsx" path="/Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/frontend/src/pages/AdminPage.tsx">
         <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
         <line num="9" count="2" type="stmt"/>
@@ -435,6 +435,56 @@
         <line num="55" count="1" type="stmt"/>
         <line num="60" count="3" type="stmt"/>
       </file>
+      <file name="TaskDetailPage.tsx" path="/Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/frontend/src/pages/TaskDetailPage.tsx">
+        <metrics statements="47" coveredstatements="44" conditionals="34" coveredconditionals="21" methods="16" coveredmethods="13"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="11" type="stmt"/>
+        <line num="12" count="11" type="stmt"/>
+        <line num="13" count="11" type="stmt"/>
+        <line num="14" count="11" type="stmt"/>
+        <line num="15" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="24" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="33" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="5" type="stmt"/>
+        <line num="38" count="5" type="stmt"/>
+        <line num="43" count="11" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="49" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="54" count="5" type="stmt"/>
+        <line num="55" count="5" type="stmt"/>
+        <line num="59" count="11" type="stmt"/>
+        <line num="60" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="65" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="73" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="5" type="stmt"/>
+        <line num="77" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="81" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="85" count="5" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
+      </file>
     </package>
     <package name="src.services">
       <metrics statements="90" coveredstatements="15" conditionals="45" coveredconditionals="2" methods="22" coveredmethods="4"/>
@@ -513,29 +563,29 @@
       </file>
       <file name="socketClient.ts" path="/Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/frontend/src/services/socketClient.ts">
         <metrics statements="23" coveredstatements="15" conditionals="8" coveredconditionals="2" methods="6" coveredmethods="4"/>
-        <line num="15" count="10" type="cond" truecount="1" falsecount="1"/>
-        <line num="16" count="10" type="stmt"/>
-        <line num="18" count="10" type="stmt"/>
-        <line num="20" count="10" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="24" count="10" type="stmt"/>
+        <line num="15" count="13" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="18" count="13" type="stmt"/>
+        <line num="20" count="13" type="stmt"/>
+        <line num="21" count="8" type="stmt"/>
+        <line num="24" count="13" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="28" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
-        <line num="37" count="10" type="stmt"/>
+        <line num="37" count="13" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
-        <line num="42" count="10" type="stmt"/>
-        <line num="43" count="10" type="stmt"/>
-        <line num="44" count="10" type="stmt"/>
-        <line num="45" count="10" type="stmt"/>
-        <line num="48" count="10" type="stmt"/>
-        <line num="50" count="10" type="cond" truecount="1" falsecount="1"/>
-        <line num="51" count="10" type="stmt"/>
-        <line num="58" count="4" type="stmt"/>
+        <line num="42" count="13" type="stmt"/>
+        <line num="43" count="13" type="stmt"/>
+        <line num="44" count="13" type="stmt"/>
+        <line num="45" count="13" type="stmt"/>
+        <line num="48" count="13" type="stmt"/>
+        <line num="50" count="13" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="13" type="stmt"/>
+        <line num="58" count="5" type="stmt"/>
       </file>
     </package>
     <package name="src.types">

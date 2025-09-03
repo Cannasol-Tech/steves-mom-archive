@@ -31,7 +31,7 @@ make test-unit
 ### Development
 
 - `make setup` - Complete project setup (backend + frontend + dev deps)
-- `make preview` - Start dev servers (backend + frontend)
+- `make preview` - Start local preview (FastAPI backend @9696 + Frontend @6969)
 - `make dev` - Start development environment with hot reload
 - `make clean` - Clean build artifacts and caches
 

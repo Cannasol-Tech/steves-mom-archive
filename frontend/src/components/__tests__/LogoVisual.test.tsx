@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import Layout from '../Layout';
 import ChatInterface from '../Chat/ChatInterface';
 import type { Message } from '../Chat/MessageList';
@@ -20,11 +20,11 @@ describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo displays in header with correct attributes and responsive sizing', () => {
     render(
       withTheme(
-        <BrowserRouter>
+        <MemoryRouter>
           <Layout>
             <div>Test content</div>
           </Layout>
-        </BrowserRouter>
+        </MemoryRouter>
       )
     );
 
@@ -37,11 +37,11 @@ describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo appears alongside Steve\'s Mom branding text', () => {
     render(
       withTheme(
-        <BrowserRouter>
+        <MemoryRouter>
           <Layout>
             <div>Test content</div>
           </Layout>
-        </BrowserRouter>
+        </MemoryRouter>
       )
     );
 
@@ -59,11 +59,11 @@ describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo has error handling for missing image', () => {
     render(
       withTheme(
-        <BrowserRouter>
+        <MemoryRouter>
           <Layout>
             <div>Test content</div>
           </Layout>
-        </BrowserRouter>
+        </MemoryRouter>
       )
     );
 
@@ -81,11 +81,11 @@ describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo maintains accessibility with proper alt text', () => {
     render(
       withTheme(
-        <BrowserRouter>
+        <MemoryRouter>
           <Layout>
             <div>Test content</div>
           </Layout>
-        </BrowserRouter>
+        </MemoryRouter>
       )
     );
 
@@ -109,6 +109,8 @@ describe('Cannasol Logo Visual Regression Tests', () => {
         streamingActive={false}
         onRetryStream={() => {}}
         onCancelStream={() => {}}
+        onApproveTask={() => {}}
+        onRejectTask={() => {}}
       />
     );
     
@@ -121,11 +123,11 @@ describe('Cannasol Logo Visual Regression Tests', () => {
   test('logo responsive classes work across breakpoints', () => {
     render(
       withTheme(
-        <BrowserRouter>
+        <MemoryRouter>
           <Layout>
             <div>Test content</div>
           </Layout>
-        </BrowserRouter>
+        </MemoryRouter>
       )
     );
 

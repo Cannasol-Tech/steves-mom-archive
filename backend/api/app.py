@@ -16,6 +16,13 @@ except Exception:  # pragma: no cover
     XAI = None
 from contextlib import asynccontextmanager
 
+# Database models and engine for local dev initialization
+from backend.database import engine
+from backend.models.orm.base import Base
+# Import models so SQLAlchemy registers tables
+import backend.models.orm.task  # noqa: F401
+import backend.models.orm.approval_history  # noqa: F401
+
 from backend.ai.model_router import (ModelRouter, ProviderError,
                                      create_router_from_env)
 from backend.ai.providers.base import ModelConfig
@@ -29,12 +36,26 @@ model_router: ModelRouter | None = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load the model router on startup."""
+    """App startup/shutdown lifecycle.
+
+    - Initialize local SQLite DB schema (create tables if missing)
+    - Load the AI ModelRouter from environment configuration
+    """
     global model_router
+
+    # Ensure local SQLite database has required tables (idempotent)
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("INFO:     Database tables ensured (SQLite)")
+    except Exception as e:
+        print(f"WARNING:  Failed to initialize database schema: {e}")
+
     print("INFO:     Loading model router...")
     model_router = await create_router_from_env()
     print("INFO:     Model router loaded.")
+
     yield
+
     # Clean up resources if needed
     model_router = None
 

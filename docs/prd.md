@@ -347,7 +347,7 @@ Frontend (React.js)
 │       ├── Authentication.jsx
 │       ├── ErrorBoundary.jsx
 │       └── LoadingStates.jsx
-
+|
 Backend (Azure Functions)
 ├── Functions/
 │   ├── ChatProcessor/
