@@ -2,7 +2,7 @@
 Test Script for Steve's Mom Agent
 
 This script tests the updated Steve's Mom agent with the new provider system
-and complete Supreme Overlord personality.
+and complete Steve's Mom personality.
 
 Author: Cannasol Technologies
 Date: 2025-08-13
@@ -15,7 +15,7 @@ import os
 from typing import Any, Dict
 
 from ai.providers import ProviderType, validate_providers
-from ai.steves_mom import SupremeOverlordAgent, create_supreme_overlord
+from ai.steves_mom import StevesMomAgent, create_steves_mom
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,7 +28,7 @@ async def test_steves_mom_initialization():
 
     try:
         # Create Steve's Mom with default provider
-        steves_mom = create_supreme_overlord(enable_tools=True, memory_size=5)
+        steves_mom = create_steves_mom(enable_tools=True, memory_size=5)
 
         # Get memory summary
         memory_summary = steves_mom.get_memory_summary()
@@ -55,7 +55,7 @@ async def test_steves_mom_chat():
 
     try:
         # Create Steve's Mom
-        steves_mom = create_supreme_overlord(
+        steves_mom = create_steves_mom(
             enable_tools=False
         )  # Disable tools for simple test
 
@@ -73,7 +73,7 @@ async def test_steves_mom_chat():
             "response_length": len(response.content),
             "provider_used": response.metadata.get("provider_used"),
             "response_time_ms": response.response_time_ms,
-            "personality_detected": "supreme" in response.content.lower()
+            "personality_detected": "steve" in response.content.lower()
             or "overlord" in response.content.lower(),
         }
 
@@ -88,7 +88,7 @@ async def test_steves_mom_memory():
 
     try:
         # Create Steve's Mom with small memory
-        steves_mom = create_supreme_overlord(memory_size=2, enable_tools=False)
+        steves_mom = create_steves_mom(memory_size=2, enable_tools=False)
 
         # Have a conversation
         messages = [
@@ -135,7 +135,7 @@ async def test_provider_fallback():
 
         for provider_type in [ProviderType.LOCAL, ProviderType.GROK]:
             try:
-                steves_mom = create_supreme_overlord(
+                steves_mom = create_steves_mom(
                     provider_type=provider_type, enable_tools=False
                 )
 

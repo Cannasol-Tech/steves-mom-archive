@@ -16,7 +16,7 @@ import random
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple, TypedDict, Protocol, Awaitable
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, TypedDict, Protocol, Awaitable
 
 from .providers.base import (LLMProvider, Message, ModelCapability,
                              ModelConfig, ModelResponse, ProviderError,
@@ -69,6 +69,71 @@ class RoutingPolicy:
 
 
 class ModelRouter:
+    async def stream_request(
+        self,
+        messages: List[Message],
+        config: ModelConfig,
+        policy: Optional[RoutingPolicy] = None,
+    ) -> AsyncGenerator[str, None]:
+        """
+        Route a streaming request to the best available provider.
+
+        Args:
+            messages: Conversation messages
+            config: Model configuration
+            policy: Routing policy (uses default if None)
+
+        Yields:
+            Chunks of the response from the selected provider
+        """
+        policy = policy or self.default_policy
+        config.stream = True  # Ensure stream is enabled
+
+        eligible_providers = await self._get_eligible_providers(
+            messages, config, policy
+        )
+
+        if not eligible_providers:
+            raise ProviderError("No eligible providers available for streaming", "router")
+
+        last_error: Optional[Exception] = None
+
+        for attempt in range(policy.retry_attempts):
+            for provider_name in eligible_providers:
+                if self._circuit_breakers.get(provider_name, False):
+                    continue
+
+                try:
+                    provider_config = self.providers[provider_name]
+
+                    if not self._check_rate_limit(provider_name):
+                        logger.warning(f"Rate limit exceeded for {provider_name}")
+                        continue
+
+                    start_time = time.time()
+                    async for chunk in provider_config.provider.stream_response(
+                        messages, config
+                    ):
+                        yield chunk
+                    end_time = time.time()
+
+                    self._record_request(provider_name, end_time - start_time)
+                    logger.info(f"Request streamed via {provider_name}")
+                    return  # End generation
+
+                except (ProviderError, Exception) as e:
+                    logger.error(f"Provider streaming error for {provider_name}: {e}")
+                    self._record_error(provider_name)
+                    last_error = e
+                    continue
+
+            if attempt < policy.retry_attempts - 1:
+                await asyncio.sleep(2**attempt)  # Exponential backoff
+
+        if last_error:
+            raise last_error
+        else:
+            raise ProviderError("All providers failed to stream", "router")
     """
     Intelligent router for AI model providers.
 

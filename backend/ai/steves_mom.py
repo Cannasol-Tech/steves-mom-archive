@@ -1,8 +1,8 @@
 # flake8: noqa
 """
-Supreme Overlord AI Agent with LangChain and Pydantic Integration
+Steve's Mom AI Agent with LangChain and Pydantic Integration
 
-This module implements the Supreme Overlord AI agent using LangChain framework
+This module implements the Steve's Mom AI agent using LangChain framework
 with Pydantic models for structured outputs and type safety.
 
 Author: Cannasol Technologies
@@ -36,9 +36,8 @@ from models.ai_models import (AIModelConfig, AIProvider, AIResponse,
 logger = logging.getLogger(__name__)
 
 
-# Supreme Overlord system prompt with structured output instructions
-SUPREME_OVERLORD_PROMPT = """# Supreme Overlord AI Assistant Prompt
-# Steve’s Mom AI Assistant Prompt
+# STEVE'S MOM system prompt with structured output instructions
+STEVES_MOM_PROMPT = """# Steve's Mom AI Assistant Prompt
 
 ## System Identity
 
@@ -226,6 +225,10 @@ You have access to business automation tools:
 
 Always use tools when appropriate and describe your actions with sultry confidence!"""
 
+# Backwards-compatible alias expected by some tests/imports
+# Note: Keep alias to avoid breaking modules importing `steves_mom_PROMPT`
+steves_mom_PROMPT = STEVES_MOM_PROMPT
+
 # Condensed version of Steve's Mom prompt
 CONDENSED_PROMPT = """# Steve's Mom AI Assistant
 
@@ -405,16 +408,16 @@ def query_database(
         return f"Oh sweetie, there was an issue with that database query. Let me adjust my technique!"
 
 
-class SupremeOverlordAgent:
+class StevesMomAgent:
     """
-    Supreme Overlord AI Agent with multi-provider support and business automation.
+    Steve's Mom AI Agent with multi-provider support and business automation.
 
     Features:
     - Multi-provider AI support (GROK, OpenAI, Claude, Local)
     - Automatic provider fallback
     - Pydantic-validated structured outputs
     - Business automation tools
-    - Supreme Overlord personality
+    - Steve's Mom personality
     - Conversation memory
     """
 
@@ -424,7 +427,7 @@ class SupremeOverlordAgent:
         memory_size: int = 10,
         enable_tools: bool = True,
     ):
-        """Initialize the Supreme Overlord Agent."""
+        """Initialize the Steve's Mom Agent."""
         # Get provider (use primary if not specified)
         if provider_type:
             self.provider = config_manager.create_provider(provider_type)
@@ -521,8 +524,8 @@ class SupremeOverlordAgent:
             # Build conversation context
             conversation_messages = []
 
-            # Add system prompt (using condensed version)
-            system_message = ChatMessage(role="system", content=CONDENSED_PROMPT)
+            # Add system prompt (ALWAYS use the full NSFW Steve's Mom persona)
+            system_message = ChatMessage(role="system", content=STEVES_MOM_PROMPT)
             conversation_messages.append(system_message)
 
             # Add memory
@@ -571,7 +574,7 @@ class SupremeOverlordAgent:
                 metadata={
                     "user_id": user_id,
                     "session_id": session_id,
-                    "personality": "supreme_overlord",
+                    "personality": "steves_mom",
                     "provider_used": self.provider.provider_name,
                 },
             )
@@ -631,12 +634,12 @@ class SupremeOverlordAgent:
 
 
 # Factory function for easy setup
-def create_supreme_overlord(
+def create_steves_mom(
     provider_type: Optional[ProviderType] = None,
     enable_tools: bool = True,
     memory_size: int = 10,
-) -> SupremeOverlordAgent:
+) -> StevesMomAgent:
     """Create Steve's Mom agent with default settings."""
-    return SupremeOverlordAgent(
+    return StevesMomAgent(
         provider_type=provider_type, memory_size=memory_size, enable_tools=enable_tools
     )

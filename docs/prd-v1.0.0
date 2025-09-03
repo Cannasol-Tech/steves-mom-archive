@@ -403,7 +403,7 @@ Backend (Azure Functions)
 - **Configuration Management**: Environment-specific settings with validation
 - **Business Logic**: Domain models for tasks, users, permissions, and integrations
 
-**Supreme Overlord Personality:**
+**Steve's Mom Personality:**
 - **System Prompt**: Integrated personality from existing steves-mom-beta.py
 - **Context Preservation**: Personality maintained across conversation turns
 - **Tool Integration**: Business automation tools with personality-driven responses

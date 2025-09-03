@@ -86,6 +86,15 @@ param enableMonitoring bool = true
 @description('Enable Redis Cache for session management')
 param enableRedis bool = true
 
+/**
+ * @brief SignalR service name
+ * @details Must be lowercase, no spaces or special characters
+ */
+@minLength(3)
+@maxLength(10)
+@description('SignalR service name (e.g., sig-steves-mom)')
+param signalrName string = 'sig-steves-mom-${environment}'
+
 // ============================================================================
 // VARIABLES
 // ============================================================================
@@ -160,6 +169,20 @@ module storage 'modules/storage.bicep' = {
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   scope: resourceGroup
   name: naming.keyVault
+}
+
+/**
+ * @brief SignalR module deployment
+ * @details Deploys Azure SignalR service for real-time communication
+ */
+module signalr 'modules/signalr.bicep' = {
+  name: 'signalr'
+  params: {
+    signalrName: signalrName
+    location: location
+    tags: commonTags
+    environment: environment
+  }
 }
 
 /**

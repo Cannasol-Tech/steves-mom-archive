@@ -132,7 +132,7 @@ class GeneratedTask(BaseModel):
     dependencies: List[str] = Field(default_factory=list)
     confidence_score: float = Field(..., ge=0.0, le=1.0)
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    created_by: str = "supreme_overlord"
+    created_by: str = "steves_mom"
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("confidence_score")

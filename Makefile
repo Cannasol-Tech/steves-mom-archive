@@ -1,5 +1,6 @@
 .PHONY: help setup setup-backend setup-frontend setup-dev
 .PHONY: test test-unit test-integration test-acceptance test-acceptance-pytest test-frontend test-infra test-router test-router-acceptance
+.PHONY: test-coverage test-backend-coverage test-frontend-coverage
 .PHONY: lint lint-py lint-js lint-md fix-lint
 .PHONY: preview dev clean
 .PHONY: deploy deploy-infra deploy-functions
@@ -22,9 +23,12 @@ help:
 	@echo "  test-unit     - Run unit tests only"
 	@echo "  test-integration - Run integration tests"
 	@echo "  test-backend  - Run backend tests (unit + integration)"
+	@echo "  test-backend-coverage - Run backend tests with coverage (backend/ ai/ models/)"
 	@echo "  test-acceptance - Run acceptance tests (behave)"
 	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
+	@echo "  test-frontend-coverage - Run frontend tests with coverage"
+	@echo "  test-coverage - Run backend + frontend coverage suites"
 	@echo "  test-infra    - Run infrastructure tests (Bicep validation)"
 	@echo "  test-router   - Run model router unit tests"
 	@echo "  test-router-acceptance - Run model router acceptance tests (pytest)"
@@ -62,10 +66,15 @@ setup-backend:
 	@echo "Setting up Python backend..."
 	python3 -m venv .venv || /opt/homebrew/bin/python3.12 -m venv .venv
 	.venv/bin/pip install --upgrade pip
-	.venv/bin/pip install fastapi uvicorn[standard] python-dotenv pydantic xai-sdk
-	@if [ -f src/backend/requirements.txt ]; then \
-		echo "Installing Azure Functions backend requirements..."; \
-		.venv/bin/pip install -r src/backend/requirements.txt; \
+	@if [ -f backend/requirements.txt ]; then \
+		echo "Preparing backend requirements (handling torch separately for compatibility)..."; \
+		TMP_REQ=$$(mktemp); \
+		grep -v '^torch==' backend/requirements.txt > $$TMP_REQ; \
+		echo "Installing backend requirements (without torch)..."; \
+		.venv/bin/pip install -r $$TMP_REQ; \
+		rm -f $$TMP_REQ; \
+		echo "Attempting to install a compatible torch version (CPU) as best-effort..."; \
+		.venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.7.0" || true; \
 	fi
 
 setup-frontend:
@@ -77,8 +86,15 @@ setup-dev:
 	.venv/bin/pip install -r requirements-dev.txt
 	.venv/bin/pip install pytest-asyncio flake8 mypy black isort
 
+# Tooling (no-op by default to avoid global installs automatically)
+setup-tools:
+	@echo "Skipping automatic install of Azurite and Azure Functions Core Tools."
+	@echo "To install manually:"
+	@echo "  npm install -g azurite"
+	@echo "  brew tap azure/functions && brew install azure-functions-core-tools@4"
+
 # Testing targets
-test: setup-backend setup-dev test-unit test-integration test-acceptance
+test: setup-backend setup-dev test-unit test-integration test-acceptance test-frontend
 
 test-unit: setup-backend setup-dev
 	@echo "Running unit tests..."
@@ -99,6 +115,22 @@ test-acceptance-pytest: setup-backend setup-dev
 test-frontend:
 	@echo "Running frontend tests..."
 	cd frontend && npm test -- --watchAll=false
+
+# Coverage targets
+test-backend-coverage: setup-backend setup-dev
+	@echo "Running backend tests with coverage..."
+	.venv/bin/pytest \
+	  tests/unit/ tests/integration/ -v \
+	  --cov=backend --cov=ai --cov=models \
+	  --cov-report=term-missing \
+	  --cov-report=xml:coverage-backend.xml
+
+test-frontend-coverage:
+	@echo "Running frontend tests with coverage..."
+	cd frontend && npm test -- --watchAll=false --coverage
+
+test-coverage: test-backend-coverage test-frontend-coverage
+	@echo "Combined coverage complete. Backend: coverage-backend.xml, Frontend: frontend/coverage/"
 
 test-infra: setup-dev
 	@echo "Running infrastructure tests..."

@@ -14,9 +14,18 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     name: Build and Deploy Frontend to Azure Static Web Apps
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Build and Deploy
         uses: Azure/static-web-apps-deploy@v1
@@ -27,11 +36,6 @@ jobs:
           app_location: "frontend"
           output_location: "build"
           app_build_command: |
-            npm ci && npm run build
+            CI=true npm ci && npm run build
           skip_api_build: true
-        env:
-          # Optional environment variables can be defined per environment/branch via GitHub Environments
-          
-          # Example: set custom SWA app name or environment-specific flags here if needed
-          # SWA_APP_NAME: my-swa-app
-          # NODE_OPTIONS: --max_old_space_size=4096
+

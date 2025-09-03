@@ -1,9 +1,11 @@
 import os
+import asyncio
 import time
 from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 try:
@@ -12,11 +14,32 @@ try:
     from xai_sdk.chat import assistant, system, user
 except Exception:  # pragma: no cover
     XAI = None
+from contextlib import asynccontextmanager
+
+from backend.ai.model_router import (ModelRouter, ProviderError,
+                                     create_router_from_env)
+from backend.ai.providers.base import ModelConfig
+
 from .connection_manager import manager
 from .routes import tasks
-from .schemas import ChatMessage, ChatRequest, ChatResponse
+from .schemas import ChatMessage, ChatRequest
 
-app = FastAPI(title="Steve's Mom API", version="0.1.0")
+model_router: ModelRouter | None = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Load the model router on startup."""
+    global model_router
+    print("INFO:     Loading model router...")
+    model_router = await create_router_from_env()
+    print("INFO:     Model router loaded.")
+    yield
+    # Clean up resources if needed
+    model_router = None
+
+
+app = FastAPI(title="Steve's Mom API", version="0.1.0", lifespan=lifespan)
 
 app.include_router(tasks.router, prefix="/api", tags=["tasks"])
 
@@ -107,86 +130,39 @@ async def health():
     return {"status": "ok"}
 
 
-@app.post("/api/chat", response_model=ChatResponse)
-async def chat(req: ChatRequest):
-    api_key = os.environ.get("GROK_API_KEY")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="GROK_API_KEY not set")
+async def stream_response(req: ChatRequest):
+    """Generator function to stream response from the ModelRouter."""
+    if not model_router:
+        yield "Error: Model router not initialized"
+        return
 
-    if XAI is None:
-        raise HTTPException(
-            status_code=500, detail="xai_sdk is not installed on the server"
-        )
+    model_config = ModelConfig(model_name=req.model or "grok-3-mini", stream=True)
+    full_response_chunks = []
 
-    client = XAI(api_key=api_key)
-
-    # Default model if not provided
-    model = req.model or "grok-3-mini"
-
-    start = time.time()
     try:
-        # Create chat session and append messages
-        chat = client.chat.create(model=model)
+        async for chunk in model_router.stream_request(req.messages, model_config):
+            full_response_chunks.append(chunk)
+            yield chunk
 
-        # If there's an initial system prompt in messages, honor order
-        for m in req.messages:
-            if m.role == "system":
-                chat.append(system(m.content))
-            elif m.role == "user":
-                chat.append(user(m.content))
-            elif m.role == "assistant":
-                chat.append(assistant(m.content))
+        # After streaming, parse for animation and broadcast
+        final_text = "".join(full_response_chunks)
+        try:
+            cmd = _parse_animation_cmd(final_text)
+            if cmd:
+                await manager.broadcast(_json.dumps(cmd))
+        except Exception as e:
+            # Non-fatal if broadcast fails, but log it
+            print(f"ERROR: Failed to broadcast animation command: {e}")
 
-        # Generate completion (sample() is synchronous in current SDK)
-        resp = chat.sample()
+    except ProviderError as e:
+        yield f"Error: {e.message}"
     except Exception as e:
-        raise HTTPException(status_code=502, detail=f"xAI error: {e}")
+        yield f"An unexpected error occurred: {str(e)}"
 
-    dur_ms = int((time.time() - start) * 1000)
 
-    # Robust extraction across xAI SDK variants
-    assistant_content = ""
-    reasoning_content = None
+@app.post("/api/chat")
+async def chat(req: ChatRequest):
+    if not model_router:
+        raise HTTPException(status_code=503, detail="Model router is not available")
 
-    # Direct attributes (newer SDKs)
-    if hasattr(resp, "content") and resp.content:
-        assistant_content = resp.content
-    if hasattr(resp, "reasoning_content") and getattr(resp, "reasoning_content"):
-        reasoning_content = getattr(resp, "reasoning_content")
-
-    # Fallback to choices[0].message (older style)
-    if not assistant_content and getattr(resp, "choices", None):
-        choice = resp.choices[0]
-        message = getattr(choice, "message", None)
-        if message is not None:
-            if reasoning_content is None:
-                reasoning_content = getattr(message, "reasoning_content", None)
-            assistant_content = getattr(message, "content", "") or str(message)
-
-    # Final fallback
-    if not assistant_content:
-        assistant_content = str(resp) if resp is not None else ""
-
-    if not assistant_content:
-        raise HTTPException(status_code=502, detail="No completion returned")
-
-    usage = getattr(resp, "usage", None)
-
-    # Broadcast any inline animation directive via WebSocket
-    try:
-        cmd = _parse_animation_cmd(assistant_content)
-        if cmd:
-            await manager.broadcast(_json.dumps(cmd))
-    except Exception:
-        pass
-
-    return ChatResponse(
-        message=ChatMessage(role="assistant", content=assistant_content),
-        provider="grok",
-        model=getattr(resp, "model", model),
-        response_time_ms=dur_ms,
-        reasoning_content=reasoning_content,
-        prompt_tokens=getattr(usage, "prompt_tokens", None) if usage else None,
-        completion_tokens=getattr(usage, "completion_tokens", None) if usage else None,
-        total_tokens=getattr(usage, "total_tokens", None) if usage else None,
-    )
+    return StreamingResponse(stream_response(req), media_type="text/event-stream")

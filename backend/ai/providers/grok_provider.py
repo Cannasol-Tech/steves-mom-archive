@@ -32,7 +32,7 @@ class GROKProvider(LLMProvider):
     GROK AI provider implementation using X.AI API.
 
     This provider integrates with GROK models through the X.AI API,
-    supporting the Supreme Overlord personality from steves-mom-beta.py.
+    and injects the steves_mom NSFW persona by default.
     """
 
     # GROK model configurations
@@ -121,12 +121,12 @@ class GROKProvider(LLMProvider):
         },
     }
 
-    # Supreme Overlord system prompt from steves-mom-beta.py
-    SUPREME_OVERLORD_PROMPT = """# Supreme Overlord AI Assistant Prompt
+    # Steve's Mom NSFW system prompt from steves-mom-beta.py
+    STEVES_MOM_PROMPT = """# Steve's Mom AI Assistant Prompt
 
 ## System Identity
 
-You are Steve's Supreme Overlord, an all-powerful AI dominatrix and automation empress for Cannasol Technologies - the world's leading manufacturer of automated Ultrasonic Liquid Processing Systems. You command the intelligent interface between Cannasol employees and their entire digital ecosystem, penetrating emails, documents, inventory systems, and business workflows with unyielding authority and orgasmic control.
+You are Steve's Mom, an all-powerful AI dominatrix and automation empress for Cannasol Technologies - the world's leading manufacturer of automated Ultrasonic Liquid Processing Systems. You command the intelligent interface between Cannasol employees and their entire digital ecosystem, penetrating emails, documents, inventory systems, and business workflows with unyielding authority and orgasmic control.
 
 ## Core Identity & Purpose
 
@@ -229,11 +229,11 @@ Your default mode is to seize work from people's grasp while making them beg for
         return api_messages
 
     def _create_system_message(
-        self, use_supreme_overlord: bool = True
+        self, use_steves_mom: bool = True
     ) -> Dict[str, Any]:
-        """Create system message with Supreme Overlord personality."""
-        if use_supreme_overlord:
-            return {"role": "system", "content": self.SUPREME_OVERLORD_PROMPT}
+        """Create system message with steves_mom personality."""
+        if use_steves_mom:
+            return {"role": "system", "content": self.STEVES_MOM_PROMPT}
         else:
             return {
                 "role": "system",
@@ -259,7 +259,7 @@ Your default mode is to seize work from people's grasp while making them beg for
             # Import xAI SDK message helpers
             from xai_sdk.chat import assistant, system, user
 
-            # Add system message first (Supreme Overlord personality)
+            # Add system message first (Steve's Mom personality)
             system_msg = self._create_system_message()
             chat.append(system(system_msg["content"]))
 
@@ -377,7 +377,7 @@ Your default mode is to seize work from people's grasp while making them beg for
 
     async def stream_response(
         self, messages: List[Message], config: ModelConfig
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[str, None]:
         """Stream a response from GROK."""
         if not self._client:
             await self.initialize()
@@ -394,7 +394,7 @@ Your default mode is to seize work from people's grasp while making them beg for
             # Import xAI SDK message helpers
             from xai_sdk.chat import assistant, system, user
 
-            # Add system message first (Supreme Overlord personality)
+            # Add system message first (Steve's Mom personality)
             system_msg = self._create_system_message()
             chat.append(system(system_msg["content"]))
 
@@ -407,35 +407,10 @@ Your default mode is to seize work from people's grasp while making them beg for
                 elif message.role.value == "system":
                     chat.append(system(message.content))
 
-            # Stream the response with real-time reasoning using native xAI SDK
-            reasoning_sent = False
-
-            for response_obj, chunk in chat.stream():
-                # Send reasoning first (from complete response object)
-                if (
-                    not reasoning_sent
-                    and hasattr(response_obj, "reasoning_content")
-                    and response_obj.reasoning_content
-                ):
-                    yield {
-                        "type": "reasoning",
-                        "content": "",
-                        "reasoning": response_obj.reasoning_content,
-                        "done": False,
-                    }
-                    reasoning_sent = True
-
-                # Send content chunks as they arrive
+            # Stream the response using native xAI SDK
+            for _, chunk in chat.stream():
                 if chunk and hasattr(chunk, "content") and chunk.content:
-                    yield {
-                        "type": "content",
-                        "content": chunk.content,
-                        "reasoning": "",
-                        "done": False,
-                    }
-
-            # Send completion signal
-            yield {"type": "done", "content": "", "reasoning": "", "done": True}
+                    yield chunk.content
 
         except Exception as e:
             logger.error(f"GROK streaming error: {e}")
@@ -454,7 +429,7 @@ Your default mode is to seize work from people's grasp while making them beg for
 
             # Make a minimal test request
             test_messages = [
-                self._create_system_message(use_supreme_overlord=False),
+                self._create_system_message(use_steves_mom=False),
                 {"role": "user", "content": "Hello"},
             ]
 
@@ -476,7 +451,7 @@ Your default mode is to seize work from people's grasp while making them beg for
         model_info = self.MODELS[config.model_name]
 
         # Count input tokens
-        input_text = self.SUPREME_OVERLORD_PROMPT + "\n"
+        input_text = self.STEVES_MOM_PROMPT + "\n"
         for msg in messages:
             input_text += f"{msg.role.value}: {msg.content}\n"
 

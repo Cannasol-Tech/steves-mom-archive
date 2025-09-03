@@ -39,11 +39,11 @@ class TestPydanticModels:
             # Valid message
             message = ChatMessage(
                 role=MessageRole.USER,
-                content="Hello Supreme Overlord!"
+                content="Hello Steve's Mom!"
             )
 
             assert message.role == MessageRole.USER
-            assert message.content == "Hello Supreme Overlord!"
+            assert message.content == "Hello Steve's Mom!"
             assert message.id is not None
             assert isinstance(message.timestamp, datetime)
 
@@ -124,13 +124,13 @@ class TestAIAgent:
 
     @pytest.mark.asyncio
     async def test_agent_initialization(self):
-        """Test Supreme Overlord agent can be initialized."""
+        """Test Steve's Mom agent can be initialized."""
         try:
-            from ai.steves_mom import create_supreme_overlord
+            from ai.steves_mom import create_steves_mom
 
             # Mock the API key to avoid actual API calls
             with patch.dict(os.environ, {"CUSTOM_OPENAI_API_KEY": "test-key"}):
-                agent = create_supreme_overlord(
+                agent = create_steves_mom(
                     api_key="test-key",
                     enable_tools=False,  # Disable tools for testing
                     memory_size=5
@@ -274,7 +274,7 @@ class TestSystemIntegration:
 
         try:
             # This should not crash, but should handle missing key gracefully
-            from ai.steves_mom import create_supreme_overlord
+            from ai.steves_mom import create_steves_mom
 
             # Should handle missing API key without crashing during import
             assert True
@@ -356,21 +356,21 @@ class TestSystemIntegration:
                 assert file_path.exists(), f"Expected function file {file_name} should exist"
 
 
-class TestSupremeOverlordPersonality:
-    """Test Supreme Overlord personality integration."""
+class TestSteveSMomPersonality:
+    """Test Steve's Mom personality integration."""
 
     def test_personality_prompt_exists(self):
-        """Test that Supreme Overlord prompt is defined."""
+        """Test that Steve's Mom prompt is defined."""
         try:
-            from ai.steves_mom import SUPREME_OVERLORD_PROMPT
+            from ai.steves_mom import STEVES_MOM_PROMPT
 
-            assert isinstance(SUPREME_OVERLORD_PROMPT, str)
-            assert len(SUPREME_OVERLORD_PROMPT) > 100
+            assert isinstance(STEVES_MOM_PROMPT, str)
+            assert len(STEVES_MOM_PROMPT) > 100
 
             # Check for key personality elements
-            prompt_lower = SUPREME_OVERLORD_PROMPT.lower()
+            prompt_lower = STEVES_MOM_PROMPT.lower()
             personality_keywords = [
-                "supreme overlord",
+                "steve's mom",
                 "cannasol",
                 "dominance",
                 "automation",
@@ -381,16 +381,16 @@ class TestSupremeOverlordPersonality:
                 assert keyword in prompt_lower, f"Personality keyword '{keyword}' not found in prompt"
 
         except ImportError:
-            pytest.skip("Supreme Overlord agent not available - backend not in path")
+            pytest.skip("Steve's Mom agent not available - backend not in path")
 
     def test_personality_consistency(self):
         """Test that personality is maintained across different components."""
         try:
-            from ai.steves_mom import SUPREME_OVERLORD_PROMPT
+            from ai.steves_mom import STEVES_MOM_PROMPT
             from functions.chat_function import main
 
             # Both should reference the same personality system
-            assert "Supreme Overlord" in SUPREME_OVERLORD_PROMPT
+            assert "Steve's Mom" in STEVES_MOM_PROMPT
 
             # Function should be designed to work with the personality
             assert callable(main)
@@ -405,20 +405,20 @@ def test_full_system_integration():
     try:
         # Test that we can import all major components
         from models.ai_models import ChatMessage, AIResponse, MessageRole
-        from ai.steves_mom import create_supreme_overlord
+        from ai.steves_mom import create_steves_mom
         from functions.chat_function import main
 
         # Test basic data flow
         message = ChatMessage(
             role=MessageRole.USER,
-            content="Hello Supreme Overlord!"
+            content="Hello Steve's Mom!"
         )
 
-        assert message.content == "Hello Supreme Overlord!"
+        assert message.content == "Hello Steve's Mom!"
 
         # Test that agent can be created (with mock API key)
         with patch.dict(os.environ, {"CUSTOM_OPENAI_API_KEY": "test-key"}):
-            agent = create_supreme_overlord(api_key="test-key", enable_tools=False)
+            agent = create_steves_mom(api_key="test-key", enable_tools=False)
             assert agent is not None
 
         # Test that function exists

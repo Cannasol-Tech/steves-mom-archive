@@ -1,7 +1,7 @@
 """
-Azure Function for Supreme Overlord Chat API
+Azure Function for Steve's Mom Chat API
 
-This module implements the Azure Function endpoint for the Supreme Overlord
+This module implements the Azure Function endpoint for the Steve's Mom
 AI agent with LangChain and Pydantic integration.
 
 Author: Cannasol Technologies
@@ -19,7 +19,7 @@ import azure.functions as func
 from azure.functions import HttpRequest, HttpResponse
 
 # Import our AI agent and models
-from ..ai.supreme_overlord_agent import create_supreme_overlord
+from ..ai.steves_mom_agent import create_steves_mom
 from ..models.ai_models import (AIModelConfig, AIResponse, ChatMessage,
                                 ChatResponse, HealthResponse, SystemHealth,
                                 TaskRequest)
@@ -33,16 +33,16 @@ _agent = None
 
 
 def get_agent():
-    """Get or create the Supreme Overlord agent instance."""
+    """Get or create the Steve's Mom agent instance."""
     global _agent
     if _agent is None:
         try:
-            _agent = create_supreme_overlord(
+            _agent = create_steves_mom(
                 api_key=os.environ.get("CUSTOM_OPENAI_API_KEY"),
                 enable_tools=True,
                 memory_size=10,
             )
-            logger.info("Supreme Overlord agent initialized successfully")
+            logger.info("Steve's Mom agent initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize agent: {e}")
             raise
@@ -54,7 +54,7 @@ async def main(req: HttpRequest) -> HttpResponse:
     Main Azure Function entry point for chat API.
 
     Supports:
-    - POST /api/chat - Chat with Supreme Overlord
+    - POST /api/chat - Chat with Steve's Mom
     - GET /api/health - Health check
     - POST /api/tasks - Generate tasks from request
     """
@@ -92,7 +92,7 @@ async def main(req: HttpRequest) -> HttpResponse:
 
 
 async def handle_chat_request(req: HttpRequest) -> HttpResponse:
-    """Handle chat requests with the Supreme Overlord."""
+    """Handle chat requests with the Steve's Mom Agent."""
     try:
         # Parse request body
         try:
@@ -134,7 +134,7 @@ async def handle_chat_request(req: HttpRequest) -> HttpResponse:
         # Get agent and process request
         agent = get_agent()
 
-        # Chat with the Supreme Overlord
+        # Chat with Steve's Mom
         ai_response = await agent.chat(
             message=message, user_id=user_id, session_id=session_id
         )

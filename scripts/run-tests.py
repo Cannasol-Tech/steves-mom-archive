@@ -96,7 +96,7 @@ def check_project_structure():
     
     expected_files = [
         "backend/models/ai_models.py",
-        "backend/ai/supreme_overlord_agent.py", 
+        "backend/ai/steves_mom_agent.py", 
         "backend/functions/chat_function.py",
         "backend/requirements.txt",
         "tests/unit/test_sanity.py"

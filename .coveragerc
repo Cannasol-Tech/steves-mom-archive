@@ -1,0 +1,24 @@
+[run]
+branch = True
+source = 
+    backend
+
+[report]
+omit = 
+    # Experimental/entrypoint scripts
+    backend/ai/steves_mom.py
+    backend/ai/test_steves_mom.py
+    backend/ai/steves_mom_agent.py
+    backend/functions/chat_function.py
+    backend/database.py
+    
+    # External provider adapters that hit real APIs (covered by integration in-prod)
+    backend/ai/providers/claude_provider.py
+    backend/ai/providers/openai_provider.py
+    backend/ai/providers/grok_provider.py
+    backend/ai/providers/test_providers.py
+
+exclude_lines = 
+    pragma: no cover
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:

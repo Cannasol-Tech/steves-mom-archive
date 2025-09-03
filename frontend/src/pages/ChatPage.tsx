@@ -6,6 +6,8 @@ import { startStream, type StreamHandle } from '../services/chatStream';
 import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socketClient';
 import { TaskStatus } from '../types/tasks';
 import { parseAnimationFromText, executeAnimation } from '../utils/animationCommands';
+import AgentTasksPanel from '../components/AgentTasksPanel';
+import { BeakerIcon } from '@heroicons/react/24/outline';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -28,6 +30,7 @@ const ChatPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const liveConnRef = useRef<LiveUpdateConnection | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const handleApproveTask = async (taskId: string) => {
     await updateTaskStatus(taskId, 'approved');
@@ -296,8 +299,11 @@ Keep normal content readable; place control directives once per reply when appro
     }
   };
 
+    const tasks = messages.filter(m => m.taskId && m.taskStatus);
+
   return (
-    <ChatInterface
+    <div className="relative h-full">
+      <ChatInterface
       messages={messages}
       isLoading={isLoading}
       inputValue={inputValue}
@@ -315,7 +321,22 @@ Keep normal content readable; place control directives once per reply when appro
       toastMessage={toastMessage || undefined}
       onApproveTask={handleApproveTask}
       onRejectTask={handleRejectTask}
-    />
+      />
+      <button
+        onClick={() => setIsPanelOpen(true)}
+        className="absolute top-4 right-4 z-20 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        aria-label="Open agent tasks panel"
+      >
+        <BeakerIcon className="h-6 w-6" />
+      </button>
+      <AgentTasksPanel
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+        tasks={tasks as (Message & { taskId: string, taskStatus: TaskStatus })[]}
+        onApprove={handleApproveTask}
+        onReject={handleRejectTask}
+      />
+    </div>
   );
 };
 

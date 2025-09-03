@@ -46,6 +46,52 @@ make test-unit
 - `make deploy-infra` - Deploy infrastructure only (Bicep)
 - `make deploy-functions` - Deploy Azure Functions only
 
+## 🧪 Testing
+
+The project uses multiple test suites. The Makefile standardizes how to run them.
+
+### One-shot (all suites)
+
+```bash
+make setup   # installs backend + dev deps + frontend deps
+make test    # runs unit + integration + acceptance + frontend
+```
+
+### Selective runs
+
+```bash
+# Backend
+make test-unit         # pytest: tests/unit/
+make test-integration  # pytest: tests/integration/
+make test-acceptance   # behave: tests/acceptance/features
+
+# Frontend
+make test-frontend     # CRA/Jest: frontend/src/**/__tests__/*.test.tsx
+```
+
+### Coverage
+
+Backend coverage is configured via `.coveragerc` and focuses on `backend/` modules.
+
+```bash
+.venv/bin/pytest \
+  --cov=backend \
+  --cov-report=term-missing \
+  --cov-config=.coveragerc \
+  tests/unit/ tests/integration/
+```
+
+Notes:
+
+- `.coveragerc` excludes external provider adapters and entrypoint-like modules so that coverage reflects core backend logic.
+- Frontend coverage (optional):
+
+```bash
+cd frontend && npm test -- --watchAll=false --coverage
+```
+
+Target: Test Coverage >85% with all tests passing.
+
 ## 📚 Documentation
 
 ### [Implementation Plan](docs/planning/implementation-plan.md)
