@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
@@ -125,7 +125,12 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,10 +169,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,8 +176,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -209,7 +219,7 @@ export function <span class="fstat-no" title="function not covered" >startStream
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  (<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const res = <span class="cstat-no" title="statement not covered" >await fetch(chatUrl, {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await fetch(chatUrl, {</span>
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -221,26 +231,31 @@ export function <span class="fstat-no" title="function not covered" >startStream
         signal: controller.signal,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!res.ok) {</span>
-        const txt = <span class="cstat-no" title="statement not covered" >await res.text().catch(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >'')</span>;</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(`API ${res.status}: ${txt}`);</span>
+<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+        const txt = <span class="cstat-no" title="statement not covered" >await response.text().catch(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >'')</span>;</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(`API ${response.status}: ${txt}`);</span>
       }
 &nbsp;
-      // Parse JSON response from backend
-      const data = <span class="cstat-no" title="statement not covered" >await res.json();</span>
-      
-      // Extract message content and reasoning
-      const messageContent = <span class="cstat-no" title="statement not covered" >data.message?.content || '';</span>
-      const reasoningContent = <span class="cstat-no" title="statement not covered" >data.reasoning_content || '';</span>
-      
-      // Only send content if it's not empty or "(no content)"
-<span class="cstat-no" title="statement not covered" >      if (messageContent &amp;&amp; messageContent.trim() !== '(no content)') {</span>
-<span class="cstat-no" title="statement not covered" >        params.onChunk(messageContent);</span>
+<span class="cstat-no" title="statement not covered" >      if (!response.body) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Response body is empty');</span>
       }
-      
-<span class="cstat-no" title="statement not covered" >      params.onDone(reasoningContent);</span>
+&nbsp;
+      const reader = <span class="cstat-no" title="statement not covered" >response.body.getReader();</span>
+      const decoder = <span class="cstat-no" title="statement not covered" >new TextDecoder();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      while (true) {</span>
+        const { done, value } = <span class="cstat-no" title="statement not covered" >await reader.read();</span>
+<span class="cstat-no" title="statement not covered" >        if (done) {</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        }
+        const chunk = <span class="cstat-no" title="statement not covered" >decoder.decode(value, { stream: true });</span>
+<span class="cstat-no" title="statement not covered" >        params.onChunk(chunk);</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      params.onDone();</span>
+&nbsp;
     } catch (e: any) {
-<span class="cstat-no" title="statement not covered" >      if (controller.signal.aborted) <span class="cstat-no" title="statement not covered" >return; </span></span>// cancelled, ignore error callback
+<span class="cstat-no" title="statement not covered" >      if (controller.signal.aborted) <span class="cstat-no" title="statement not covered" >return; </span></span>// Cancelled, ignore error callback
 <span class="cstat-no" title="statement not covered" >      params.onError(e instanceof Error ? e : new Error(String(e)));</span>
     }
   })();
@@ -256,7 +271,7 @@ export function <span class="fstat-no" title="function not covered" >startStream
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-16T13:16:12.599Z
+                at 2025-09-03T20:04:40.438Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

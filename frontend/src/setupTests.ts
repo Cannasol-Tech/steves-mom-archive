@@ -34,26 +34,25 @@ if (!('scrollTo' in Element.prototype)) {
 }
 
 // Lightweight WebSocket mock to avoid jsdom connection errors/noise
+// Always override to ensure no real network attempts happen in tests.
 // Provides minimal interface used by app code: onopen/onerror/onclose/send/close
-if (typeof (global as any).WebSocket === 'undefined') {
-  class WS {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onopen: any = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onerror: any = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onclose: any = null;
-    constructor() {
-      // open asynchronously to mimic real behavior
-      setTimeout(() => this.onopen && this.onopen({} as Event), 0);
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    send(_data: unknown) {}
-    close() {
-      this.onclose && this.onclose({} as Event);
-    }
-    addEventListener() {}
-    removeEventListener() {}
+class WS {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onopen: any = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onerror: any = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onclose: any = null;
+  constructor() {
+    // open asynchronously to mimic real behavior
+    setTimeout(() => this.onopen && this.onopen({} as Event), 0);
   }
-  (globalThis as unknown as { WebSocket?: unknown }).WebSocket = WS as unknown as typeof WebSocket;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  send(_data: unknown) {}
+  close() {
+    this.onclose && this.onclose({} as Event);
+  }
+  addEventListener() {}
+  removeEventListener() {}
 }
+(globalThis as unknown as { WebSocket?: unknown }).WebSocket = WS as unknown as typeof WebSocket;
