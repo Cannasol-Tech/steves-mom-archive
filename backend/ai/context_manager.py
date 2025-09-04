@@ -55,6 +55,12 @@ class ContextManager:
     - Message summarization for long conversations
     - Context injection and retrieval
     - Memory persistence (in-memory for MVP, can be extended to Redis/SQL)
+    
+    Notes:
+    - This component starts a background asyncio task to periodically clean up
+      expired sessions. Ensure an event loop is running before instantiation in
+      tests; prefer using async tests or calling `await shutdown()` to cleanly
+      cancel the cleanup task when done.
     """
 
     def __init__(
@@ -68,10 +74,15 @@ class ContextManager:
         Initialize the context manager.
 
         Args:
-            max_context_tokens: Maximum tokens in context window
-            max_session_age_hours: Maximum age of sessions before cleanup
-            max_sessions_per_user: Maximum sessions per user
-            summarization_threshold: Token count to trigger summarization
+            max_context_tokens: Maximum tokens permitted in a computed context window.
+            max_session_age_hours: Maximum age (in hours) before a session is considered expired.
+            max_sessions_per_user: Maximum number of concurrently retained sessions per user.
+            summarization_threshold: Token count threshold that triggers conversation summarization.
+
+        Notes:
+            - Creates an internal background task that periodically invokes
+              `cleanup_expired_sessions()`. Call `await shutdown()` to cancel it
+              during teardown (e.g., in tests) to avoid event-loop warnings.
         """
         self.max_context_tokens = max_context_tokens
         self.max_session_age_hours = max_session_age_hours
@@ -87,7 +98,14 @@ class ContextManager:
         self._start_cleanup_task()
 
     def _start_cleanup_task(self):
-        """Start the session cleanup background task."""
+        """
+        Start the session cleanup background task.
+
+        Notes:
+            - Requires an active asyncio event loop. In test environments,
+              ensure the test is async (e.g., with `pytest.mark.asyncio`) or
+              patch out background tasks.
+        """
 
         async def cleanup_loop():
             while True:
@@ -110,12 +128,13 @@ class ContextManager:
         Create a new conversation session.
 
         Args:
-            user_id: User identifier
-            session_id: Optional session ID (generated if not provided)
-            metadata: Optional session metadata
+            user_id: Unique user identifier for whom the session is created.
+            session_id: Optional explicit session ID; if omitted, a deterministic
+                short hex ID is generated.
+            metadata: Optional arbitrary metadata to associate with the session.
 
         Returns:
-            Session ID
+            The created session's ID.
         """
         if session_id is None:
             session_id = self._generate_session_id(user_id)
@@ -156,10 +175,13 @@ class ContextManager:
         Add a message to a session.
 
         Args:
-            session_id: Session identifier
-            role: Message role (user, assistant, system, tool)
-            content: Message content
-            metadata: Optional message metadata
+            session_id: Target session identifier.
+            role: Message role (user, assistant, system, tool).
+            content: Message content (string or structured content encoded as string).
+            metadata: Optional message metadata.
+
+        Raises:
+            ValueError: If the session is not found.
         """
         if session_id not in self.sessions:
             raise ValueError(f"Session {session_id} not found")
@@ -180,14 +202,24 @@ class ContextManager:
         self, session_id: str, max_tokens: Optional[int] = None
     ) -> ContextWindow:
         """
-        Get context window for a session.
+        Compute a token-limited context window for a session.
 
         Args:
-            session_id: Session identifier
-            max_tokens: Override default max tokens
+            session_id: Session identifier.
+            max_tokens: Optional override for the maximum number of tokens in the window.
 
         Returns:
-            ContextWindow with messages and metadata
+            ContextWindow containing selected messages, estimated total tokens,
+            the max token limit, a `truncated` flag, and an optional summary.
+
+        Raises:
+            ValueError: If the session is not found.
+
+        Notes:
+            - System messages are always prioritized. If system-only tokens exceed
+              the limit, an empty (but `truncated=True`) window is returned.
+            - Messages are added in reverse chronological order until the limit
+              is reached, then reversed back to chronological ordering.
         """
         if session_id not in self.sessions:
             raise ValueError(f"Session {session_id} not found")
@@ -256,10 +288,10 @@ class ContextManager:
         Delete a session.
 
         Args:
-            session_id: Session identifier
+            session_id: Session identifier.
 
         Returns:
-            True if session was deleted, False if not found
+            True if the session existed and was deleted; False if it was not found.
         """
         if session_id not in self.sessions:
             return False
@@ -285,10 +317,13 @@ class ContextManager:
 
     async def cleanup_expired_sessions(self) -> int:
         """
-        Clean up expired sessions.
+        Clean up sessions older than `max_session_age_hours`.
 
         Returns:
-            Number of sessions cleaned up
+            The number of sessions that were removed.
+
+        Notes:
+            - This method is periodically invoked by the background cleanup task.
         """
         cutoff_time = datetime.now(timezone.utc) - timedelta(
             hours=self.max_session_age_hours
@@ -308,7 +343,16 @@ class ContextManager:
         return len(expired_sessions)
 
     async def get_session_info(self, session_id: str) -> Optional[Dict[str, Any]]:
-        """Get session information."""
+        """
+        Get a readonly information snapshot for a session.
+
+        Args:
+            session_id: Session identifier.
+
+        Returns:
+            A dictionary containing identifiers, timestamps, counts, a best-effort
+            token estimate, and metadata; or None if the session does not exist.
+        """
         if session_id not in self.sessions:
             return None
 
@@ -325,13 +369,25 @@ class ContextManager:
         }
 
     def _generate_session_id(self, user_id: str) -> str:
-        """Generate a unique session ID."""
+        """
+        Generate a short, unique session ID.
+
+        The ID is a hex string (length 16) derived from a hash of the user ID,
+        current timestamp, and the instance identity.
+        """
         timestamp = datetime.now(timezone.utc).isoformat()
         data = f"{user_id}:{timestamp}:{id(self)}"
         return hashlib.md5(data.encode()).hexdigest()[:16]
 
     def _estimate_tokens(self, messages: List[Message]) -> int:
-        """Estimate token count for a list of messages based on a simple heuristic."""
+        """
+        Estimate token count for a list of messages based on a simple heuristic.
+
+        Notes:
+            - Uses a coarse approximation: ~1 token per 4 characters, plus a
+              small fixed overhead per message. Dict-like contents are JSON
+              serialized before counting.
+        """
         # A simple heuristic: 1 token ~ 4 chars.
         total_tokens = 0
         for message in messages:
@@ -354,7 +410,14 @@ class ContextManager:
             await self._summarize_conversation(session_id)
 
     async def _summarize_conversation(self, session_id: str) -> None:
-        """Summarize conversation to reduce context size."""
+        """
+        Summarize conversation to reduce context size.
+
+        Notes:
+            - Keeps the last 10 non-system messages and replaces older content
+              with a single system summary message. Previous summary messages are
+              replaced to maintain a single canonical summary in the context.
+        """
         # This is a placeholder for conversation summarization
         # In a full implementation, this would use the AI model to create summaries
         session = self.sessions[session_id]
@@ -402,7 +465,13 @@ class ContextManager:
         logger.info(f"Summarized conversation for session {session_id}")
 
     async def enforce_max_sessions_per_user(self, user_id: str) -> None:
-        """Enforce maximum sessions per user."""
+        """
+        Enforce the `max_sessions_per_user` limit for a given user.
+
+        Notes:
+            - When the limit is exceeded, the oldest sessions by `last_activity`
+              are deleted first.
+        """
         user_session_ids = self.user_sessions.get(user_id, [])
 
         if len(user_session_ids) > self.max_sessions_per_user:
@@ -424,7 +493,12 @@ class ContextManager:
             logger.info(f"Removed {sessions_to_remove} old sessions for user {user_id}")
 
     async def shutdown(self) -> None:
-        """Shutdown the context manager."""
+        """
+        Shutdown the context manager.
+
+        Cancels the background cleanup task (if running) and waits for a clean
+        cancellation. Safe to call multiple times.
+        """
         if self._cleanup_task:
             self._cleanup_task.cancel()
             try:

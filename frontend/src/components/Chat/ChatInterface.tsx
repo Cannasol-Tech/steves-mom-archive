@@ -3,7 +3,6 @@ import MessageList, { Message } from './MessageList';
 import ModelSelector from './ModelSelector';
 import InputArea from './InputArea';
 import StreamRenderer from './StreamRenderer';
-import StevesMomCharacter from '../Character/StevesMomCharacter';
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -116,10 +115,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
           )}
         </div>
-
-      {/* Steve's Mom Character Overlay */}
-      <StevesMomCharacter size={160} />
-
       </div>
 
       {/* Persona Avatars */}

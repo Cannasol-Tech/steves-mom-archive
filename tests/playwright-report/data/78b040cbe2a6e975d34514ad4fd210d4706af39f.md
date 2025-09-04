@@ -1,0 +1,142 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Cannasol Technologies Steve's Mom" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Cannasol Technologies" [ref=e7] [cursor=pointer]
+        - generic [ref=e8] [cursor=pointer]: Steve's Mom
+      - generic [ref=e9]:
+        - button "Toggle theme" [ref=e10] [cursor=pointer]:
+          - img [ref=e11] [cursor=pointer]
+        - button "Open main menu" [ref=e13] [cursor=pointer]:
+          - generic [ref=e14] [cursor=pointer]: Open main menu
+          - img [ref=e15] [cursor=pointer]
+  - main [ref=e18]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - img "Cannasol Technologies" [ref=e29]
+              - generic [ref=e31]:
+                - heading "Chat with Steve's Mom AI" [level=1] [ref=e32]
+                - paragraph [ref=e33]: Your intelligent business assistant
+            - generic [ref=e37]: Online
+          - alert [ref=e38]:
+            - generic [ref=e39]:
+              - img [ref=e40]
+              - generic [ref=e42]: "Live updates error: WebSocket error"
+        - generic [ref=e43]:
+          - status [ref=e44]: Assistant is idle
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e54]: AI
+              - generic [ref=e56]:
+                - generic [ref=e59]:
+                  - generic [ref=e60]:
+                    - generic [ref=e61]: Steve's Mom AI
+                    - generic [ref=e62]: •
+                    - generic [ref=e63]: 11:31 AM
+                    - generic [ref=e64]: •
+                    - generic [ref=e67]: Online
+                  - generic [ref=e68]: Hello! I'm Steve's Mom AI assistant. I can help you with inventory management, document generation, and email tasks. How can I assist you today?
+                - button "Copy message" [ref=e71] [cursor=pointer]:
+                  - img [ref=e72] [cursor=pointer]
+            - generic [ref=e74]:
+              - generic [ref=e79]: AI
+              - generic [ref=e81]:
+                - generic [ref=e84]:
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: Steve's Mom AI
+                    - generic [ref=e87]: •
+                    - generic [ref=e88]: 11:31 AM
+                    - generic [ref=e89]: •
+                    - generic [ref=e92]: Online
+                  - generic [ref=e93]: "{\"type\":\"hot\"}"
+                - button "Copy message" [ref=e96] [cursor=pointer]:
+                  - img [ref=e97] [cursor=pointer]
+            - generic [ref=e99]:
+              - generic [ref=e104]: AI
+              - generic [ref=e106]:
+                - generic [ref=e109]:
+                  - generic [ref=e110]:
+                    - generic [ref=e111]: Steve's Mom AI
+                    - generic [ref=e112]: •
+                    - generic [ref=e113]: 11:31 AM
+                    - generic [ref=e114]: •
+                    - generic [ref=e117]: Online
+                  - generic [ref=e118]: "{\"type\":\"liveReload\"}"
+                - button "Copy message" [ref=e121] [cursor=pointer]:
+                  - img [ref=e122] [cursor=pointer]
+            - generic [ref=e124]:
+              - generic [ref=e129]: AI
+              - generic [ref=e131]:
+                - generic [ref=e134]:
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: Steve's Mom AI
+                    - generic [ref=e137]: •
+                    - generic [ref=e138]: 11:31 AM
+                    - generic [ref=e139]: •
+                    - generic [ref=e142]: Online
+                  - generic [ref=e143]: "{\"type\":\"reconnect\",\"data\":10}"
+                - button "Copy message" [ref=e146] [cursor=pointer]:
+                  - img [ref=e147] [cursor=pointer]
+            - generic [ref=e149]:
+              - generic [ref=e154]: AI
+              - generic [ref=e156]:
+                - generic [ref=e159]:
+                  - generic [ref=e160]:
+                    - generic [ref=e161]: Steve's Mom AI
+                    - generic [ref=e162]: •
+                    - generic [ref=e163]: 11:31 AM
+                    - generic [ref=e164]: •
+                    - generic [ref=e167]: Online
+                  - generic [ref=e168]: "{\"type\":\"overlay\",\"data\":{\"errors\":true,\"warnings\":false}}"
+                - button "Copy message" [ref=e171] [cursor=pointer]:
+                  - img [ref=e172] [cursor=pointer]
+            - generic [ref=e174]:
+              - generic [ref=e179]: AI
+              - generic [ref=e181]:
+                - generic [ref=e184]:
+                  - generic [ref=e185]:
+                    - generic [ref=e186]: Steve's Mom AI
+                    - generic [ref=e187]: •
+                    - generic [ref=e188]: 11:31 AM
+                    - generic [ref=e189]: •
+                    - generic [ref=e192]: Online
+                  - generic [ref=e193]: "{\"type\":\"hash\",\"data\":\"72b0e3e0efa57014ee46\"}"
+                - button "Copy message" [ref=e196] [cursor=pointer]:
+                  - img [ref=e197] [cursor=pointer]
+            - generic [ref=e199]:
+              - generic [ref=e204]: AI
+              - generic [ref=e206]:
+                - generic [ref=e209]:
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: Steve's Mom AI
+                    - generic [ref=e212]: •
+                    - generic [ref=e213]: 11:31 AM
+                    - generic [ref=e214]: •
+                    - generic [ref=e217]: Online
+                  - generic [ref=e218]: "{\"type\":\"ok\"}"
+                - button "Copy message" [ref=e221] [cursor=pointer]:
+                  - img [ref=e222] [cursor=pointer]
+        - generic [ref=e228]:
+          - generic [ref=e229]:
+            - textbox "Ask anything… (Shift+Enter newline • Cmd/Ctrl+Enter send • Esc cancel)" [ref=e230]
+            - button "Send message" [disabled] [ref=e232]:
+              - img [ref=e233]
+          - paragraph [ref=e235]: "Tip: Press Command or Control and Enter to send. Press Shift and Enter for a new line. Press Escape to cancel streaming."
+          - generic [ref=e236]:
+            - status [ref=e237]: "Characters remaining: 2000."
+            - generic [ref=e238]:
+              - text: Powered by Grok (Azure proxy) • Reasoning-aware •
+              - generic [ref=e239]: "2000"
+              - text: left
+      - button "Open agent tasks panel" [ref=e240] [cursor=pointer]:
+        - img [ref=e241] [cursor=pointer]
+  - contentinfo [ref=e243]:
+    - generic [ref=e244]: © 2025 Steve's Mom AI Chatbot. Built with ♥ for efficient business operations.
+```

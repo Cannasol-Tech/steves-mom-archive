@@ -10,6 +10,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 2 : undefined,
+  // Clean up previous reports before each run
+  outputDir: 'test-results',
   reporter: [
     ['list'],
     ['html', { outputFolder: 'playwright-report' }],
@@ -18,9 +20,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:6969',
     headless: true,
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    trace: 'on',
+    screenshot: 'on',
+    video: 'on',
   },
   // Start the preview stack via our robust orchestrator script
   // webServer: {

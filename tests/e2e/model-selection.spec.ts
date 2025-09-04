@@ -26,7 +26,7 @@ test.describe('Model Selection', () => {
 
   test('displays model selector with default options', async ({ page }) => {
     // Find the model selector
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     await expect(modelSelector).toBeVisible();
     
     // Check default options are available
@@ -37,7 +37,7 @@ test.describe('Model Selection', () => {
   });
 
   test('changes model selection', async ({ page }) => {
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     
     // Check initial selection (should be first option)
     await expect(modelSelector).toHaveValue('grok-3-mini (proxy)');
@@ -52,7 +52,7 @@ test.describe('Model Selection', () => {
   });
 
   test('model selection persists during chat session', async ({ page }) => {
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     const input = page.getByPlaceholder('Ask anything…');
     
     // Change to local model
@@ -71,7 +71,7 @@ test.describe('Model Selection', () => {
   });
 
   test('model selector is accessible', async ({ page }) => {
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     
     // Should be focusable
     await modelSelector.focus();
@@ -122,7 +122,7 @@ test.describe('Model Selection', () => {
       });
     });
     
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     const input = page.getByPlaceholder('Ask anything…');
     
     // Test with default model
@@ -143,7 +143,7 @@ test.describe('Model Selection', () => {
   });
 
   test('model selector works in different themes', async ({ page }) => {
-    const modelSelector = page.getByLabelText(/Select AI model/i);
+    const modelSelector = page.locator('select').first();
     
     // Test in dark theme (default)
     await expect(page.locator('html')).toHaveClass(/dark/);

@@ -69,6 +69,22 @@ class RoutingPolicy:
 
 
 class ModelRouter:
+    """
+    Intelligent router for AI model providers.
+
+    Routes requests to the most appropriate provider based on cost, latency,
+    capabilities, and availability. Supports multiple routing strategies such
+    as cost-optimized, latency-optimized, capability-based, round-robin,
+    failover, and weighted load balancing. Implements basic rate limiting and
+    circuit breaker behavior per provider.
+
+    Responsibilities:
+    - Maintain a registry of provider configurations and runtime metrics
+    - Determine eligible providers for a given request and policy
+    - Select and invoke providers according to routing strategy
+    - Track request counts, latency history, and error counts
+    - Expose provider status snapshots for observability
+    """
     async def stream_request(
         self,
         messages: List[Message],
@@ -134,12 +150,6 @@ class ModelRouter:
             raise last_error
         else:
             raise ProviderError("All providers failed to stream", "router")
-    """
-    Intelligent router for AI model providers.
-
-    Routes requests to the most appropriate provider based on
-    cost, latency, capabilities, and availability.
-    """
 
     def __init__(self, default_policy: Optional[RoutingPolicy] = None):
         """
