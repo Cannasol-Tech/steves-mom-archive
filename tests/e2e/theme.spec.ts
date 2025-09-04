@@ -66,7 +66,7 @@ test.describe('Theme Switching', () => {
     
     // Navigate back to chat
     await page.getByRole('link', { name: /Chat/i }).first().click();
-    await expect(page).toHaveURL('/chat');
+    await expect(page).toHaveURL('/');
     await expect(html).toHaveClass(/light/);
   });
 

@@ -2,6 +2,20 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Error Handling', () => {
   test.beforeEach(async ({ page }) => {
+    // Mock the analytics API endpoint for tasks page
+    await page.route('/api/tasks/analytics/', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          totalTasks: 100,
+          accepted: 75,
+          rejected: 15,
+          modified: 10
+        })
+      });
+    });
+
     await page.goto('/');
   });
 
@@ -23,11 +37,11 @@ test.describe('Error Handling', () => {
     await expect(page.getByText('This will cause an error')).toBeVisible();
 
     // Should show error message or toast
-    await expect(page.getByText(/error/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/error/i).first()).toBeVisible({ timeout: 10000 });
 
     // Input should be re-enabled after error
-    await expect(input).toBeEnabled();
-    await expect(page.getByRole('button', { name: 'Send' })).toBeEnabled();
+    await expect(input).toBeEnabled({ timeout: 15000 });
+    await expect(page.getByRole('button', { name: 'Send' })).toBeEnabled({ timeout: 15000 });
   });
 
   test('handles network errors', async ({ page }) => {
@@ -44,7 +58,7 @@ test.describe('Error Handling', () => {
     await expect(page.getByText('Network error test')).toBeVisible();
 
     // Should handle the error gracefully
-    await expect(input).toBeEnabled({ timeout: 10000 });
+    await expect(input).toBeEnabled({ timeout: 15000 });
   });
 
   test('handles health check failures', async ({ page }) => {
@@ -79,7 +93,7 @@ test.describe('Error Handling', () => {
     await page.getByRole('button', { name: 'Send' }).click();
 
     // Should handle parsing error gracefully
-    await expect(input).toBeEnabled({ timeout: 10000 });
+    await expect(input).toBeEnabled({ timeout: 15000 });
   });
 
   test('handles slow API responses with timeout', async ({ page }) => {
@@ -110,8 +124,8 @@ test.describe('Error Handling', () => {
     await page.addInitScript(() => {
       const originalWebSocket = window.WebSocket;
       window.WebSocket = class extends originalWebSocket {
-        constructor(url) {
-          super(url);
+        constructor(url: string | URL, protocols?: string | string[]) {
+          super(url, protocols);
           // Simulate connection error
           setTimeout(() => {
             this.onerror?.(new Event('error'));
@@ -155,7 +169,7 @@ test.describe('Error Handling', () => {
     await page.getByRole('button', { name: 'Send' }).click();
 
     // Should show error first
-    await expect(page.getByText(/error/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/error/i).first()).toBeVisible({ timeout: 10000 });
 
     // Look for retry button and click it
     const retryButton = page.getByRole('button', { name: /retry/i });

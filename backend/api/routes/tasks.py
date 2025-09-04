@@ -133,3 +133,20 @@ async def reject_task(task_id: uuid.UUID, db: Session = Depends(get_db)):
     db.refresh(db_task)
     await manager.broadcast(task_models.Task.model_validate(db_task).model_dump_json())
     return db_task
+
+
+@router.get("/tasks/analytics")
+def get_task_analytics(db: Session = Depends(get_db)):
+    """Get task analytics including counts by status."""
+    # Count tasks by status
+    total_tasks = db.query(orm.task.Task).count()
+    accepted = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.APPROVED).count()
+    rejected = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.REJECTED).count()
+    modified = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.IN_PROGRESS).count()
+
+    return {
+        "totalTasks": total_tasks,
+        "accepted": accepted,
+        "rejected": rejected,
+        "modified": modified
+    }

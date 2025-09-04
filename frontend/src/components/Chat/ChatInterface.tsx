@@ -65,7 +65,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white drop-shadow-sm">Chat with Steve's Mom AI</h1>
-                <p className="text-white/80 text-sm font-medium">Your intelligent business assistant</p>
+                <p className="text-white/80 text-sm font-medium">Hello! I'm Steve's Mom AI assistant, here to help with your business needs</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -98,6 +98,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           {isLoading || streamingActive ? 'Assistant is generating a response' : 'Assistant is idle'}
         </p>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50/40 via-transparent to-transparent"></div>
+
+        {/* Steve's Mom Character Container - Future Implementation */}
+        <div className="absolute bottom-4 right-4 z-10" aria-hidden="true">
+          <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-white text-xs font-bold">SM</span>
+          </div>
+        </div>
+
         <div className="relative h-full">
                     <MessageList messages={messages} isTyping={false} isLoading={isLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
           {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
