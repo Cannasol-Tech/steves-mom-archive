@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from ...database import get_db
@@ -46,16 +45,17 @@ def read_tasks(
     if status:
         query = query.filter(orm.task.Task.status == status)
     if start_date:
-        query = query.filter(orm.task.Task.created_at >= start_date)
+        # Use SQLAlchemy-style op() to avoid direct Python comparisons that break with MagicMock in tests
+        created_at_col = getattr(orm.task.Task, "created_at")
+        query = query.filter(created_at_col.op(">=")(start_date))
     if end_date:
-        query = query.filter(orm.task.Task.created_at <= end_date)
+        created_at_col = getattr(orm.task.Task, "created_at")
+        query = query.filter(created_at_col.op("<=")(end_date))
     if search:
-        query = query.filter(
-            or_(
-                orm.task.Task.title.ilike(f"%{search}%"),
-                orm.task.Task.description.ilike(f"%{search}%"),
-            )
-        )
+        # Use bitwise OR to combine clauses; this plays nicely with SQLAlchemy and with MagicMocks in tests
+        title_match = getattr(orm.task.Task, "title").ilike(f"%{search}%")
+        desc_match = getattr(orm.task.Task, "description").ilike(f"%{search}%")
+        query = query.filter(title_match | desc_match)
     tasks = query.offset(skip).limit(limit).all()
     return tasks
 
