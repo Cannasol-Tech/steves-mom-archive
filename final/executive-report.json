@@ -3,14 +3,14 @@
   "owner": "Cannasol-Tech",
   "repo": "steves-mom-archive",
   "releaseTag": "local",
-  "commit": "f16bc69a",
-  "createdAt": "2025-09-04T20:14:45+00:00",
+  "commit": "6569ef71",
+  "createdAt": "2025-09-04T20:54:11+00:00",
   "summary": {
     "total": 30,
     "passed": 7,
     "failed": 0,
     "skipped": 23,
-    "durationMs": 24
+    "durationMs": 11
   },
   "scenarios": [
     {
@@ -295,7 +295,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Production system fails over to backup provider",
       "status": "passed",
-      "durationMs": 3,
+      "durationMs": 2,
       "steps": [
         {
           "keyword": "Given",
@@ -336,7 +336,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Complex queries are routed by AI capability",
       "status": "passed",
-      "durationMs": 5,
+      "durationMs": 4,
       "steps": [
         {
           "keyword": "Given",
@@ -413,7 +413,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "DevOps engineer configures router from environment variables",
       "status": "passed",
-      "durationMs": 2,
+      "durationMs": 1,
       "steps": [
         {
           "keyword": "Given",
@@ -444,7 +444,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Operations team monitors system health and performance",
       "status": "passed",
-      "durationMs": 4,
+      "durationMs": 1,
       "steps": [
         {
           "keyword": "Given",
@@ -750,7 +750,7 @@
       "feature": "Sample acceptance scaffold",
       "name": "Placeholder passes trivially",
       "status": "passed",
-      "durationMs": 7,
+      "durationMs": 0,
       "steps": [
         {
           "keyword": "Given",
