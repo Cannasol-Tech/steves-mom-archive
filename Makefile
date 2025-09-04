@@ -304,6 +304,8 @@ ci:
 	$(MAKE) lint
 	$(MAKE) test-unit
 	$(MAKE) test-integration
+	# Run acceptance to ensure final/executive-report.json is produced in CI
+	$(MAKE) test-acceptance
 	$(MAKE) test-frontend
 
 ci-fast:
