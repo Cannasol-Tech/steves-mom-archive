@@ -7,12 +7,14 @@ Covers:
 - Summarization trigger and metadata update
 - Session deletion and cleanup of expired sessions
 - Enforcing max sessions per user (oldest removal)
+- Session creation validation
 """
 
 import sys
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 import pytest
+from unittest.mock import patch
 
 # Ensure backend package is importable
 backend_path = Path(__file__).parent.parent.parent / "backend"
@@ -124,3 +126,56 @@ async def test_enforce_max_sessions_per_user_removes_oldest():
 
     # Also ensure sessions dict reflects removal
     assert s1 not in cm.sessions
+
+
+@pytest.fixture
+def context_manager(monkeypatch):
+    monkeypatch.setattr('backend.ai.context_manager.ContextManager._start_cleanup_task', lambda self: None)
+    return ContextManager()
+
+
+@pytest.mark.asyncio
+async def test_add_message_invalid_session(context_manager):
+    with pytest.raises(ValueError) as excinfo:
+        await context_manager.add_message("invalid_id", MessageRole.USER, "Test")
+    assert "Session invalid_id not found" in str(excinfo.value)
+
+@pytest.mark.asyncio
+async def test_session_creation_duplicate_id(context_manager):
+    session_id = await context_manager.create_session("user1", session_id="custom_id")
+    assert session_id == "custom_id"
+    
+    # Should reject duplicate session ID
+    with pytest.raises(ValueError) as excinfo:
+        await context_manager.create_session("user2", session_id="custom_id")
+    assert "already exists" in str(excinfo.value)
+
+@pytest.mark.asyncio
+async def test_session_metadata_persistence(context_manager):
+    metadata = {"project": "steves-mom", "version": 1}
+    session_id = await context_manager.create_session("user3", metadata=metadata)
+    
+    session_info = await context_manager.get_session_info(session_id)
+    assert session_info["metadata"] == metadata
+
+@pytest.mark.asyncio
+async def test_summarization_trigger(context_manager):
+    """Test summarization is triggered when token threshold is exceeded"""
+    session_id = await context_manager.create_session("user1")
+    
+    # Add 15 messages (more than 10)
+    for i in range(15):
+        await context_manager.add_message(session_id, MessageRole.USER, f"Message {i}")
+    
+    # Mock token estimation to return a value above the threshold (default 4096)
+    with patch.object(context_manager, '_estimate_tokens', return_value=5000):
+        # This should trigger summarization on the next add_message
+        await context_manager.add_message(session_id, MessageRole.USER, "Trigger")
+    
+    messages = await context_manager.get_session_messages(session_id)
+    assert len(messages) == 12
+    # The first message should be the summary (system role)
+    assert messages[0].role == MessageRole.SYSTEM
+    assert "Previous conversation summary" in messages[0].content
+    # The last message is the one we added after summarization
+    assert messages[-1].content == "Trigger"

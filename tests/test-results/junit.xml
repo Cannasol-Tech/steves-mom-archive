@@ -1,0 +1,1317 @@
+<testsuites id="" name="" tests="30" failures="15" skipped="0" errors="0" time="32.809737999999996">
+<testsuite name="admin.spec.ts" timestamp="2025-09-04T02:41:23.252Z" hostname="chromium" tests="6" failures="3" skipped="0" time="8.823" errors="0">
+<testcase name="Admin Page Functionality › renders admin page with all sections" classname="admin.spec.ts" time="1.897">
+<failure message="admin.spec.ts:8:7 renders admin page with all sections" type="FAILURE">
+<![CDATA[  [chromium] › admin.spec.ts:8:7 › Admin Page Functionality › renders admin page with all sections ─
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › feature toggles work correctly" classname="admin.spec.ts" time="1.932">
+<failure message="admin.spec.ts:37:7 feature toggles work correctly" type="FAILURE">
+<![CDATA[  [chromium] › admin.spec.ts:37:7 › Admin Page Functionality › feature toggles work correctly ──────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › system status indicators are visible" classname="admin.spec.ts" time="1.144">
+</testcase>
+<testcase name="Admin Page Functionality › quick action buttons are clickable" classname="admin.spec.ts" time="1.275">
+</testcase>
+<testcase name="Admin Page Functionality › performance metrics display placeholder values" classname="admin.spec.ts" time="1.165">
+</testcase>
+<testcase name="Admin Page Functionality › admin page is responsive" classname="admin.spec.ts" time="1.41">
+<failure message="admin.spec.ts:104:7 admin page is responsive" type="FAILURE">
+<![CDATA[  [chromium] › admin.spec.ts:104:7 › Admin Page Functionality › admin page is responsive ───────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.ts" timestamp="2025-09-04T02:41:23.252Z" hostname="firefox" tests="6" failures="3" skipped="0" time="26.919" errors="0">
+<testcase name="Admin Page Functionality › renders admin page with all sections" classname="admin.spec.ts" time="5.908">
+<failure message="admin.spec.ts:8:7 renders admin page with all sections" type="FAILURE">
+<![CDATA[  [firefox] › admin.spec.ts:8:7 › Admin Page Functionality › renders admin page with all sections ──
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-firefox-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › feature toggles work correctly" classname="admin.spec.ts" time="6.2">
+<failure message="admin.spec.ts:37:7 feature toggles work correctly" type="FAILURE">
+<![CDATA[  [firefox] › admin.spec.ts:37:7 › Admin Page Functionality › feature toggles work correctly ───────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-firefox-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › system status indicators are visible" classname="admin.spec.ts" time="3.227">
+</testcase>
+<testcase name="Admin Page Functionality › quick action buttons are clickable" classname="admin.spec.ts" time="3.513">
+</testcase>
+<testcase name="Admin Page Functionality › performance metrics display placeholder values" classname="admin.spec.ts" time="2.912">
+</testcase>
+<testcase name="Admin Page Functionality › admin page is responsive" classname="admin.spec.ts" time="5.159">
+<failure message="admin.spec.ts:104:7 admin page is responsive" type="FAILURE">
+<![CDATA[  [firefox] › admin.spec.ts:104:7 › Admin Page Functionality › admin page is responsive ────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-firefox-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.ts" timestamp="2025-09-04T02:41:23.252Z" hostname="webkit" tests="6" failures="3" skipped="0" time="15.538" errors="0">
+<testcase name="Admin Page Functionality › renders admin page with all sections" classname="admin.spec.ts" time="4.22">
+<failure message="admin.spec.ts:8:7 renders admin page with all sections" type="FAILURE">
+<![CDATA[  [webkit] › admin.spec.ts:8:7 › Admin Page Functionality › renders admin page with all sections ───
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-webkit-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › feature toggles work correctly" classname="admin.spec.ts" time="4.026">
+<failure message="admin.spec.ts:37:7 feature toggles work correctly" type="FAILURE">
+<![CDATA[  [webkit] › admin.spec.ts:37:7 › Admin Page Functionality › feature toggles work correctly ────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-webkit-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › system status indicators are visible" classname="admin.spec.ts" time="2.459">
+</testcase>
+<testcase name="Admin Page Functionality › quick action buttons are clickable" classname="admin.spec.ts" time="1.631">
+</testcase>
+<testcase name="Admin Page Functionality › performance metrics display placeholder values" classname="admin.spec.ts" time="1.395">
+</testcase>
+<testcase name="Admin Page Functionality › admin page is responsive" classname="admin.spec.ts" time="1.807">
+<failure message="admin.spec.ts:104:7 admin page is responsive" type="FAILURE">
+<![CDATA[  [webkit] › admin.spec.ts:104:7 › Admin Page Functionality › admin page is responsive ─────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-webkit-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.ts" timestamp="2025-09-04T02:41:23.252Z" hostname="mobile-chrome" tests="6" failures="3" skipped="0" time="8.609" errors="0">
+<testcase name="Admin Page Functionality › renders admin page with all sections" classname="admin.spec.ts" time="2.168">
+<failure message="admin.spec.ts:8:7 renders admin page with all sections" type="FAILURE">
+<![CDATA[  [mobile-chrome] › admin.spec.ts:8:7 › Admin Page Functionality › renders admin page with all sections 
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-chrome-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › feature toggles work correctly" classname="admin.spec.ts" time="1.886">
+<failure message="admin.spec.ts:37:7 feature toggles work correctly" type="FAILURE">
+<![CDATA[  [mobile-chrome] › admin.spec.ts:37:7 › Admin Page Functionality › feature toggles work correctly ─
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-chrome-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › system status indicators are visible" classname="admin.spec.ts" time="0.849">
+</testcase>
+<testcase name="Admin Page Functionality › quick action buttons are clickable" classname="admin.spec.ts" time="1.01">
+</testcase>
+<testcase name="Admin Page Functionality › performance metrics display placeholder values" classname="admin.spec.ts" time="0.779">
+</testcase>
+<testcase name="Admin Page Functionality › admin page is responsive" classname="admin.spec.ts" time="1.917">
+<failure message="admin.spec.ts:104:7 admin page is responsive" type="FAILURE">
+<![CDATA[  [mobile-chrome] › admin.spec.ts:104:7 › Admin Page Functionality › admin page is responsive ──────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-chrome-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="admin.spec.ts" timestamp="2025-09-04T02:41:23.252Z" hostname="mobile-safari" tests="6" failures="3" skipped="0" time="10.841" errors="0">
+<testcase name="Admin Page Functionality › renders admin page with all sections" classname="admin.spec.ts" time="2.352">
+<failure message="admin.spec.ts:8:7 renders admin page with all sections" type="FAILURE">
+<![CDATA[  [mobile-safari] › admin.spec.ts:8:7 › Admin Page Functionality › renders admin page with all sections 
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      12 |     // Check feature toggles section
+      13 |     await expect(page.getByText(/Feature Toggles/i)).toBeVisible();
+    > 14 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+         |                       ^
+      15 |     await expect(page.getByLabelText(/Email Integration/i)).toBeVisible();
+      16 |     await expect(page.getByLabelText(/Document Generation/i)).toBeVisible();
+      17 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:14:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-64731-dmin-page-with-all-sections-mobile-safari-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › feature toggles work correctly" classname="admin.spec.ts" time="2.313">
+<failure message="admin.spec.ts:37:7 feature toggles work correctly" type="FAILURE">
+<![CDATA[  [mobile-safari] › admin.spec.ts:37:7 › Admin Page Functionality › feature toggles work correctly ─
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      37 |   test('feature toggles work correctly', async ({ page }) => {
+      38 |     // All toggles should be enabled by default
+    > 39 |     const nlsqlToggle = page.getByLabelText(/NL→SQL Queries/i);
+         |                              ^
+      40 |     const emailToggle = page.getByLabelText(/Email Integration/i);
+      41 |     const documentsToggle = page.getByLabelText(/Document Generation/i);
+      42 |     
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:39:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functiona-2976b-ture-toggles-work-correctly-mobile-safari-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin Page Functionality › system status indicators are visible" classname="admin.spec.ts" time="1.144">
+</testcase>
+<testcase name="Admin Page Functionality › quick action buttons are clickable" classname="admin.spec.ts" time="1.611">
+</testcase>
+<testcase name="Admin Page Functionality › performance metrics display placeholder values" classname="admin.spec.ts" time="1.315">
+</testcase>
+<testcase name="Admin Page Functionality › admin page is responsive" classname="admin.spec.ts" time="2.106">
+<failure message="admin.spec.ts:104:7 admin page is responsive" type="FAILURE">
+<![CDATA[  [mobile-safari] › admin.spec.ts:104:7 › Admin Page Functionality › admin page is responsive ──────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TypeError: page.getByLabelText is not a function
+
+      116 |     
+      117 |     // Feature toggles should still be accessible on mobile
+    > 118 |     await expect(page.getByLabelText(/NL→SQL Queries/i)).toBeVisible();
+          |                       ^
+      119 |   });
+      120 | });
+      121 |
+        at /Users/stephenboyett/Desktop/Github/cannasol-technologies/steves-mom/tests/e2e/admin.spec.ts:118:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../test-results/admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari/trace.zip]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/video.webm]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/error-context.md]]
+
+[[ATTACHMENT|admin-Admin-Page-Functionality-admin-page-is-responsive-mobile-safari-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

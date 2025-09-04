@@ -1,0 +1,78 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Cannasol Technologies Steve's Mom" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Cannasol Technologies" [ref=e7] [cursor=pointer]
+        - generic [ref=e8] [cursor=pointer]: Steve's Mom
+      - generic [ref=e9]:
+        - button "Toggle theme" [ref=e10] [cursor=pointer]:
+          - img [ref=e11] [cursor=pointer]
+        - generic [ref=e13]: Signed in as
+  - generic [ref=e15]:
+    - complementary [ref=e16]:
+      - navigation [ref=e17]:
+        - link "Chat" [ref=e18] [cursor=pointer]:
+          - /url: /
+        - link "Tasks" [ref=e19] [cursor=pointer]:
+          - /url: /tasks
+        - link "Admin" [ref=e20] [cursor=pointer]:
+          - /url: /admin
+    - main [ref=e21]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "Admin Panel" [level=1] [ref=e25]
+          - paragraph [ref=e26]: Manage system settings, user permissions, and monitor application performance.
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - heading "Feature Toggles" [level=3] [ref=e29]
+            - generic [ref=e30]:
+              - generic [ref=e31]:
+                - generic [ref=e32]: NL→SQL Queries
+                - checkbox "NL→SQL Queries" [checked] [ref=e34] [cursor=pointer]
+              - generic [ref=e36]:
+                - generic [ref=e37]: Email Integration
+                - checkbox "Email Integration" [checked] [ref=e39] [cursor=pointer]
+              - generic [ref=e41]:
+                - generic [ref=e42]: Document Generation
+                - checkbox "Document Generation" [checked] [ref=e44] [cursor=pointer]
+          - generic [ref=e46]:
+            - heading "System Status" [level=3] [ref=e47]
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - generic [ref=e50]: API Status
+                - generic [ref=e51]: Online
+              - generic [ref=e52]:
+                - generic [ref=e53]: Database
+                - generic [ref=e54]: Connected
+              - generic [ref=e55]:
+                - generic [ref=e56]: AI Model
+                - generic [ref=e57]: Pending
+          - generic [ref=e58]:
+            - heading "Quick Actions" [level=3] [ref=e59]
+            - generic [ref=e60]:
+              - button "View System Logs" [ref=e61] [cursor=pointer]
+              - button "Export Analytics" [ref=e62] [cursor=pointer]
+              - button "Manage Users" [ref=e63] [cursor=pointer]
+          - generic [ref=e64]:
+            - heading "Performance Metrics" [level=3] [ref=e65]
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [ref=e68]: "--"
+                - generic [ref=e69]: Requests/Hour
+              - generic [ref=e70]:
+                - generic [ref=e71]: "--ms"
+                - generic [ref=e72]: Avg Response Time
+              - generic [ref=e73]:
+                - generic [ref=e74]: "--%"
+                - generic [ref=e75]: Uptime
+              - generic [ref=e76]:
+                - generic [ref=e77]: "--"
+                - generic [ref=e78]: Active Users
+            - generic [ref=e79]: "* Metrics will be populated when telemetry system is implemented (Phase 11)"
+  - contentinfo [ref=e80]:
+    - generic [ref=e81]: © 2025 Steve's Mom AI Chatbot. Built with ♥ for efficient business operations.
+```

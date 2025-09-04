@@ -1,0 +1,34 @@
+{
+  "name": "steves-mom-e2e-tests",
+  "version": "1.0.0",
+  "description": "End-to-end tests for Steve's Mom AI application",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:core": "./run-e2e.sh core",
+    "test:navigation": "./run-e2e.sh navigation",
+    "test:admin": "./run-e2e.sh admin",
+    "test:ui-features": "./run-e2e.sh ui",
+    "test:interactive": "./run-e2e.sh interactive",
+    "test:accessibility": "./run-e2e.sh accessibility",
+    "test:errors": "./run-e2e.sh errors",
+    "test:smoke": "./run-e2e.sh smoke",
+    "install-browsers": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "e2e",
+    "testing",
+    "playwright",
+    "automation"
+  ],
+  "author": "Cannasol Technologies",
+  "license": "MIT"
+}

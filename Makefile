@@ -45,7 +45,8 @@ help:
 	@echo "  fix-lint      - Auto-fix linting issues where possible"
 	@echo ""
 	@echo "Development:"
-	@echo "  preview       - Start local preview (FastAPI backend @9696 + Frontend @6969)"
+	@echo "  preview       - Start local preview (installs + servers)"
+	@echo "  preview-serve - Start servers only (FastAPI @9696 + Frontend @6969)"
 	@echo "  preview-smoke - Smoke test: check backend (9696), frontend (6969), and proxy"
 	@echo "  dev           - Start development environment with hot reload"
 	@echo "  clean         - Clean build artifacts and caches"
@@ -126,11 +127,11 @@ test: setup-backend-preview setup-dev test-unit test-integration test-acceptance
 
 test-unit: setup-backend setup-dev
 	@echo "Running unit tests..."
-	.venv/bin/pytest tests/unit/ -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/unit/ -v
 
 test-integration: setup-backend setup-dev
 	@echo "Running integration tests..."
-	.venv/bin/pytest tests/integration/ -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/integration/ -v
 
 test-acceptance: setup-backend setup-dev
 	@echo "Running acceptance tests..."
@@ -138,7 +139,7 @@ test-acceptance: setup-backend setup-dev
 
 test-acceptance-pytest: setup-backend setup-dev
 	@echo "Running acceptance tests (pytest)..."
-	.venv/bin/pytest tests/acceptance/*.py -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/acceptance/*.py -v
 
 test-frontend:
 	@echo "Running frontend tests..."
@@ -169,7 +170,7 @@ test-frontend-each:
 # Coverage targets
 test-backend-coverage: setup-backend setup-dev
 	@echo "Running backend tests with coverage..."
-	.venv/bin/pytest \
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_cov -p pytest_asyncio \
 	  tests/unit/ tests/integration/ -v \
 	  --cov=backend --cov=ai --cov=models \
 	  --cov-report=term-missing \
@@ -184,20 +185,20 @@ test-coverage: test-backend-coverage test-frontend-coverage
 
 test-infra: setup-dev
 	@echo "Running infrastructure tests..."
-	.venv/bin/pytest tests/infrastructure/ -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/infrastructure/ -v
 
 # Convenience backend test bundle
 test-backend: setup-backend setup-dev
 	@echo "Running backend tests (unit + integration)..."
-	.venv/bin/pytest tests/unit/ tests/integration/ -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/unit/ tests/integration/ -v
 
 test-router: setup-backend setup-dev
 	@echo "Running model router unit tests..."
-	.venv/bin/pytest tests/unit/test_model_router_* -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/unit/test_model_router_* -v
 
 test-router-acceptance: setup-backend setup-dev
 	@echo "Running model router acceptance tests (pytest)..."
-	.venv/bin/pytest tests/acceptance/test_model_router_acceptance.py -v
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/acceptance/test_model_router_acceptance.py -v
 
 # Linting targets
 lint: lint-py lint-js lint-md

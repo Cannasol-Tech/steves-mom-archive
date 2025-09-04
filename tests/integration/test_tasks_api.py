@@ -2,6 +2,7 @@ import pytest
 import uuid
 from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
+from types import SimpleNamespace
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
 
@@ -65,14 +66,26 @@ def test_read_tasks(client, session):
     data = response.json()
     assert len(data) >= 2
 
-def test_update_task(client, session):
+def test_update_task(client, session, monkeypatch):
     response = client.post("/api/tasks/", json={"title": "Test Task", "description": "Test Description"})
     task_id = response.json()["id"]
+
+    # Patch broadcast to capture calls
+    sent = []
+
+    class FakeManager:
+        async def broadcast(self, message: str):
+            sent.append(message)
+
+    import backend.api.routes.tasks as tasks_module
+    monkeypatch.setattr(tasks_module, "manager", FakeManager())
 
     response = client.put(f"/api/tasks/{task_id}", json={"title": "Updated Task"})
     assert response.status_code == 200
     data = response.json()
     assert data["title"] == "Updated Task"
+    # Ensure a broadcast occurred
+    assert len(sent) == 1
 
 def test_delete_task(client, session):
     response = client.post("/api/tasks/", json={"title": "Test Task", "description": "Test Description"})

@@ -53,22 +53,48 @@ def mock_task(session: Session):
     session.delete(db_task)
     session.commit()
 
-def test_approve_task_api(client, mock_task):
-    """Test approving a task via the API."""
+def test_approve_task_api(client, mock_task, monkeypatch):
+    """Test approving a task via the API and ensure a broadcast occurs."""
+    sent = []
+
+    class FakeManager:
+        async def broadcast(self, message: str):
+            sent.append(message)
+
+    import backend.api.routes.tasks as tasks_module
+    monkeypatch.setattr(tasks_module, "manager", FakeManager())
+
     response = client.post(f"/api/tasks/{mock_task.id}/approve")
     assert response.status_code == 200
     assert response.json()["status"] == "approved"
+    assert len(sent) == 1
 
-def test_reject_task_api(client, mock_task):
-    """Test rejecting a task via the API."""
+def test_reject_task_api(client, mock_task, monkeypatch):
+    """Test rejecting a task via the API and ensure a broadcast occurs."""
+    sent = []
+
+    class FakeManager:
+        async def broadcast(self, message: str):
+            sent.append(message)
+
+    import backend.api.routes.tasks as tasks_module
+    monkeypatch.setattr(tasks_module, "manager", FakeManager())
+
     response = client.post(f"/api/tasks/{mock_task.id}/reject")
     assert response.status_code == 200
     assert response.json()["status"] == "rejected"
+    assert len(sent) == 1
 
 def test_approve_nonexistent_task(client):
     """Test approving a task that does not exist."""
     non_existent_uuid = uuid.uuid4()
     response = client.post(f"/api/tasks/{non_existent_uuid}/approve")
+    assert response.status_code == 404
+
+def test_reject_nonexistent_task(client):
+    """Test rejecting a task that does not exist."""
+    non_existent_uuid = uuid.uuid4()
+    response = client.post(f"/api/tasks/{non_existent_uuid}/reject")
     assert response.status_code == 404
 
 def test_invalid_approval_transition_api(client, mock_task):
