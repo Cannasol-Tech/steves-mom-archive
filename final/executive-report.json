@@ -3,16 +3,248 @@
   "owner": "Cannasol-Tech",
   "repo": "steves-mom-archive",
   "releaseTag": "local",
-  "commit": "88b8d8b3",
-  "createdAt": "2025-09-04T20:04:06+00:00",
+  "commit": "f16bc69a",
+  "createdAt": "2025-09-04T20:14:45+00:00",
   "summary": {
-    "total": 7,
+    "total": 30,
     "passed": 7,
     "failed": 0,
-    "skipped": 0,
-    "durationMs": 13
+    "skipped": 23,
+    "durationMs": 24
   },
   "scenarios": [
+    {
+      "feature": "Analytics and Learning",
+      "name": "FR-5.1 Performance metrics collection",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "tasks and responses are processed",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "metrics are recorded",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "accuracy, response times, user satisfaction, and model comparisons are available",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-5.1",
+        "skip",
+        "analytics",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Analytics and Learning",
+      "name": "FR-5.2 Training data collection",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "user corrections and feedback occur",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "tasks are misidentified and corrected",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "training data is collected for future improvements",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-5.2",
+        "skip",
+        "analytics",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Core Chat Interface",
+      "name": "FR-1.1 AI Model Integration baseline routing",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the system is configured with GROK as default provider",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "I send a general knowledge prompt",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "the request is routed to GROK and a valid response is returned",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-1.1",
+        "skip",
+        "core",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Core Chat Interface",
+      "name": "FR-1.2 Conversation management basics",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "I have an active conversation",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "I send a follow-up message",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "the assistant maintains context across the turn",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-1.2",
+        "skip",
+        "core",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Core Chat Interface",
+      "name": "FR-1.3 NLP intent recognition for task generation",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a user message with an actionable request",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "the NLP layer processes the message",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "an intent and entities are extracted for downstream task generation",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-1.3",
+        "skip",
+        "core",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "System Integrations",
+      "name": "FR-3.1 Inventory database operations",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "I need to look up items and update quantities",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "I perform read and write operations",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "the inventory API reflects real-time changes with history",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-3.1",
+        "skip",
+        "integrations",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "System Integrations",
+      "name": "FR-3.2 Email integration for summarization and drafting",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "I have unread emails",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "the system processes my inbox",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "summaries and draft replies are produced, requiring approval before send",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-3.2",
+        "skip",
+        "integrations",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "System Integrations",
+      "name": "FR-3.3 Document generation from templates",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a standard template and fields",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "I request a document generation",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "a document is produced with validated fields and versioning",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-3.3",
+        "skip",
+        "integrations",
+        "acceptance"
+      ]
+    },
     {
       "feature": "Model Router End-to-End Scenarios",
       "name": "Cost-conscious business user gets cheapest responses",
@@ -104,7 +336,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Complex queries are routed by AI capability",
       "status": "passed",
-      "durationMs": 3,
+      "durationMs": 5,
       "steps": [
         {
           "keyword": "Given",
@@ -145,7 +377,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Administrator modifies routing policies at runtime",
       "status": "passed",
-      "durationMs": 2,
+      "durationMs": 1,
       "steps": [
         {
           "keyword": "Given",
@@ -181,7 +413,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "DevOps engineer configures router from environment variables",
       "status": "passed",
-      "durationMs": 1,
+      "durationMs": 2,
       "steps": [
         {
           "keyword": "Given",
@@ -212,7 +444,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Operations team monitors system health and performance",
       "status": "passed",
-      "durationMs": 2,
+      "durationMs": 4,
       "steps": [
         {
           "keyword": "Given",
@@ -245,10 +477,280 @@
       ]
     },
     {
+      "feature": "Non-Functional - Performance and Scalability",
+      "name": "NFR-1.1 Response time thresholds",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "representative workloads",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "requests are processed",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "simple queries complete < 2s, single-integration < 5s, multi-system < 10s",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-1.1",
+        "skip",
+        "nfr",
+        "performance",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Performance and Scalability",
+      "name": "NFR-1.2 Throughput and concurrency",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "20 concurrent users",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "the system processes 1000 requests/hour",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "it maintains service quality with queueing during peaks",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-1.2",
+        "skip",
+        "nfr",
+        "performance",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Performance and Scalability",
+      "name": "NFR-1.3 Scalability characteristics",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "increased load and data volumes",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "scaling operations are applied",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "the system scales horizontally/vertically and meets DB targets",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-1.3",
+        "skip",
+        "nfr",
+        "performance",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Reliability",
+      "name": "NFR-3.1 Availability targets",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "normal operations",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "monitoring the system during business hours",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "uptime meets 99.5% with redundancy and failover",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-3.1",
+        "skip",
+        "nfr",
+        "reliability",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Reliability",
+      "name": "NFR-3.2 Error handling and resilience",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "transient failures and faults",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "they occur",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "errors are handled gracefully with retries, logging, alerts, and user-friendly fallbacks",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-3.2",
+        "skip",
+        "nfr",
+        "reliability",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Security",
+      "name": "NFR-2.1 Data protection controls",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "data at rest and in transit",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "encryption standards are applied",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "AES-256 at rest and TLS 1.3 are enforced and keys managed via Key Vault",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-2.1",
+        "skip",
+        "nfr",
+        "security",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Security",
+      "name": "NFR-2.2 Access control protections",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "authentication attempts and access patterns",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "controls are evaluated",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "lockouts, IP whitelisting, VPN needs, and session termination are enforced",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-2.2",
+        "skip",
+        "nfr",
+        "security",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Usability and Documentation",
+      "name": "NFR-4.1 User experience",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the chat interface and UI components",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "used across devices and browsers",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "it is intuitive, responsive, and meets WCAG 2.1 AA",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-4.1",
+        "skip",
+        "nfr",
+        "usability",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Non-Functional - Usability and Documentation",
+      "name": "NFR-4.2 Documentation coverage",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "in-app help and guides",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "users and admins need assistance",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "help, tutorials, admin guides, and API docs are available",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "NFR-4.2",
+        "skip",
+        "nfr",
+        "usability",
+        "acceptance"
+      ]
+    },
+    {
       "feature": "Sample acceptance scaffold",
       "name": "Placeholder passes trivially",
       "status": "passed",
-      "durationMs": 0,
+      "durationMs": 7,
       "steps": [
         {
           "keyword": "Given",
@@ -270,9 +772,344 @@
         "PRD-001",
         "smoke"
       ]
+    },
+    {
+      "feature": "Security and Access Control",
+      "name": "FR-4.1 Azure AD Authentication",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the user signs in with @cannasolusa.com",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "authentication completes",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "a valid session is established with SSO and timeout policies",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-4.1",
+        "skip",
+        "security",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Security and Access Control",
+      "name": "FR-4.2 Role-based authorization",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "users have assigned roles and permissions",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "accessing protected resources",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "access is granted/denied according to RBAC and classification",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-4.2",
+        "skip",
+        "security",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Security and Access Control",
+      "name": "FR-4.3 Audit and compliance logging",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "system events occur",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "actions are performed on sensitive resources",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "audit logs capture activity and provide export capabilities",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-4.3",
+        "skip",
+        "security",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Task Generation and Workflow",
+      "name": "FR-2.1 Intelligent Task Generation",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a complex user request requiring multiple actions",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "the system analyzes the request",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "tasks are generated with types, metadata, and confidence scores",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-2.1",
+        "skip",
+        "tasks",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Task Generation and Workflow",
+      "name": "FR-2.2 Approval Workflow",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "tasks are generated for a request",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "the user reviews the tasks",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "they can approve, reject, or modify them with history captured",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-2.2",
+        "skip",
+        "tasks",
+        "acceptance"
+      ]
+    },
+    {
+      "feature": "Task Generation and Workflow",
+      "name": "FR-2.3 Task Execution and Progress",
+      "status": "skipped",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "an approved task with an available agent",
+          "status": "unknown"
+        },
+        {
+          "keyword": "When",
+          "text": "execution starts",
+          "status": "unknown"
+        },
+        {
+          "keyword": "Then",
+          "text": "progress is tracked and status updates are emitted",
+          "status": "unknown"
+        }
+      ],
+      "tags": [
+        "FR-2.3",
+        "skip",
+        "tasks",
+        "acceptance"
+      ]
     }
   ],
   "requirements": [
+    {
+      "id": "FR-1.1",
+      "status": "covered",
+      "scenarios": [
+        "FR-1.1 AI Model Integration baseline routing"
+      ]
+    },
+    {
+      "id": "FR-1.2",
+      "status": "covered",
+      "scenarios": [
+        "FR-1.2 Conversation management basics"
+      ]
+    },
+    {
+      "id": "FR-1.3",
+      "status": "covered",
+      "scenarios": [
+        "FR-1.3 NLP intent recognition for task generation"
+      ]
+    },
+    {
+      "id": "FR-2.1",
+      "status": "covered",
+      "scenarios": [
+        "FR-2.1 Intelligent Task Generation"
+      ]
+    },
+    {
+      "id": "FR-2.2",
+      "status": "covered",
+      "scenarios": [
+        "FR-2.2 Approval Workflow"
+      ]
+    },
+    {
+      "id": "FR-2.3",
+      "status": "covered",
+      "scenarios": [
+        "FR-2.3 Task Execution and Progress"
+      ]
+    },
+    {
+      "id": "FR-3.1",
+      "status": "covered",
+      "scenarios": [
+        "FR-3.1 Inventory database operations"
+      ]
+    },
+    {
+      "id": "FR-3.2",
+      "status": "covered",
+      "scenarios": [
+        "FR-3.2 Email integration for summarization and drafting"
+      ]
+    },
+    {
+      "id": "FR-3.3",
+      "status": "covered",
+      "scenarios": [
+        "FR-3.3 Document generation from templates"
+      ]
+    },
+    {
+      "id": "FR-4.1",
+      "status": "covered",
+      "scenarios": [
+        "FR-4.1 Azure AD Authentication"
+      ]
+    },
+    {
+      "id": "FR-4.2",
+      "status": "covered",
+      "scenarios": [
+        "FR-4.2 Role-based authorization"
+      ]
+    },
+    {
+      "id": "FR-4.3",
+      "status": "covered",
+      "scenarios": [
+        "FR-4.3 Audit and compliance logging"
+      ]
+    },
+    {
+      "id": "FR-5.1",
+      "status": "covered",
+      "scenarios": [
+        "FR-5.1 Performance metrics collection"
+      ]
+    },
+    {
+      "id": "FR-5.2",
+      "status": "covered",
+      "scenarios": [
+        "FR-5.2 Training data collection"
+      ]
+    },
+    {
+      "id": "NFR-1.1",
+      "status": "covered",
+      "scenarios": [
+        "NFR-1.1 Response time thresholds"
+      ]
+    },
+    {
+      "id": "NFR-1.2",
+      "status": "covered",
+      "scenarios": [
+        "NFR-1.2 Throughput and concurrency"
+      ]
+    },
+    {
+      "id": "NFR-1.3",
+      "status": "covered",
+      "scenarios": [
+        "NFR-1.3 Scalability characteristics"
+      ]
+    },
+    {
+      "id": "NFR-2.1",
+      "status": "covered",
+      "scenarios": [
+        "NFR-2.1 Data protection controls"
+      ]
+    },
+    {
+      "id": "NFR-2.2",
+      "status": "covered",
+      "scenarios": [
+        "NFR-2.2 Access control protections"
+      ]
+    },
+    {
+      "id": "NFR-3.1",
+      "status": "covered",
+      "scenarios": [
+        "NFR-3.1 Availability targets"
+      ]
+    },
+    {
+      "id": "NFR-3.2",
+      "status": "covered",
+      "scenarios": [
+        "NFR-3.2 Error handling and resilience"
+      ]
+    },
+    {
+      "id": "NFR-4.1",
+      "status": "covered",
+      "scenarios": [
+        "NFR-4.1 User experience"
+      ]
+    },
+    {
+      "id": "NFR-4.2",
+      "status": "covered",
+      "scenarios": [
+        "NFR-4.2 Documentation coverage"
+      ]
+    },
     {
       "id": "PRD-001",
       "status": "covered",

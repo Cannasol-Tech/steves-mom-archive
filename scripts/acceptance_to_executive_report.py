@@ -89,7 +89,8 @@ def summarize_behave(behave_data: Any) -> Dict[str, Any]:
 
             # Steps
             steps_out: List[Dict[str, Any]] = []
-            scen_status = "unknown"
+            # Default status; if tagged with 'skip', mark as skipped regardless of step results
+            scen_status = "skipped" if "skip" in [t.lower() for t in scen_tags] else "unknown"
             scen_duration_ms = 0
             for st in el.get("steps", []) or []:
                 res = st.get("result", {}) or {}
@@ -107,12 +108,12 @@ def summarize_behave(behave_data: Any) -> Dict[str, Any]:
                 })
                 if status in ("failed", "undefined"):
                     scen_status = "failed"
-            if scen_status != "failed":
-                # If any pending/undefined we marked failed already; else passed if all passed, else unknown
-                if all(s.get("status") == "passed" for s in steps_out if s.get("status")):
-                    scen_status = "passed"
-                elif any(s.get("status") == "skipped" for s in steps_out):
+            if scen_status not in ("failed", "skipped"):
+                # If any pending/undefined we marked failed already; if any skipped in steps, mark skipped; else passed if all passed, else unknown
+                if any(s.get("status") == "skipped" for s in steps_out):
                     scen_status = "skipped"
+                elif all(s.get("status") == "passed" for s in steps_out if s.get("status")) and steps_out:
+                    scen_status = "passed"
                 else:
                     scen_status = "unknown"
 
@@ -126,10 +127,11 @@ def summarize_behave(behave_data: Any) -> Dict[str, Any]:
                 skipped += 1
             duration_ms += scen_duration_ms
 
-            # Requirements mapping from tags like PRD-123
-            prd_tags = [t for t in scen_tags if t.upper().startswith("PRD-")]
-            for prd in prd_tags:
-                requirements_map.setdefault(prd.upper(), []).append(scen_name)
+            # Requirements mapping from tags like PRD-*, FR-*, NFR-*
+            req_tags = [t for t in scen_tags if t.upper().startswith(("PRD-", "FR-", "NFR-"))]
+            for req in req_tags:
+                # Use uppercase key for grouping, but retain original tag text in scenario tags above
+                requirements_map.setdefault(req.upper(), []).append(scen_name)
 
             scenarios.append({
                 "feature": feature_name,
