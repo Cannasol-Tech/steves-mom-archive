@@ -134,8 +134,19 @@ test-integration: setup-backend setup-dev
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/integration/ -v
 
 test-acceptance: setup-backend setup-dev
-	@echo "Running acceptance tests..."
-	.venv/bin/behave tests/acceptance/features
+	@echo "Running acceptance tests (Behave) and generating executive report..."
+	@BEHAVE_JSON=tests/acceptance/.behave-report.json; \
+	mkdir -p tests/acceptance || true; \
+	mkdir -p final || true; \
+	EXIT_CODE=0; \
+	# Run Behave with JSON output captured; preserve exit code
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/behave -f json -o $$BEHAVE_JSON tests/acceptance/features || EXIT_CODE=$$?; \
+	# Transform to executive-report.json (set owner/repo; script will set releaseTag=local for non-CI runs)
+	REPORT_OWNER=Cannasol-Tech REPORT_REPO=steves-mom-archive .venv/bin/python scripts/acceptance_to_executive_report.py --behave-json $$BEHAVE_JSON --out final/executive-report.json || true; \
+	# Ensure artifact exists even on catastrophic failure
+	[ -f final/executive-report.json ] || echo '{"version":"1.0.0","owner":"Cannasol-Tech","repo":"steves-mom-archive","releaseTag":"local","commit":"unknown","createdAt":"" ,"summary":{"total":0,"passed":0,"failed":0,"skipped":0,"durationMs":0},"scenarios":[],"requirements":[]}' > final/executive-report.json; \
+	# Return original Behave exit code
+	exit $$EXIT_CODE
 
 test-acceptance-pytest: setup-backend setup-dev
 	@echo "Running acceptance tests (pytest)..."
