@@ -1,0 +1,326 @@
+{
+  "version": "1.0.0",
+  "owner": "Cannasol-Tech",
+  "repo": "steves-mom-archive",
+  "releaseTag": "local",
+  "commit": "88b8d8b3",
+  "createdAt": "2025-09-04T20:04:06+00:00",
+  "summary": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 13
+  },
+  "scenarios": [
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "Cost-conscious business user gets cheapest responses",
+      "status": "passed",
+      "durationMs": 2,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "a \"cost_optimized\" routing policy with a max cost of $0.05",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a \"local\" provider is configured with a cost of $0.01 and priority 5",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a \"grok\" provider is configured with a cost of $0.08 and priority 10",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "a business user sends a query",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the router should select the \"local\" provider",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "the \"grok\" provider should not be called",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-101"
+      ]
+    },
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "Production system fails over to backup provider",
+      "status": "passed",
+      "durationMs": 3,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "a \"failover\" routing policy with fallback enabled",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a primary \"grok\" provider is configured to fail",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a backup \"local\" provider is configured to succeed",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "a user sends a technical query",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the router should select the \"local\" provider after the primary fails",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-102"
+      ]
+    },
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "Complex queries are routed by AI capability",
+      "status": "passed",
+      "durationMs": 3,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "a \"capability_based\" routing policy requiring \"REASONING\" and \"CODE_GENERATION\"",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a \"local\" provider is configured with \"TEXT_GENERATION\" capability and priority 10",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "a \"grok\" provider is configured with \"REASONING\" and \"CODE_GENERATION\" capabilities and priority 5",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "a user sends a query requiring code generation",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the router should select the \"grok\" provider",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-103"
+      ]
+    },
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "Administrator modifies routing policies at runtime",
+      "status": "passed",
+      "durationMs": 2,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "a \"local\" provider is configured with priority 5 and 60 max requests per minute",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "the administrator loads a new configuration with priority 10 and 120 max requests per minute",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the router's configuration should be updated successfully",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "the system should continue to operate correctly",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-104"
+      ]
+    },
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "DevOps engineer configures router from environment variables",
+      "status": "passed",
+      "durationMs": 1,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "the environment is configured for \"failover\" routing with a \"local\" provider",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "the router is created from the environment",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "its configuration should match the environment variables",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-105"
+      ]
+    },
+    {
+      "feature": "Model Router End-to-End Scenarios",
+      "name": "Operations team monitors system health and performance",
+      "status": "passed",
+      "durationMs": 2,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a ModelRouter instance",
+          "status": "passed"
+        },
+        {
+          "keyword": "Given",
+          "text": "a \"local\" provider is configured for health checks",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "3 requests are sent to the router",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider status should report as \"healthy\"",
+          "status": "passed"
+        },
+        {
+          "keyword": "And",
+          "text": "show 3 recent requests",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-106"
+      ]
+    },
+    {
+      "feature": "Sample acceptance scaffold",
+      "name": "Placeholder passes trivially",
+      "status": "passed",
+      "durationMs": 0,
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a working repository",
+          "status": "passed"
+        },
+        {
+          "keyword": "When",
+          "text": "I run a no-op acceptance step",
+          "status": "passed"
+        },
+        {
+          "keyword": "Then",
+          "text": "the placeholder should pass",
+          "status": "passed"
+        }
+      ],
+      "tags": [
+        "PRD-001",
+        "smoke"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "PRD-001",
+      "status": "covered",
+      "scenarios": [
+        "Placeholder passes trivially"
+      ]
+    },
+    {
+      "id": "PRD-101",
+      "status": "covered",
+      "scenarios": [
+        "Cost-conscious business user gets cheapest responses"
+      ]
+    },
+    {
+      "id": "PRD-102",
+      "status": "covered",
+      "scenarios": [
+        "Production system fails over to backup provider"
+      ]
+    },
+    {
+      "id": "PRD-103",
+      "status": "covered",
+      "scenarios": [
+        "Complex queries are routed by AI capability"
+      ]
+    },
+    {
+      "id": "PRD-104",
+      "status": "covered",
+      "scenarios": [
+        "Administrator modifies routing policies at runtime"
+      ]
+    },
+    {
+      "id": "PRD-105",
+      "status": "covered",
+      "scenarios": [
+        "DevOps engineer configures router from environment variables"
+      ]
+    },
+    {
+      "id": "PRD-106",
+      "status": "covered",
+      "scenarios": [
+        "Operations team monitors system health and performance"
+      ]
+    }
+  ]
+}

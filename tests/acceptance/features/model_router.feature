@@ -6,6 +6,7 @@ Feature: Model Router End-to-End Scenarios
   Background:
     Given a ModelRouter instance
 
+  @PRD-101
   Scenario: Cost-conscious business user gets cheapest responses
     Given a "cost_optimized" routing policy with a max cost of $0.05
     And a "local" provider is configured with a cost of $0.01 and priority 5
@@ -14,6 +15,7 @@ Feature: Model Router End-to-End Scenarios
     Then the router should select the "local" provider
     And the "grok" provider should not be called
 
+  @PRD-102
   Scenario: Production system fails over to backup provider
     Given a "failover" routing policy with fallback enabled
     And a primary "grok" provider is configured to fail
@@ -21,6 +23,7 @@ Feature: Model Router End-to-End Scenarios
     When a user sends a technical query
     Then the router should select the "local" provider after the primary fails
 
+  @PRD-103
   Scenario: Complex queries are routed by AI capability
     Given a "capability_based" routing policy requiring "REASONING" and "CODE_GENERATION"
     And a "local" provider is configured with "TEXT_GENERATION" capability and priority 10
@@ -28,17 +31,20 @@ Feature: Model Router End-to-End Scenarios
     When a user sends a query requiring code generation
     Then the router should select the "grok" provider
 
+  @PRD-104
   Scenario: Administrator modifies routing policies at runtime
     Given a "local" provider is configured with priority 5 and 60 max requests per minute
     When the administrator loads a new configuration with priority 10 and 120 max requests per minute
     Then the router's configuration should be updated successfully
     And the system should continue to operate correctly
 
+  @PRD-105
   Scenario: DevOps engineer configures router from environment variables
     Given the environment is configured for "failover" routing with a "local" provider
     When the router is created from the environment
     Then its configuration should match the environment variables
 
+  @PRD-106
   Scenario: Operations team monitors system health and performance
     Given a "local" provider is configured for health checks
     When 3 requests are sent to the router

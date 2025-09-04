@@ -1,5 +1,6 @@
 .PHONY: help setup setup-backend setup-frontend setup-dev
 .PHONY: test test-unit test-integration test-acceptance test-acceptance-pytest test-frontend test-infra test-router test-router-acceptance
+.PHONY: validate-executive-report
 .PHONY: test-coverage test-backend-coverage test-frontend-coverage test-frontend-verbose test-frontend-inband test-frontend-bail test-frontend-each
 .PHONY: lint lint-py lint-js lint-md fix-lint
 .PHONY: preview dev clean
@@ -25,6 +26,7 @@ help:
 	@echo "  test-backend  - Run backend tests (unit + integration)"
 	@echo "  test-backend-coverage - Run backend tests with coverage (backend/ ai/ models/)"
 	@echo "  test-acceptance - Run acceptance tests (behave)"
+	@echo "  validate-executive-report - Validate final/executive-report.json format"
 	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
 	@echo "  test-frontend-verbose - Run frontend tests with --verbose for detailed suite/test reporting"
@@ -133,16 +135,18 @@ test-integration: setup-backend setup-dev
 	@echo "Running integration tests..."
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/integration/ -v
 
+BEHAVE_JSON := tests/acceptance/.behave-report.json
+FEATURES_DIR := tests/acceptance/features
+
 test-acceptance: setup-backend setup-dev
 	@echo "Running acceptance tests (Behave) and generating executive report..."
-	@BEHAVE_JSON=tests/acceptance/.behave-report.json; \
-	mkdir -p tests/acceptance || true; \
+	@mkdir -p $(FEATURES_DIR) || true; \
 	mkdir -p final || true; \
 	EXIT_CODE=0; \
 	# Run Behave with JSON output captured; preserve exit code
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/behave -f json -o $$BEHAVE_JSON tests/acceptance/features || EXIT_CODE=$$?; \
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/behave -f json -o $(BEHAVE_JSON) $(FEATURES_DIR) || EXIT_CODE=$$?; \
 	# Transform to executive-report.json (set owner/repo; script will set releaseTag=local for non-CI runs)
-	REPORT_OWNER=Cannasol-Tech REPORT_REPO=steves-mom-archive .venv/bin/python scripts/acceptance_to_executive_report.py --behave-json $$BEHAVE_JSON --out final/executive-report.json || true; \
+	REPORT_OWNER=Cannasol-Tech REPORT_REPO=steves-mom-archive .venv/bin/python scripts/acceptance_to_executive_report.py --behave-json $(BEHAVE_JSON) --out final/executive-report.json || true; \
 	# Ensure artifact exists even on catastrophic failure
 	[ -f final/executive-report.json ] || echo '{"version":"1.0.0","owner":"Cannasol-Tech","repo":"steves-mom-archive","releaseTag":"local","commit":"unknown","createdAt":"" ,"summary":{"total":0,"passed":0,"failed":0,"skipped":0,"durationMs":0},"scenarios":[],"requirements":[]}' > final/executive-report.json; \
 	# Return original Behave exit code
@@ -151,6 +155,10 @@ test-acceptance: setup-backend setup-dev
 test-acceptance-pytest: setup-backend setup-dev
 	@echo "Running acceptance tests (pytest)..."
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/acceptance/*.py -v
+
+validate-executive-report: setup-dev
+	@echo "Validating executive report (final/executive-report.json)..."
+	.venv/bin/python scripts/validate_executive_report.py
 
 test-frontend:
 	@echo "Running frontend tests..."
@@ -306,6 +314,8 @@ ci:
 	$(MAKE) test-integration
 	# Run acceptance to ensure final/executive-report.json is produced in CI
 	$(MAKE) test-acceptance
+	# Validate the executive report schema/structure before publishing
+	$(MAKE) validate-executive-report
 	$(MAKE) test-frontend
 
 ci-fast:

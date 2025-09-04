@@ -1,0 +1,67 @@
+Feature: Model Router End-to-End Scenarios # tests/acceptance/features/model_router.feature:1
+  As a user of the AI system
+  I want the model router to behave correctly under various conditions
+  So that the system is reliable, cost-effective, and performant.
+  Background:   # tests/acceptance/features/model_router.feature:6
+
+  @PRD-101
+  Scenario: Cost-conscious business user gets cheapest responses             # tests/acceptance/features/model_router.feature:10
+    Given a ModelRouter instance                                             # tests/acceptance/features/steps/model_router_steps.py:51
+    Given a "cost_optimized" routing policy with a max cost of $0.05         # tests/acceptance/features/steps/model_router_steps.py:56
+    And a "local" provider is configured with a cost of $0.01 and priority 5 # tests/acceptance/features/steps/model_router_steps.py:64
+    And a "grok" provider is configured with a cost of $0.08 and priority 10 # tests/acceptance/features/steps/model_router_steps.py:64
+    When a business user sends a query                                       # tests/acceptance/features/steps/model_router_steps.py:74
+    Then the router should select the "local" provider                       # tests/acceptance/features/steps/model_router_steps.py:80
+    And the "grok" provider should not be called                             # tests/acceptance/features/steps/model_router_steps.py:84
+
+  @PRD-102
+  Scenario: Production system fails over to backup provider                    # tests/acceptance/features/model_router.feature:19
+    Given a ModelRouter instance                                               # tests/acceptance/features/steps/model_router_steps.py:51
+    Given a "failover" routing policy with fallback enabled                    # tests/acceptance/features/steps/model_router_steps.py:88
+    And a primary "grok" provider is configured to fail                        # tests/acceptance/features/steps/model_router_steps.py:93
+    And a backup "local" provider is configured to succeed                     # tests/acceptance/features/steps/model_router_steps.py:99
+    When a user sends a technical query                                        # tests/acceptance/features/steps/model_router_steps.py:105
+    Then the router should select the "local" provider after the primary fails # tests/acceptance/features/steps/model_router_steps.py:113
+
+  @PRD-103
+  Scenario: Complex queries are routed by AI capability                                                    # tests/acceptance/features/model_router.feature:27
+    Given a ModelRouter instance                                                                           # tests/acceptance/features/steps/model_router_steps.py:51
+    Given a "capability_based" routing policy requiring "REASONING" and "CODE_GENERATION"                  # tests/acceptance/features/steps/model_router_steps.py:119
+    And a "local" provider is configured with "TEXT_GENERATION" capability and priority 10                 # tests/acceptance/features/steps/model_router_steps.py:126
+    And a "grok" provider is configured with "REASONING" and "CODE_GENERATION" capabilities and priority 5 # tests/acceptance/features/steps/model_router_steps.py:132
+    When a user sends a query requiring code generation                                                    # tests/acceptance/features/steps/model_router_steps.py:139
+    Then the router should select the "grok" provider                                                      # tests/acceptance/features/steps/model_router_steps.py:80
+
+  @PRD-104
+  Scenario: Administrator modifies routing policies at runtime                                        # tests/acceptance/features/model_router.feature:35
+    Given a ModelRouter instance                                                                      # tests/acceptance/features/steps/model_router_steps.py:51
+    Given a "local" provider is configured with priority 5 and 60 max requests per minute             # tests/acceptance/features/steps/model_router_steps.py:145
+    When the administrator loads a new configuration with priority 10 and 120 max requests per minute # tests/acceptance/features/steps/model_router_steps.py:151
+    Then the router's configuration should be updated successfully                                    # tests/acceptance/features/steps/model_router_steps.py:160
+    And the system should continue to operate correctly                                               # tests/acceptance/features/steps/model_router_steps.py:166
+
+  @PRD-105
+  Scenario: DevOps engineer configures router from environment variables               # tests/acceptance/features/model_router.feature:42
+    Given a ModelRouter instance                                                       # tests/acceptance/features/steps/model_router_steps.py:51
+    Given the environment is configured for "failover" routing with a "local" provider # tests/acceptance/features/steps/model_router_steps.py:173
+    When the router is created from the environment                                    # tests/acceptance/features/steps/model_router_steps.py:181
+    Then its configuration should match the environment variables                      # tests/acceptance/features/steps/model_router_steps.py:196
+
+  @PRD-106
+  Scenario: Operations team monitors system health and performance  # tests/acceptance/features/model_router.feature:48
+    Given a ModelRouter instance                                    # tests/acceptance/features/steps/model_router_steps.py:51
+    Given a "local" provider is configured for health checks        # tests/acceptance/features/steps/model_router_steps.py:201
+    When 3 requests are sent to the router                          # tests/acceptance/features/steps/model_router_steps.py:207
+    Then the provider status should report as "healthy"             # tests/acceptance/features/steps/model_router_steps.py:214
+    And show 3 recent requests                                      # tests/acceptance/features/steps/model_router_steps.py:219
+
+@PRD-001 @smoke
+Feature: Sample acceptance scaffold # tests/acceptance/features/sample_acceptance.feature:2
+  As a team
+  I want a minimal acceptance test scaffold
+  So that the Make target can demonstrate report generation
+  Scenario: Placeholder passes trivially  # tests/acceptance/features/sample_acceptance.feature:7
+    Given a working repository            # tests/acceptance/features/steps/sample_steps.py:4
+    When I run a no-op acceptance step    # tests/acceptance/features/steps/sample_steps.py:10
+    Then the placeholder should pass      # tests/acceptance/features/steps/sample_steps.py:16
+

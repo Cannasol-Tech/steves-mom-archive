@@ -59,14 +59,33 @@ def summarize_behave(behave_data: Any) -> Dict[str, Any]:
     scenarios: List[Dict[str, Any]] = []
     requirements_map: Dict[str, List[str]] = {}
 
+    def _normalize_tags(raw_tags: Any) -> List[str]:
+        tags: List[str] = []
+        if not raw_tags:
+            return tags
+        for t in raw_tags:
+            if isinstance(t, dict):
+                name = str(t.get("name", ""))
+            else:
+                name = str(t)
+            name = name.lstrip("@").strip()
+            if name:
+                tags.append(name)
+        # de-duplicate, preserve order
+        return list(dict.fromkeys(tags))
+
     for feat in features:
         feature_name = feat.get("name", "")
+        feature_tags = _normalize_tags(feat.get("tags", []) or [])
         elements = feat.get("elements", []) or []
         for el in elements:
             if el.get("type") not in ("scenario", "scenario_outline"):
                 continue
             scen_name = el.get("name", "")
-            scen_tags = [t.get("name", "").lstrip("@") for t in (el.get("tags", []) or [])]
+            # Combine scenario-level and feature-level tags for traceability
+            scen_tags = _normalize_tags(el.get("tags", []) or [])
+            if feature_tags:
+                scen_tags = list(dict.fromkeys(scen_tags + feature_tags))  # de-duplicate, preserve order
 
             # Steps
             steps_out: List[Dict[str, Any]] = []
