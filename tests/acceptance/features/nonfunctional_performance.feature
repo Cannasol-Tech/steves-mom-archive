@@ -1,4 +1,4 @@
-@skip @nfr @performance @acceptance
+@nfr @performance @acceptance
 Feature: Non-Functional - Performance and Scalability
   Validate performance targets and scalability characteristics
 

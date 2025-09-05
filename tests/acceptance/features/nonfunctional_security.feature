@@ -1,4 +1,4 @@
-@skip @nfr @security @acceptance
+@nfr @security @acceptance
 Feature: Non-Functional - Security
   Ensure data protection and access control requirements are met
 

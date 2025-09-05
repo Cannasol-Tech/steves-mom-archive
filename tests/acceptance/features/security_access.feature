@@ -1,4 +1,4 @@
-@skip @security @acceptance
+@security @acceptance
 Feature: Security and Access Control
   Ensure authenticated and authorized access with auditing
 

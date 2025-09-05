@@ -1,4 +1,4 @@
-@skip @analytics @acceptance
+@analytics @acceptance
 Feature: Analytics and Learning
   Track performance and collect training data
 

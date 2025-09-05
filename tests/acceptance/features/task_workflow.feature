@@ -1,4 +1,4 @@
-@skip @tasks @acceptance
+@tasks @acceptance
 Feature: Task Generation and Workflow
   In order to automate work
   As a user

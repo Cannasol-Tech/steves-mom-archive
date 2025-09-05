@@ -5,11 +5,11 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from ...database import get_db
-from ...functions.approval.approval_handler import ApprovalHandler
-from ...models import orm, task_models
-from ...models.orm.approval_history import ApprovalHistory
-from ..connection_manager import manager
+from backend.database import get_db
+from backend.functions.approval.approval_handler import ApprovalHandler
+from backend.models import orm, task_models
+from backend.models.orm.approval_history import ApprovalHistory
+from backend.api.connection_manager import manager
 
 router = APIRouter()
 
@@ -45,14 +45,16 @@ def read_tasks(
     if status:
         query = query.filter(orm.task.Task.status == status)
     if start_date:
-        # Use SQLAlchemy-style op() to avoid direct Python comparisons that break with MagicMock in tests
+        # Use SQLAlchemy-style op() to avoid direct Python comparisons that
+        # break with MagicMock in tests
         created_at_col = getattr(orm.task.Task, "created_at")
         query = query.filter(created_at_col.op(">=")(start_date))
     if end_date:
         created_at_col = getattr(orm.task.Task, "created_at")
         query = query.filter(created_at_col.op("<=")(end_date))
     if search:
-        # Use bitwise OR to combine clauses; this plays nicely with SQLAlchemy and with MagicMocks in tests
+        # Use bitwise OR to combine clauses; this plays nicely with SQLAlchemy
+        # and with MagicMocks in tests
         title_match = getattr(orm.task.Task, "title").ilike(f"%{search}%")
         desc_match = getattr(orm.task.Task, "description").ilike(f"%{search}%")
         query = query.filter(title_match | desc_match)
@@ -140,9 +142,21 @@ def get_task_analytics(db: Session = Depends(get_db)):
     """Get task analytics including counts by status."""
     # Count tasks by status
     total_tasks = db.query(orm.task.Task).count()
-    accepted = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.APPROVED).count()
-    rejected = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.REJECTED).count()
-    modified = db.query(orm.task.Task).filter(orm.task.Task.status == task_models.TaskStatus.IN_PROGRESS).count()
+    accepted = (
+        db.query(orm.task.Task)
+        .filter(orm.task.Task.status == task_models.TaskStatus.APPROVED)
+        .count()
+    )
+    rejected = (
+        db.query(orm.task.Task)
+        .filter(orm.task.Task.status == task_models.TaskStatus.REJECTED)
+        .count()
+    )
+    modified = (
+        db.query(orm.task.Task)
+        .filter(orm.task.Task.status == task_models.TaskStatus.IN_PROGRESS)
+        .count()
+    )
 
     return {
         "totalTasks": total_tasks,

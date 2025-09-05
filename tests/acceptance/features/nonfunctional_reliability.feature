@@ -1,4 +1,4 @@
-@skip @nfr @reliability @acceptance
+@nfr @reliability @acceptance
 Feature: Non-Functional - Reliability
   Validate availability and error handling
 

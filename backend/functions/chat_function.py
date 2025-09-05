@@ -19,10 +19,16 @@ import azure.functions as func
 from azure.functions import HttpRequest, HttpResponse
 
 # Import our AI agent and models
-from ..ai.steves_mom_agent import create_steves_mom
-from ..models.ai_models import (AIModelConfig, AIResponse, ChatMessage,
-                                ChatResponse, HealthResponse, SystemHealth,
-                                TaskRequest)
+from backend.ai.steves_mom import create_steves_mom
+from backend.models.ai_models import (
+    AIModelConfig,
+    AIResponse,
+    ChatMessage,
+    ChatResponse,
+    HealthResponse,
+    SystemHealth,
+    TaskRequest,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -55,7 +55,7 @@ class ContextManager:
     - Message summarization for long conversations
     - Context injection and retrieval
     - Memory persistence (in-memory for MVP, can be extended to Redis/SQL)
-    
+
     Notes:
     - This component starts a background asyncio task to periodically clean up
       expired sessions. Ensure an event loop is running before instantiation in

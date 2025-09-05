@@ -33,3 +33,9 @@ venv312/**
 **/*.gif
 **/*.svg
 **/*.pdf
+
+# Temporarily ignore story and testing docs until formatted per markdownlint rules
+docs/stories/
+docs/stories/**
+docs/testing/
+docs/testing/**

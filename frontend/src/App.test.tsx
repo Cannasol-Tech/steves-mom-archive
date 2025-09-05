@@ -72,8 +72,8 @@ test('renders navigation links', async () => {
 
 test('renders welcome message', async () => {
   render(<App />);
-  const welcomeMessage = await screen.findByText(/Hello! I'm Steve's Mom AI assistant/i);
-  expect(welcomeMessage).toBeInTheDocument();
+  const welcomeMessages = await screen.findAllByText(/Hello! I'm Steve's Mom AI assistant/i);
+  expect(welcomeMessages.length).toBeGreaterThan(0);
 });
 
 test('renders chat input form', async () => {

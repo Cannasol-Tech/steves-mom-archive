@@ -1,4 +1,4 @@
-@skip @core @acceptance
+@core @acceptance
 Feature: Core Chat Interface
   As a Cannasol employee
   I want to chat with Steve's Mom and manage conversations

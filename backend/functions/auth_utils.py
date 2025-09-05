@@ -177,8 +177,8 @@ def auth_decorator(required_roles: Optional[List[str]] = None):
                 else:
                     user = require_auth(req)
 
-                # Add user to request for function access
-                req.user = user
+                # Add user to request for function access without static attribute error
+                setattr(req, "user", user)
 
                 # Call the original function
                 return await func(req)
@@ -210,7 +210,7 @@ def allow_anonymous(func):
 
     async def wrapper(req: HttpRequest) -> HttpResponse:
         # Add user to request if available, but don't require it
-        req.user = get_user_principal(req)
+        setattr(req, "user", get_user_principal(req))
         return await func(req)
 
     return wrapper

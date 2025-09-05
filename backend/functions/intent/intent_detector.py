@@ -32,5 +32,8 @@ class IntentDetector:
                     )
 
         return IntentDetectionResult(
-            intent=Intent.GENERAL_CONVERSATION, confidence=0.5, entities={}
+            intent=Intent.GENERAL_CONVERSATION,
+            confidence=0.5,
+            entities={},
+            needs_confirmation=False,
         )

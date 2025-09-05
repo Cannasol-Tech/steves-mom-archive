@@ -8,7 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 try:
     # xai_sdk 1.x exposes `Client`. Alias to XAI for backward-compat usage below.
     from xai_sdk import Client as XAI
-    from xai_sdk.chat import assistant, system, user
 except Exception:  # pragma: no cover
     XAI = None
 from contextlib import asynccontextmanager
@@ -26,7 +25,7 @@ from backend.ai.providers.base import ModelConfig
 
 from .connection_manager import manager
 from .routes import tasks
-from .schemas import ChatMessage, ChatRequest
+from .schemas import ChatRequest
 
 model_router: ModelRouter | None = None
 
@@ -148,6 +147,8 @@ async def health():
     return {"status": "ok"}
 
 # Provide /api/health alias so CRA proxy checks succeed in local preview
+
+
 @app.get("/api/health")
 async def api_health():
     return {"status": "ok"}
@@ -180,7 +181,11 @@ async def stream_response(req: ChatRequest):
     except ProviderError as e:
         # If no providers are available, provide a mock response for testing
         if "No eligible providers available" in str(e):
-            mock_response = "Hello! I'm Steve's Mom AI assistant. I'm currently running in test mode since no AI providers are configured. This is a mock response to help with testing the streaming functionality."
+            mock_response = (
+                "Hello! I'm Steve's Mom AI assistant. I'm currently running in test "
+                "mode since no AI providers are configured. This is a mock response "
+                "to help with testing the streaming functionality."
+            )
 
             # Stream the mock response word by word
             words = mock_response.split()

@@ -1,4 +1,4 @@
-@skip @nfr @usability @acceptance
+@nfr @usability @acceptance
 Feature: Non-Functional - Usability and Documentation
   Validate UX and documentation standards
 

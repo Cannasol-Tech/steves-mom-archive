@@ -25,7 +25,9 @@ help:
 	@echo "  test-integration - Run integration tests"
 	@echo "  test-backend  - Run backend tests (unit + integration)"
 	@echo "  test-backend-coverage - Run backend tests with coverage (backend/ ai/ models/)"
-	@echo "  test-acceptance - Run acceptance tests (behave)"
+	@echo "  test-acceptance - Run acceptance tests with clean output (behave)"
+	@echo "  test-acceptance-verbose - Run acceptance tests with full verbose output"
+	@echo "  test-acceptance-summary - Display executive test summary dashboard"
 	@echo "  validate-executive-report - Validate final/executive-report.json format"
 	@echo "  test-acceptance-pytest - Run acceptance tests implemented with pytest"
 	@echo "  test-frontend - Run frontend tests (Jest/React Testing Library)"
@@ -72,17 +74,16 @@ setup: setup-backend setup-frontend setup-dev setup-tools
 
 setup-backend:
 	@echo "Setting up Python backend..."
-	/opt/homebrew/bin/python3.12 -m venv .venv || python3.12 -m venv .venv || python3 -m venv .venv
-	.venv/bin/pip install --upgrade pip
+	@/opt/homebrew/bin/python3.12 -m venv .venv >/dev/null 2>&1 || python3.12 -m venv .venv >/dev/null 2>&1 || python3 -m venv .venv >/dev/null 2>&1
+	@.venv/bin/pip install --upgrade pip >/dev/null 2>&1
 	@if [ -f backend/requirements.txt ]; then \
-		echo "Preparing backend requirements (handling torch separately for compatibility)..."; \
+		echo "Installing backend dependencies..."; \
 		TMP_REQ=$$(mktemp); \
 		grep -v '^torch' backend/requirements.txt > $$TMP_REQ; \
-		echo "Installing backend requirements (without torch)..."; \
-		.venv/bin/pip install -r $$TMP_REQ; \
+		.venv/bin/pip install -r $$TMP_REQ >/dev/null 2>&1; \
 		rm -f $$TMP_REQ; \
-		echo "Attempting to install a compatible torch version (CPU) as best-effort..."; \
-		.venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.7.0" || true; \
+		echo "Installing torch (CPU version)..."; \
+		.venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.7.0" >/dev/null 2>&1 || true; \
 	fi
 
 # Minimal backend setup for local preview (installs only core deps for FastAPI app)
@@ -114,8 +115,8 @@ setup-frontend:
 
 setup-dev:
 	@echo "Installing development dependencies..."
-	.venv/bin/pip install -r requirements-dev.txt
-	.venv/bin/pip install pytest-asyncio flake8 mypy black isort
+	@.venv/bin/pip install -r requirements-dev.txt >/dev/null 2>&1
+	@.venv/bin/pip install pytest-asyncio flake8 mypy black isort >/dev/null 2>&1
 
 # Tooling (no-op by default to avoid global installs automatically)
 setup-tools:
@@ -133,24 +134,31 @@ test-unit: setup-backend setup-dev
 
 test-integration: setup-backend setup-dev
 	@echo "Running integration tests..."
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/integration/ -v
+	@if [ -d tests/integration ]; then \
+		PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/integration/ -v; \
+	else \
+		echo "No tests/integration/ directory found. Skipping integration tests."; \
+	fi
 
 BEHAVE_JSON := tests/acceptance/.behave-report.json
 FEATURES_DIR := tests/acceptance/features
 
-test-acceptance: setup-backend setup-dev
-	@echo "Running acceptance tests (Behave) and generating executive report..."
+test-acceptance:
+	@.venv/bin/python scripts/run_clean_acceptance_tests.py
+
+test-acceptance-verbose: setup-backend setup-dev
+	@echo "Running acceptance tests (Behave) with verbose output..."
 	@mkdir -p $(FEATURES_DIR) || true; \
 	mkdir -p final || true; \
 	EXIT_CODE=0; \
-	# Run Behave with JSON output captured; preserve exit code
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/behave -f json -o $(BEHAVE_JSON) $(FEATURES_DIR) || EXIT_CODE=$$?; \
-	# Transform to executive-report.json (set owner/repo; script will set releaseTag=local for non-CI runs)
 	REPORT_OWNER=Cannasol-Tech REPORT_REPO=steves-mom-archive .venv/bin/python scripts/acceptance_to_executive_report.py --behave-json $(BEHAVE_JSON) --out final/executive-report.json || true; \
-	# Ensure artifact exists even on catastrophic failure
 	[ -f final/executive-report.json ] || echo '{"version":"1.0.0","owner":"Cannasol-Tech","repo":"steves-mom-archive","releaseTag":"local","commit":"unknown","createdAt":"" ,"summary":{"total":0,"passed":0,"failed":0,"skipped":0,"durationMs":0},"scenarios":[],"requirements":[]}' > final/executive-report.json; \
-	# Return original Behave exit code
 	exit $$EXIT_CODE
+
+test-acceptance-summary:
+	@echo "Displaying executive test summary..."
+	@.venv/bin/python scripts/display_executive_summary.py
 
 test-acceptance-pytest: setup-backend setup-dev
 	@echo "Running acceptance tests (pytest)..."
@@ -189,8 +197,9 @@ test-frontend-each:
 # Coverage targets
 test-backend-coverage: setup-backend setup-dev
 	@echo "Running backend tests with coverage..."
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_cov -p pytest_asyncio \
-	  tests/unit/ tests/integration/ -v \
+	@TEST_PATHS="tests/unit/"; \
+	if [ -d tests/integration ]; then TEST_PATHS="$$TEST_PATHS tests/integration/"; fi; \
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_cov -p pytest_asyncio $$TEST_PATHS -v \
 	  --cov=backend --cov=ai --cov=models \
 	  --cov-report=term-missing \
 	  --cov-report=xml:coverage-backend.xml
@@ -209,7 +218,9 @@ test-infra: setup-dev
 # Convenience backend test bundle
 test-backend: setup-backend setup-dev
 	@echo "Running backend tests (unit + integration)..."
-	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio tests/unit/ tests/integration/ -v
+	@TEST_PATHS="tests/unit/"; \
+	if [ -d tests/integration ]; then TEST_PATHS="$$TEST_PATHS tests/integration/"; fi; \
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/pytest -p pytest_asyncio $$TEST_PATHS -v
 
 test-router: setup-backend setup-dev
 	@echo "Running model router unit tests..."

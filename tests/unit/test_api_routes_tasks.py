@@ -199,6 +199,15 @@ class TestReadTasks:
         mock_query.all.return_value = mock_tasks
 
         with patch('backend.api.routes.tasks.orm.task.Task') as mock_orm_class:
+            # Mock the created_at attribute and its op() method
+            mock_created_at = Mock()
+            mock_op_gte = Mock()
+            mock_op_lte = Mock()
+            mock_created_at.op.side_effect = lambda op: mock_op_gte if op == ">=" else mock_op_lte
+            mock_op_gte.return_value = Mock()  # Mock the comparison result
+            mock_op_lte.return_value = Mock()  # Mock the comparison result
+            mock_orm_class.created_at = mock_created_at
+
             result = read_tasks(
                 start_date=start_date,
                 end_date=end_date,
@@ -222,6 +231,21 @@ class TestReadTasks:
         mock_query.all.return_value = mock_tasks
 
         with patch('backend.api.routes.tasks.orm.task.Task') as mock_orm_class:
+            # Mock the title and description attributes and their ilike() methods
+            mock_title = Mock()
+            mock_description = Mock()
+            mock_title_match = Mock()
+            mock_desc_match = Mock()
+
+            mock_title.ilike.return_value = mock_title_match
+            mock_description.ilike.return_value = mock_desc_match
+
+            # Mock the bitwise OR operation
+            mock_title_match.__or__ = Mock(return_value=Mock())
+
+            mock_orm_class.title = mock_title
+            mock_orm_class.description = mock_description
+
             result = read_tasks(search="test query", db=mock_db)
 
             # Verify search filtering was applied

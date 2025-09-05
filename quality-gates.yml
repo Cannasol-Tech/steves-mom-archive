@@ -1,0 +1,119 @@
+# Quality Gates Configuration
+# This file defines the quality standards and thresholds for the project
+
+coverage:
+  # Overall coverage thresholds
+  line_coverage_threshold: 80
+  branch_coverage_threshold: 70
+  
+  # Package-specific thresholds
+  packages:
+    backend.ai: 85        # AI components should have high coverage
+    backend.api: 90       # API routes should be well tested
+    backend.models: 80    # Data models coverage
+    backend.services: 85  # Business logic coverage
+    backend.utils: 75     # Utility functions
+  
+  # Files to exclude from coverage
+  exclude:
+    - "*/migrations/*"
+    - "*/tests/*"
+    - "*/conftest.py"
+    - "*/settings/*"
+
+test_success_rates:
+  # Minimum success rates for different test types
+  unit_tests: 95.0        # Unit tests should have very high success rate
+  integration_tests: 90.0 # Integration tests can be slightly more flaky
+  acceptance_tests: 85.0  # Acceptance tests may have some legitimate skips
+  
+performance:
+  # Test execution time thresholds
+  slow_test_threshold: 10.0  # Tests taking longer than 10s are considered slow
+  max_total_time: 300        # Maximum total test execution time (5 minutes)
+  
+  # Performance regression detection
+  max_time_increase: 20      # Maximum % increase in test execution time
+
+flakiness:
+  # Flaky test detection parameters
+  min_runs_for_analysis: 5   # Minimum test runs to analyze for flakiness
+  flaky_failure_threshold: 0.2  # Tests failing 20-80% of time are flaky
+  max_inconsistency_rate: 0.3   # Maximum allowed inconsistency rate
+  
+  # Actions for flaky tests
+  quarantine_threshold: 0.5  # Quarantine tests with >50% inconsistency
+  alert_threshold: 0.3       # Alert on tests with >30% inconsistency
+
+code_quality:
+  # Static analysis thresholds
+  max_complexity: 10         # Maximum cyclomatic complexity
+  max_line_length: 120       # Maximum line length
+  
+  # Security scanning
+  security_scan_required: true
+  max_security_issues: 0     # No security issues allowed
+  
+  # Dependency scanning
+  dependency_scan_required: true
+  max_vulnerability_score: 7.0  # CVSS score threshold
+
+documentation:
+  # Documentation coverage requirements
+  min_docstring_coverage: 80  # Minimum % of functions with docstrings
+  api_docs_required: true     # API documentation must be present
+  
+  # README and guides
+  readme_required: true
+  changelog_required: true
+
+git_requirements:
+  # Git workflow requirements
+  require_pr_reviews: true
+  min_reviewers: 1
+  require_status_checks: true
+  
+  # Branch protection
+  protect_main_branch: true
+  require_up_to_date: true
+  dismiss_stale_reviews: true
+
+notifications:
+  # Quality gate failure notifications
+  slack_webhook: "${SLACK_WEBHOOK_URL}"
+  email_recipients:
+    - "team@cannasolusa.com"
+  
+  # Notification triggers
+  notify_on_coverage_drop: true
+  notify_on_flaky_tests: true
+  notify_on_security_issues: true
+
+reporting:
+  # Test result reporting
+  generate_html_report: true
+  generate_junit_xml: true
+  generate_coverage_badge: true
+  
+  # Artifact retention
+  keep_reports_days: 30
+  archive_on_release: true
+
+environments:
+  # Environment-specific overrides
+  development:
+    coverage:
+      line_coverage_threshold: 70  # Lower threshold for dev
+    test_success_rates:
+      unit_tests: 90.0
+  
+  staging:
+    # Use default thresholds
+    
+  production:
+    coverage:
+      line_coverage_threshold: 85  # Higher threshold for prod
+    test_success_rates:
+      unit_tests: 98.0
+      integration_tests: 95.0
+      acceptance_tests: 90.0

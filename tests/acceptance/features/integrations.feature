@@ -1,4 +1,4 @@
-@skip @integrations @acceptance
+@integrations @acceptance
 Feature: System Integrations
   To accomplish business workflows
   The system integrates with inventory, email, and documents

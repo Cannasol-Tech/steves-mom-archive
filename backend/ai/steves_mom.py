@@ -17,6 +17,13 @@ import os
 from datetime import datetime
 from typing import Any, AsyncGenerator, Dict, List, Optional
 
+# Import conversation manager
+try:
+    from backend.ai.conversation_manager import conversation_manager
+except ImportError:
+    # Fallback for when running in different contexts
+    conversation_manager = None
+
 # LangChain tools for business automation
 from langchain.tools import tool
 from xai_sdk.models import (Message, MessageRole, ModelCapability, ModelConfig,
@@ -505,7 +512,7 @@ class StevesMomAgent:
         self, message: str, user_id: str = "default", session_id: str = "default"
     ) -> AIResponse:
         """
-        Chat with Steve's Mom using the multi-provider system.
+        Chat with Steve's Mom using the multi-provider system with conversation management.
 
         Args:
             message: User message
@@ -518,21 +525,52 @@ class StevesMomAgent:
         try:
             start_time = datetime.utcnow()
 
-            # Create user message
-            user_message = ChatMessage(role="user", content=message)
+            # Use conversation manager if available
+            if conversation_manager:
+                # Get or create conversation context
+                context = await conversation_manager.get_or_create_conversation(session_id, user_id)
 
-            # Build conversation context
-            conversation_messages = []
+                # Add user message to conversation
+                await conversation_manager.add_message(session_id, "user", message)
 
-            # Add system prompt (ALWAYS use the full NSFW Steve's Mom persona)
-            system_message = ChatMessage(role="system", content=STEVES_MOM_PROMPT)
-            conversation_messages.append(system_message)
+                # Get conversation history for AI context
+                conversation_history = await conversation_manager.get_context_for_ai(session_id)
 
-            # Add memory
-            conversation_messages.extend(self.memory)
+                # Build conversation context with history
+                conversation_messages = []
 
-            # Add current user message
-            conversation_messages.append(user_message)
+                # Add system prompt
+                system_message = ChatMessage(role="system", content=STEVES_MOM_PROMPT)
+                conversation_messages.append(system_message)
+
+                # Add conversation history (already formatted for AI)
+                for hist_msg in conversation_history[:-1]:  # Exclude the just-added user message
+                    conversation_messages.append(ChatMessage(
+                        role=hist_msg["role"],
+                        content=hist_msg["content"]
+                    ))
+
+                # Add current user message
+                user_message = ChatMessage(role="user", content=message)
+                conversation_messages.append(user_message)
+
+            else:
+                # Fallback to old memory system
+                # Create user message
+                user_message = ChatMessage(role="user", content=message)
+
+                # Build conversation context
+                conversation_messages = []
+
+                # Add system prompt (ALWAYS use the full NSFW Steve's Mom persona)
+                system_message = ChatMessage(role="system", content=STEVES_MOM_PROMPT)
+                conversation_messages.append(system_message)
+
+                # Add memory
+                conversation_messages.extend(self.memory)
+
+                # Add current user message
+                conversation_messages.append(user_message)
 
             # Convert to provider format
             provider_messages = self._convert_to_provider_messages(
@@ -552,8 +590,13 @@ class StevesMomAgent:
             end_time = datetime.utcnow()
             response_time_ms = int((end_time - start_time).total_seconds() * 1000)
 
-            # Update memory
-            self._manage_memory(user_message, provider_response.content)
+            # Update memory and conversation
+            if conversation_manager:
+                # Add AI response to conversation
+                await conversation_manager.add_message(session_id, "assistant", provider_response.content)
+            else:
+                # Fallback to old memory system
+                self._manage_memory(user_message, provider_response.content)
 
             # Map provider type to AIProvider enum
             provider_map = {

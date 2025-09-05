@@ -1,11 +1,11 @@
-@skip @analytics @acceptance
+@analytics @acceptance
 Feature: Analytics and Learning # tests/acceptance/features/analytics_learning.feature:2
   Track performance and collect training data
   @FR-5.1
   Scenario: FR-5.1 Performance metrics collection                                         # tests/acceptance/features/analytics_learning.feature:6
-    Given tasks and responses are processed                                               # None
-    When metrics are recorded                                                             # None
-    Then accuracy, response times, user satisfaction, and model comparisons are available # None
+    Given tasks and responses are processed                                               # tests/acceptance/features/steps/analytics_learning_steps.py:100
+    When metrics are recorded                                                             # tests/acceptance/features/steps/analytics_learning_steps.py:142
+    Then accuracy, response times, user satisfaction, and model comparisons are available # tests/acceptance/features/steps/analytics_learning_steps.py:165
 
   @FR-5.2
   Scenario: FR-5.2 Training data collection                 # tests/acceptance/features/analytics_learning.feature:12
@@ -13,22 +13,22 @@ Feature: Analytics and Learning # tests/acceptance/features/analytics_learning.f
     When tasks are misidentified and corrected              # None
     Then training data is collected for future improvements # None
 
-@skip @core @acceptance
+@core @acceptance
 Feature: Core Chat Interface # tests/acceptance/features/core_chat.feature:2
   As a Cannasol employee
   I want to chat with Steve's Mom and manage conversations
   So that I can get AI assistance efficiently
   @FR-1.1
   Scenario: FR-1.1 AI Model Integration baseline routing                # tests/acceptance/features/core_chat.feature:8
-    Given the system is configured with GROK as default provider        # None
-    When I send a general knowledge prompt                              # None
-    Then the request is routed to GROK and a valid response is returned # None
+    Given the system is configured with GROK as default provider        # tests/acceptance/features/steps/core_chat_steps.py:76
+    When I send a general knowledge prompt                              # tests/acceptance/features/steps/core_chat_steps.py:85
+    Then the request is routed to GROK and a valid response is returned # tests/acceptance/features/steps/core_chat_steps.py:102
 
   @FR-1.2
   Scenario: FR-1.2 Conversation management basics        # tests/acceptance/features/core_chat.feature:14
-    Given I have an active conversation                  # None
-    When I send a follow-up message                      # None
-    Then the assistant maintains context across the turn # None
+    Given I have an active conversation                  # tests/acceptance/features/steps/core_chat_steps.py:123
+    When I send a follow-up message                      # tests/acceptance/features/steps/core_chat_steps.py:145
+    Then the assistant maintains context across the turn # tests/acceptance/features/steps/core_chat_steps.py:160
 
   @FR-1.3
   Scenario: FR-1.3 NLP intent recognition for task generation                # tests/acceptance/features/core_chat.feature:20
@@ -36,15 +36,15 @@ Feature: Core Chat Interface # tests/acceptance/features/core_chat.feature:2
     When the NLP layer processes the message                                 # None
     Then an intent and entities are extracted for downstream task generation # None
 
-@skip @integrations @acceptance
+@integrations @acceptance
 Feature: System Integrations # tests/acceptance/features/integrations.feature:2
   To accomplish business workflows
   The system integrates with inventory, email, and documents
   @FR-3.1
   Scenario: FR-3.1 Inventory database operations                   # tests/acceptance/features/integrations.feature:7
-    Given I need to look up items and update quantities            # None
-    When I perform read and write operations                       # None
-    Then the inventory API reflects real-time changes with history # None
+    Given I need to look up items and update quantities            # tests/acceptance/features/steps/integrations_steps.py:81
+    When I perform read and write operations                       # tests/acceptance/features/steps/integrations_steps.py:140
+    Then the inventory API reflects real-time changes with history # tests/acceptance/features/steps/integrations_steps.py:180
 
   @FR-3.2
   Scenario: FR-3.2 Email integration for summarization and drafting               # tests/acceptance/features/integrations.feature:13
@@ -115,20 +115,20 @@ Feature: Model Router End-to-End Scenarios # tests/acceptance/features/model_rou
     Then the provider status should report as "healthy"             # tests/acceptance/features/steps/model_router_steps.py:214
     And show 3 recent requests                                      # tests/acceptance/features/steps/model_router_steps.py:219
 
-@skip @nfr @performance @acceptance
+@nfr @performance @acceptance
 Feature: Non-Functional - Performance and Scalability # tests/acceptance/features/nonfunctional_performance.feature:2
   Validate performance targets and scalability characteristics
   @NFR-1.1
   Scenario: NFR-1.1 Response time thresholds                                       # tests/acceptance/features/nonfunctional_performance.feature:6
-    Given representative workloads                                                 # None
-    When requests are processed                                                    # None
-    Then simple queries complete < 2s, single-integration < 5s, multi-system < 10s # None
+    Given representative workloads                                                 # tests/acceptance/features/steps/nonfunctional_steps.py:180
+    When requests are processed                                                    # tests/acceptance/features/steps/nonfunctional_steps.py:208
+    Then simple queries complete < 2s, single-integration < 5s, multi-system < 10s # tests/acceptance/features/steps/nonfunctional_steps.py:229
 
   @NFR-1.2
   Scenario: NFR-1.2 Throughput and concurrency                   # tests/acceptance/features/nonfunctional_performance.feature:12
-    Given 20 concurrent users                                    # None
-    When the system processes 1000 requests/hour                 # None
-    Then it maintains service quality with queueing during peaks # None
+    Given 20 concurrent users                                    # tests/acceptance/features/steps/nonfunctional_steps.py:249
+    When the system processes 1000 requests/hour                 # tests/acceptance/features/steps/nonfunctional_steps.py:256
+    Then it maintains service quality with queueing during peaks # tests/acceptance/features/steps/nonfunctional_steps.py:270
 
   @NFR-1.3
   Scenario: NFR-1.3 Scalability characteristics                         # tests/acceptance/features/nonfunctional_performance.feature:18
@@ -136,14 +136,14 @@ Feature: Non-Functional - Performance and Scalability # tests/acceptance/feature
     When scaling operations are applied                                 # None
     Then the system scales horizontally/vertically and meets DB targets # None
 
-@skip @nfr @reliability @acceptance
+@nfr @reliability @acceptance
 Feature: Non-Functional - Reliability # tests/acceptance/features/nonfunctional_reliability.feature:2
   Validate availability and error handling
   @NFR-3.1
   Scenario: NFR-3.1 Availability targets                 # tests/acceptance/features/nonfunctional_reliability.feature:6
-    Given normal operations                              # None
-    When monitoring the system during business hours     # None
-    Then uptime meets 99.5% with redundancy and failover # None
+    Given normal operations                              # tests/acceptance/features/steps/nonfunctional_steps.py:550
+    When monitoring the system during business hours     # tests/acceptance/features/steps/nonfunctional_steps.py:563
+    Then uptime meets 99.5% with redundancy and failover # tests/acceptance/features/steps/nonfunctional_steps.py:576
 
   @NFR-3.2
   Scenario: NFR-3.2 Error handling and resilience                                                 # tests/acceptance/features/nonfunctional_reliability.feature:12
@@ -151,7 +151,7 @@ Feature: Non-Functional - Reliability # tests/acceptance/features/nonfunctional_
     When they occur                                                                               # None
     Then errors are handled gracefully with retries, logging, alerts, and user-friendly fallbacks # None
 
-@skip @nfr @security @acceptance
+@nfr @security @acceptance
 Feature: Non-Functional - Security # tests/acceptance/features/nonfunctional_security.feature:2
   Ensure data protection and access control requirements are met
   @NFR-2.1
@@ -162,11 +162,11 @@ Feature: Non-Functional - Security # tests/acceptance/features/nonfunctional_sec
 
   @NFR-2.2
   Scenario: NFR-2.2 Access control protections                                      # tests/acceptance/features/nonfunctional_security.feature:12
-    Given authentication attempts and access patterns                               # None
-    When controls are evaluated                                                     # None
-    Then lockouts, IP whitelisting, VPN needs, and session termination are enforced # None
+    Given authentication attempts and access patterns                               # tests/acceptance/features/steps/nonfunctional_steps.py:497
+    When controls are evaluated                                                     # tests/acceptance/features/steps/nonfunctional_steps.py:509
+    Then lockouts, IP whitelisting, VPN needs, and session termination are enforced # tests/acceptance/features/steps/nonfunctional_steps.py:531
 
-@skip @nfr @usability @acceptance
+@nfr @usability @acceptance
 Feature: Non-Functional - Usability and Documentation # tests/acceptance/features/nonfunctional_usability.feature:2
   Validate UX and documentation standards
   @NFR-4.1
@@ -191,7 +191,7 @@ Feature: Sample acceptance scaffold # tests/acceptance/features/sample_acceptanc
     When I run a no-op acceptance step    # tests/acceptance/features/steps/sample_steps.py:10
     Then the placeholder should pass      # tests/acceptance/features/steps/sample_steps.py:16
 
-@skip @security @acceptance
+@security @acceptance
 Feature: Security and Access Control # tests/acceptance/features/security_access.feature:2
   Ensure authenticated and authorized access with auditing
   @FR-4.1
@@ -212,7 +212,7 @@ Feature: Security and Access Control # tests/acceptance/features/security_access
     When actions are performed on sensitive resources                # None
     Then audit logs capture activity and provide export capabilities # None
 
-@skip @tasks @acceptance
+@tasks @acceptance
 Feature: Task Generation and Workflow # tests/acceptance/features/task_workflow.feature:2
   In order to automate work
   As a user
@@ -225,9 +225,9 @@ Feature: Task Generation and Workflow # tests/acceptance/features/task_workflow.
 
   @FR-2.2
   Scenario: FR-2.2 Approval Workflow                                    # tests/acceptance/features/task_workflow.feature:14
-    Given tasks are generated for a request                             # None
-    When the user reviews the tasks                                     # None
-    Then they can approve, reject, or modify them with history captured # None
+    Given tasks are generated for a request                             # tests/acceptance/features/steps/task_workflow_steps.py:163
+    When the user reviews the tasks                                     # tests/acceptance/features/steps/task_workflow_steps.py:189
+    Then they can approve, reject, or modify them with history captured # tests/acceptance/features/steps/task_workflow_steps.py:215
 
   @FR-2.3
   Scenario: FR-2.3 Task Execution and Progress              # tests/acceptance/features/task_workflow.feature:20
