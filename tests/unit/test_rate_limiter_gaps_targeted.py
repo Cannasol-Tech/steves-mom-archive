@@ -324,3 +324,46 @@ async def test_rate_limiter_normalizes_when_provider_type_given():
 
     with pytest.raises(ProviderRateLimitError):
         await limiter.execute(fail_rate_limit, provider_type=ProviderType.GROK)
+
+
+@pytest.mark.asyncio
+async def test_circuit_breaker_async_func_success_path_resets_and_closes():
+    """Cover asyncio.iscoroutinefunction branch in CircuitBreaker.call and ensure success resets failure_count and closes state."""
+    breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=0.01, expected_exception=Exception)
+
+    async def ok_async():
+        await asyncio.sleep(0)
+        return "ok"
+
+    # Set state to half-open to ensure it transitions to closed on success
+    breaker.state = "half_open"
+    breaker.failure_count = 1
+    res = await breaker.call(ok_async)
+    assert res == "ok"
+    assert breaker.state == "closed"
+    assert breaker.failure_count == 0
+
+
+@pytest.mark.asyncio
+async def test_rate_limiter_execute_success_path_returns_value():
+    """Happy path: token available, circuit closed, function succeeds, result is returned."""
+    limiter = RateLimiter(requests_per_second=1000, burst_capacity=1, max_retries=0)
+
+    async def succeed():
+        return 42
+
+    result = await limiter.execute(succeed)
+    assert result == 42
+
+
+@pytest.mark.asyncio
+async def test_rate_limiter_rate_limit_error_defaults_provider_type_local():
+    """When provider_type is None and rate limit is exceeded, ensure ProviderRateLimitError uses ProviderType.LOCAL by default."""
+    limiter = RateLimiter(requests_per_second=0.0, burst_capacity=0)
+
+    async def noop():
+        return "noop"
+
+    with pytest.raises(ProviderRateLimitError) as ei:
+        await limiter.execute(noop)
+    assert ei.value.provider_type == ProviderType.LOCAL
