@@ -13,40 +13,77 @@ export type LiveUpdateConnection = {
 
 export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConnection {
   const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
 
-  let socket: WebSocket | null = new WebSocket(wsUrl);
+  // Try proxy first (for development), fallback to direct backend connection
+  const proxyUrl = `${wsProtocol}//${window.location.host}/ws`;
+  const directUrl = `${wsProtocol}//127.0.0.1:9696/ws`;
 
-  socket.onopen = () => {
-    console.log('WebSocket connection established');
-  };
+  let socket: WebSocket | null = null;
+  let retryCount = 0;
+  const maxRetries = 3;
 
-  socket.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.id && data.status) { // Simple check for task object
-        handlers.onTaskUpdate(data as Task);
-      } else {
+  function attemptConnection(url: string): WebSocket {
+    console.log(`Attempting WebSocket connection to: ${url}`);
+    return new WebSocket(url);
+  }
+
+  function connect() {
+    const url = retryCount === 0 ? proxyUrl : directUrl;
+    socket = attemptConnection(url);
+
+    socket.onopen = () => {
+      console.log(`WebSocket connection established to: ${url}`);
+      retryCount = 0; // Reset retry count on successful connection
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.id && data.status) { // Simple check for task object
+          handlers.onTaskUpdate(data as Task);
+        } else {
+          handlers.onMessage(event.data);
+        }
+      } catch (error) {
         handlers.onMessage(event.data);
       }
-    } catch (error) {
-      handlers.onMessage(event.data);
-    }
-  };
+    };
 
-  socket.onerror = (event) => {
-    console.error('WebSocket error:', event);
-    handlers.onError(new Error('WebSocket error'));
-  };
+    socket.onerror = (event) => {
+      console.error(`WebSocket error on ${url}:`, event);
 
-  socket.onclose = () => {
-    console.log('WebSocket connection closed');
-    handlers.onClose();
-    socket = null;
-  };
+      // Try fallback URL if primary fails
+      if (retryCount < maxRetries) {
+        retryCount++;
+        console.log(`Retrying WebSocket connection (attempt ${retryCount}/${maxRetries})`);
+        setTimeout(() => {
+          if (socket) {
+            socket.close();
+          }
+          connect();
+        }, 1000 * retryCount); // Exponential backoff
+      } else {
+        handlers.onError(new Error(`WebSocket connection failed after ${maxRetries} attempts`));
+      }
+    };
+
+    socket.onclose = (event) => {
+      console.log(`WebSocket connection closed (code: ${event.code}, reason: ${event.reason})`);
+
+      // Only call onClose handler if we're not retrying
+      if (retryCount >= maxRetries) {
+        handlers.onClose();
+      }
+      socket = null;
+    };
+  }
+
+  // Start initial connection
+  connect();
 
   return {
     disconnect: () => {
+      retryCount = maxRetries; // Prevent retries when manually disconnecting
       if (socket) {
         socket.close();
       }

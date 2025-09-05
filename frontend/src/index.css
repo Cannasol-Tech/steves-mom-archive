@@ -140,7 +140,7 @@
   /* Custom scrollbar for webkit browsers */
   .custom-scrollbar::-webkit-scrollbar {
     width: 14px;
-    height: 14px;
+    height: 0px; /* Remove horizontal scrollbar */
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -177,9 +177,10 @@
     scrollbar-color: #10b981 rgba(0, 0, 0, 0.15);
   }
 
-  /* Force scrollbar to always be visible */
+  /* Force vertical scrollbar to always be visible, hide horizontal */
   .custom-scrollbar {
     overflow-y: scroll !important;
+    overflow-x: hidden !important;
   }
 
   .reasoning-glow {

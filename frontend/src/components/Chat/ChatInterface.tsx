@@ -45,7 +45,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onRejectTask
 }) => {
   return (
-    <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl rotating-glow pulse-glow">
+    <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl rotating-glow pulse-glow overflow-hidden">
       {/* Modern Chat Header */}
       <div className="relative bg-gradient-to-r from-blue-600/95 via-purple-600/90 to-emerald-600/95 backdrop-blur-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/15 to-emerald-600/20 backdrop-blur-sm"></div>

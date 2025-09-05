@@ -84,11 +84,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
     <div
       ref={scrollRef}
       onScroll={handleScroll}
-      className="relative flex-1 min-h-0 max-h-full overflow-y-scroll px-4 sm:px-6 py-6 scroll-smooth custom-scrollbar"
+      className="relative flex-1 min-h-0 max-h-full overflow-y-scroll overflow-x-hidden px-4 sm:px-6 py-6 scroll-smooth custom-scrollbar"
       style={{
         height: '100%',
         maxHeight: '100%',
-        overflowY: 'scroll'
+        overflowY: 'scroll',
+        overflowX: 'hidden'
       }}
     >
       {/* Scroll fade indicators */}
