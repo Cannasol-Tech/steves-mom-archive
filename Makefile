@@ -108,6 +108,8 @@ setup-backend-preview:
 	.venv/bin/pip install "pydantic>=2.8,<3" "pydantic-settings>=2.1,<3" || .venv/bin/pip install pydantic pydantic-settings || true
 	.venv/bin/pip install "python-dotenv>=1.0,<2" || .venv/bin/pip install python-dotenv || true
 	.venv/bin/pip install "aiohttp>=3.9,<4" "httpx>=0.26,<0.28" || true
+	# Install xai_sdk for GROK API integration
+	.venv/bin/pip install xai_sdk || true
 
 setup-frontend:
 	@echo "Setting up frontend dependencies..."

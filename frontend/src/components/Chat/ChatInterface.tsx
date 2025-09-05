@@ -45,7 +45,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onRejectTask
 }) => {
   return (
-    <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl overflow-hidden rotating-glow pulse-glow">
+    <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 rounded-3xl border border-white/60 shadow-2xl backdrop-blur-xl rotating-glow pulse-glow">
       {/* Modern Chat Header */}
       <div className="relative bg-gradient-to-r from-blue-600/95 via-purple-600/90 to-emerald-600/95 backdrop-blur-sm">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/15 to-emerald-600/20 backdrop-blur-sm"></div>
@@ -92,7 +92,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50">
+      <div className="flex-1 min-h-0 relative bg-gradient-to-b from-transparent via-slate-50/30 to-white/50 overflow-hidden">
         {/* SR-only live region for loading/streaming state announcements */}
         <p className="sr-only" role="status" aria-live="polite">
           {isLoading || streamingActive ? 'Assistant is generating a response' : 'Assistant is idle'}
@@ -106,7 +106,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         </div>
 
-        <div className="relative h-full">
+        <div className="relative h-full flex flex-col">
                     <MessageList messages={messages} isTyping={false} isLoading={isLoading} reasoningText={reasoningText} onApproveTask={onApproveTask} onRejectTask={onRejectTask} />
           {(streamingActive || (typeof streamingContent === 'string' && streamingContent.length > 0)) && (
             <div className="px-6 py-3">

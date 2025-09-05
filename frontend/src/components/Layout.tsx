@@ -131,8 +131,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         )}
 
         {/* Main content */}
-        <main className="flex-1 overflow-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-center">
-          <div className="w-full max-w-4xl">
+        <main className="flex-1 overflow-hidden px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-center">
+          <div className="w-full max-w-4xl h-full">
             {children}
           </div>
         </main>

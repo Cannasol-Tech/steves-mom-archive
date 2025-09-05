@@ -27,6 +27,7 @@ interface MessageListProps {
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping, reasoningText, onApproveTask, onRejectTask }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = React.useState(true);
+  const [isAtTop, setIsAtTop] = React.useState(true);
 
   const handleScroll = React.useCallback(() => {
     const el = scrollRef.current;
@@ -34,6 +35,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
     const threshold = 48; // px tolerance to consider as bottom
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
     setIsAtBottom(distanceFromBottom <= threshold);
+    setIsAtTop(el.scrollTop <= threshold);
   }, []);
 
   // Auto-scroll to bottom when new messages arrive
@@ -79,7 +81,23 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, isTyping
   };
 
   return (
-    <div ref={scrollRef} onScroll={handleScroll} className="relative flex-1 overflow-y-auto px-4 sm:px-6 py-6 scroll-smooth custom-scrollbar">
+    <div
+      ref={scrollRef}
+      onScroll={handleScroll}
+      className="relative flex-1 min-h-0 max-h-full overflow-y-scroll px-4 sm:px-6 py-6 scroll-smooth custom-scrollbar"
+      style={{
+        height: '100%',
+        maxHeight: '100%',
+        overflowY: 'scroll'
+      }}
+    >
+      {/* Scroll fade indicators */}
+      {!isAtTop && (
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-slate-50/90 via-slate-50/60 to-transparent z-10 transition-opacity duration-300"></div>
+      )}
+      {!isAtBottom && (
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white/90 via-white/60 to-transparent z-10 transition-opacity duration-300"></div>
+      )}
       <div className="mx-auto max-w-4xl space-y-6">
         {messages.map((m, index) => {
           const fromUser = m.role === 'user';

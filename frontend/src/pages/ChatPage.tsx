@@ -302,7 +302,7 @@ Keep normal content readable; place control directives once per reply when appro
     const tasks = messages.filter(m => m.taskId && m.taskStatus);
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full max-h-full overflow-hidden">
       <ChatInterface
       messages={messages}
       isLoading={isLoading}

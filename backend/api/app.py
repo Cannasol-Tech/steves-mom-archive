@@ -21,13 +21,37 @@ import backend.models.orm.approval_history  # noqa: F401
 
 from backend.ai.model_router import (ModelRouter, ProviderError,
                                      create_router_from_env)
-from backend.ai.providers.base import ModelConfig
+from backend.ai.providers.base import ModelConfig, Message, MessageRole
 
 from .connection_manager import manager
 from .routes import tasks
 from .schemas import ChatRequest
 
 model_router: ModelRouter | None = None
+
+
+def convert_chat_messages_to_messages(chat_messages: list) -> list[Message]:
+    """Convert ChatMessage objects to Message objects for the model router."""
+    messages = []
+    for chat_msg in chat_messages:
+        # Convert string role to MessageRole enum
+        role_str = chat_msg.role.lower()
+        if role_str == "user":
+            role = MessageRole.USER
+        elif role_str == "assistant":
+            role = MessageRole.ASSISTANT
+        elif role_str == "system":
+            role = MessageRole.SYSTEM
+        elif role_str == "tool":
+            role = MessageRole.TOOL
+        else:
+            # Default to USER if unknown role
+            role = MessageRole.USER
+
+        message = Message(role=role, content=chat_msg.content)
+        messages.append(message)
+
+    return messages
 
 
 @asynccontextmanager
@@ -163,8 +187,11 @@ async def stream_response(req: ChatRequest):
     model_config = ModelConfig(model_name=req.model or "grok-3-mini", stream=True)
     full_response_chunks = []
 
+    # Convert ChatMessage objects to Message objects
+    messages = convert_chat_messages_to_messages(req.messages)
+
     try:
-        async for chunk in model_router.stream_request(req.messages, model_config):
+        async for chunk in model_router.stream_request(messages, model_config):
             full_response_chunks.append(chunk)
             yield chunk
 
