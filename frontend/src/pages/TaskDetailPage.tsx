@@ -37,7 +37,7 @@ const TaskDetailPage: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [taskId]);
+  }, [taskId, base]);
 
   // Subscribe to live updates; update local task when IDs match
   useEffect(() => {

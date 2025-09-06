@@ -3,14 +3,14 @@
   "owner": "Cannasol-Tech",
   "repo": "steves-mom-archive",
   "releaseTag": "local",
-  "commit": "40d236dd",
-  "createdAt": "2025-09-05T02:18:31+00:00",
+  "commit": "5bb2e5fd",
+  "createdAt": "2025-09-06T00:46:10+00:00",
   "summary": {
     "total": 30,
     "passed": 16,
     "failed": 0,
     "skipped": 0,
-    "durationMs": 6769
+    "durationMs": 6726
   },
   "scenarios": [
     {
@@ -101,7 +101,7 @@
       "feature": "Core Chat Interface",
       "name": "FR-1.2 Conversation management basics",
       "status": "passed",
-      "durationMs": 0,
+      "durationMs": 1,
       "steps": [
         {
           "keyword": "Given",
@@ -157,7 +157,7 @@
       "feature": "System Integrations",
       "name": "FR-3.1 Inventory database operations",
       "status": "passed",
-      "durationMs": 1,
+      "durationMs": 0,
       "steps": [
         {
           "keyword": "Given",
@@ -241,7 +241,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Cost-conscious business user gets cheapest responses",
       "status": "passed",
-      "durationMs": 2,
+      "durationMs": 4,
       "steps": [
         {
           "keyword": "Given",
@@ -328,7 +328,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Complex queries are routed by AI capability",
       "status": "passed",
-      "durationMs": 31,
+      "durationMs": 5,
       "steps": [
         {
           "keyword": "Given",
@@ -369,7 +369,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Administrator modifies routing policies at runtime",
       "status": "passed",
-      "durationMs": 6,
+      "durationMs": 0,
       "steps": [
         {
           "keyword": "Given",
@@ -405,7 +405,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "DevOps engineer configures router from environment variables",
       "status": "passed",
-      "durationMs": 4,
+      "durationMs": 2,
       "steps": [
         {
           "keyword": "Given",
@@ -436,7 +436,7 @@
       "feature": "Model Router End-to-End Scenarios",
       "name": "Operations team monitors system health and performance",
       "status": "passed",
-      "durationMs": 14,
+      "durationMs": 0,
       "steps": [
         {
           "keyword": "Given",
@@ -472,7 +472,7 @@
       "feature": "Non-Functional - Performance and Scalability",
       "name": "NFR-1.1 Response time thresholds",
       "status": "passed",
-      "durationMs": 6505,
+      "durationMs": 6508,
       "steps": [
         {
           "keyword": "Given",

@@ -23,7 +23,7 @@ beforeAll(() => {
       return;
     }
     // Let other warnings through
-    console.warn = console.warn;
+    // (original console.warn is preserved)
   });
 });
 
@@ -92,7 +92,7 @@ describe('ChatPage live updates wiring', () => {
     });
 
     // MessageList should render the new text somewhere
-    await waitFor(() => expect(screen.getByText(text)).toBeInTheDocument());
+    await screen.findByText(text);
   });
 
   test('shows a toast when live updates encounter an error', async () => {

@@ -1,6 +1,4 @@
 import React from 'react';
-
-
 import { TaskStatus } from '../../types/tasks';
 import { getStatusIcon, getStatusColor } from '../../utils/taskUtils';
 

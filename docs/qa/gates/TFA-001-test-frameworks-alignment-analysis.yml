@@ -1,0 +1,80 @@
+schema: 1
+story: 'TFA-001'
+story_title: 'Test Frameworks Alignment with Company Standards Analysis'
+gate: CONCERNS
+status_reason: 'Analysis story is comprehensive but current testing infrastructure has technical issues requiring resolution'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-09-05T12:00:00Z'
+
+top_issues:
+  - id: "TEST-001"
+    severity: medium
+    finding: "3 failing unit tests in test_config_manager.py affecting provider configuration"
+    suggested_action: "Fix failing tests before story completion"
+    suggested_owner: dev
+  - id: "LINT-001"
+    severity: medium
+    finding: "70+ Python linting violations and 35 frontend ESLint warnings"
+    suggested_action: "Resolve linting issues to meet coding standards"
+    suggested_owner: dev
+  - id: "DEP-001"
+    severity: medium
+    finding: "Missing pytest-json-report dependency prevents unified test reporting"
+    suggested_action: "Install missing dependency and verify reporting functionality"
+    suggested_owner: dev
+
+waiver: { active: false }
+
+quality_score: 70
+expires: '2025-09-19T12:00:00Z'
+
+evidence:
+  tests_reviewed: 1468
+  risks_identified: 3
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6, 7, 8]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'No security concerns in analysis story'
+  performance:
+    status: PASS
+    notes: 'Test execution times are reasonable'
+  reliability:
+    status: CONCERNS
+    notes: 'Failing tests indicate reliability issues'
+  maintainability:
+    status: CONCERNS
+    notes: 'Linting violations affect code maintainability'
+
+recommendations:
+  immediate:
+    - action: 'Fix 3 failing unit tests in test_config_manager.py'
+      refs: ['tests/unit/test_config_manager.py']
+    - action: 'Resolve Python linting violations (whitespace, line length)'
+      refs: ['backend/ai/conversation_manager.py', 'backend/features/feature_registry.py']
+    - action: 'Address frontend ESLint warnings'
+      refs: ['frontend/src/components/', 'frontend/src/pages/', 'frontend/src/services/']
+  future:
+    - action: 'Implement unified test reporting system'
+      refs: ['pytest.ini', 'Makefile']
+    - action: 'Add performance testing framework'
+      refs: ['tests/performance/']
+    - action: 'Setup security testing automation'
+      refs: ['tests/security/']
+
+risk_summary:
+  totals:
+    critical: 0
+    high: 0
+    medium: 3
+    low: 0
+  recommendations:
+    must_fix:
+      - "Fix failing unit tests before story completion"
+      - "Resolve linting violations to meet coding standards"
+    monitor:
+      - "Track progress on unified reporting implementation"
+      - "Monitor test execution performance as suite grows"

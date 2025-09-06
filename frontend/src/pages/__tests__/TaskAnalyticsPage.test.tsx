@@ -1,5 +1,5 @@
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TaskAnalyticsPage from '../TaskAnalyticsPage';
 
 const mockAnalytics = {
@@ -58,6 +58,6 @@ describe('TaskAnalyticsPage', () => {
       </MemoryRouter>
     );
 
-    await waitFor(() => expect(screen.getByText(/error:/i)).toBeInTheDocument());
+    await screen.findByText(/error:/i);
   });
 });

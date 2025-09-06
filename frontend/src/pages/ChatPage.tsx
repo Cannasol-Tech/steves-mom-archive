@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { BeakerIcon } from '@heroicons/react/24/outline';
 import ChatInterface from '../components/Chat/ChatInterface';
 import type { Message } from '../components/Chat/MessageList';
 import type { Task } from '../types/tasks';
@@ -7,7 +8,6 @@ import { connectLiveUpdates, type LiveUpdateConnection } from '../services/socke
 import { TaskStatus } from '../types/tasks';
 import { parseAnimationFromText, executeAnimation } from '../utils/animationCommands';
 import AgentTasksPanel from '../components/AgentTasksPanel';
-import { BeakerIcon } from '@heroicons/react/24/outline';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -104,7 +104,10 @@ const ChatPage: React.FC = () => {
       },
       onError: (err) => {
         // Log and show a delayed toast so streaming errors (if any) take precedence
-        console.warn('Live updates error:', err.message);
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.warn('Live updates error:', err.message);
+        }
         setTimeout(() => setToastMessage(`Live updates error: ${err.message}`), 50);
       },
       onClose: () => {

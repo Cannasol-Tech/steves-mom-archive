@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { Task, TaskStatus } from '../types/tasks';
+import { TaskStatus } from '../types/tasks';
 import { Message } from './Chat/MessageList';
 
 interface AgentTasksPanelProps {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import App from './App';
 
 // Use MemoryRouter instead of BrowserRouter inside App during tests
 jest.mock('react-router-dom', () => {
@@ -9,8 +10,6 @@ jest.mock('react-router-dom', () => {
     BrowserRouter: actual.MemoryRouter,
   };
 });
-
-import App from './App';
 
 // Prevent real WS connections during tests
 class MockWebSocket {

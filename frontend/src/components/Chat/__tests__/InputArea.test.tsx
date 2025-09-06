@@ -27,7 +27,7 @@ describe('InputArea', () => {
   });
 
   test('enables send when value has non-whitespace', async () => {
-    const { textarea, button, onChange, utils } = setup('');
+    const { textarea, onChange, utils } = setup('');
     await userEvent.type(textarea, 'Hello');
     expect(onChange).toHaveBeenCalled();
     // Re-render with controlled value to reflect enabled state

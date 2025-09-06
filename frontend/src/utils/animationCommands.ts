@@ -14,7 +14,7 @@ export function parseAnimationFromText(text: string): AnimationCommand | null {
     // HTML comment envelope
     const commentMatch = text.match(/smom:\s*\{[^}]*\}/i);
     if (commentMatch) {
-      const jsonStr = commentMatch[0].replace(/^[^\{]*/, '');
+      const jsonStr = commentMatch[0].replace(/^[^{]*/, '');
       const cmd = JSON.parse(jsonStr);
       if (cmd && typeof cmd === 'object') return normalize(cmd);
     }

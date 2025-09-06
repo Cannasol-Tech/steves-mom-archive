@@ -29,6 +29,17 @@ def with_env(env: Dict[str, str]):
     class EnvCtx:
         def __enter__(self):
             self._old = os.environ.copy()
+            # Clear all provider-related environment variables first
+            provider_keys = [
+                "GROK_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY",
+                "GROK_ENABLED", "OPENAI_ENABLED", "CLAUDE_ENABLED", "LOCAL_ENABLED",
+                "GROK_PRIORITY", "OPENAI_PRIORITY", "CLAUDE_PRIORITY", "LOCAL_PRIORITY",
+                "GROK_MODEL", "OPENAI_MODEL", "CLAUDE_MODEL", "LOCAL_MODEL",
+                "GROK_BASE_URL", "OPENAI_BASE_URL", "CLAUDE_BASE_URL", "LOCAL_BASE_URL"
+            ]
+            for key in provider_keys:
+                os.environ.pop(key, None)
+            # Now set the test environment
             os.environ.update(env)
         def __exit__(self, exc_type, exc, tb):
             os.environ.clear()

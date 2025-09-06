@@ -60,7 +60,10 @@ export class AuthService {
 
       return this.userInfo;
     } catch (error) {
-      console.error('Failed to get user info:', error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error('Failed to get user info:', error);
+      }
       this.userInfo = null;
       return null;
     } finally {

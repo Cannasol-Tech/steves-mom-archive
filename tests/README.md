@@ -1,5 +1,13 @@
 # Testing Guidelines
 
+## 📋 Quick Reference
+
+For comprehensive testing documentation, see:
+- **[Testing Guidelines](../docs/testing/testing-guidelines.md)** - Complete testing standards and best practices
+- **[Test Framework Inventory](../docs/testing/test-framework-inventory.md)** - Current testing tools and frameworks
+- **[Gap Analysis](../docs/testing/test-framework-gap-analysis.md)** - Compliance analysis against company standards
+- **[Implementation Roadmap](../docs/testing/test-framework-recommendations-roadmap.md)** - Prioritized improvement plan
+
 ## Overview
 
 This document outlines the testing standards and patterns for the Steve's Mom AI project.

@@ -1,0 +1,39 @@
+{
+  "timestamp": "2025-09-05T20:42:17.760939",
+  "compliance": {
+    "overall_score": 100.0,
+    "unified_reporting": true,
+    "functionality_report": true,
+    "executive_report": true,
+    "three_stage_testing": true,
+    "make_targets": true,
+    "bdd_framework": true,
+    "coverage_reporting": true,
+    "target_score": 95.0
+  },
+  "coverage": {
+    "backend_coverage": 55.9271646228168,
+    "frontend_coverage": 0,
+    "overall_coverage": 55.9271646228168,
+    "target_coverage": 90.0,
+    "meets_threshold": false
+  },
+  "quality": {
+    "python_lint_clean": true,
+    "js_warnings_count": 25,
+    "js_warnings_target": 5,
+    "overall_quality_score": 75
+  },
+  "performance": {
+    "unit_test_duration": 0.8137409687042236,
+    "unit_test_success": true,
+    "target_duration": 5.0,
+    "performance_score": 100
+  },
+  "operational": {
+    "working_make_targets": 4,
+    "total_make_targets": 4,
+    "operational_score": 100.0,
+    "target_score": 100.0
+  }
+}

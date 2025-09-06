@@ -23,7 +23,10 @@ export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConn
   const maxRetries = 3;
 
   function attemptConnection(url: string): WebSocket {
-    console.log(`Attempting WebSocket connection to: ${url}`);
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log(`Attempting WebSocket connection to: ${url}`);
+    }
     return new WebSocket(url);
   }
 
@@ -32,7 +35,10 @@ export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConn
     socket = attemptConnection(url);
 
     socket.onopen = () => {
-      console.log(`WebSocket connection established to: ${url}`);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log(`WebSocket connection established to: ${url}`);
+      }
       retryCount = 0; // Reset retry count on successful connection
     };
 
@@ -50,12 +56,18 @@ export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConn
     };
 
     socket.onerror = (event) => {
-      console.error(`WebSocket error on ${url}:`, event);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error(`WebSocket error on ${url}:`, event);
+      }
 
       // Try fallback URL if primary fails
       if (retryCount < maxRetries) {
         retryCount++;
-        console.log(`Retrying WebSocket connection (attempt ${retryCount}/${maxRetries})`);
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.log(`Retrying WebSocket connection (attempt ${retryCount}/${maxRetries})`);
+        }
         setTimeout(() => {
           if (socket) {
             socket.close();
@@ -68,7 +80,10 @@ export function connectLiveUpdates(handlers: LiveUpdateHandlers): LiveUpdateConn
     };
 
     socket.onclose = (event) => {
-      console.log(`WebSocket connection closed (code: ${event.code}, reason: ${event.reason})`);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log(`WebSocket connection closed (code: ${event.code}, reason: ${event.reason})`);
+      }
 
       // Only call onClose handler if we're not retrying
       if (retryCount >= maxRetries) {

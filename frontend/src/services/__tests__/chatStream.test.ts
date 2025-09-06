@@ -18,13 +18,7 @@ describe('chatStream.startStream', () => {
     await Promise.resolve();
   }
 
-  async function waitUntil(cond: () => boolean, timeoutMs = 500) {
-    const start = Date.now();
-    while (!cond()) {
-      await flushAsync();
-      if (Date.now() - start > timeoutMs) break;
-    }
-  }
+
 
   function streamFrom(chunks: string[]) {
     let i = 0;

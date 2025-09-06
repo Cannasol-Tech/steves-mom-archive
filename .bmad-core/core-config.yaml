@@ -13,11 +13,15 @@ architecture:
   architectureSharded: true
   architectureShardedLocation: docs/architecture
 customTechnicalDocuments:
-  - docs/features
+  - docs/features       # Contains Features that are planned for the current project.  These Features are created using the feature specification process outlined in the 
+  - docs/standards      # Contains all company Standard Operating Procedures that should be adhered to while working on projects.
+  - docs/planning       # Contains Implementation plans for Agents to follow and update as the project implementation progresses.
 devLoadAlwaysFiles:
   - docs/standards/coding-style.md
   - docs/architecture/tech-stack.md
   - docs/architecture/source-tree.md
+  - .auggie-guidelines.md
+  - .bmad-core/core-config.yaml
 devDebugLog: .ai/debug-log.md
 devStoryLocation: docs/stories
 testing:
